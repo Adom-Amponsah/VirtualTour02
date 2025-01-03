@@ -86,7 +86,7 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
             onClick={() => handleSceneChange(sceneId)}
             className={`px-6 py-3 rounded-lg backdrop-blur-md transition-all duration-300
               ${sceneId === currentScene 
-                ? 'bg-primary text-white shadow-lg scale-105' 
+                ? 'bg-[#B71C1C] text-white shadow-lg scale-105' 
                 : 'bg-black/30 text-white hover:bg-black/40'
               }`}
           >

@@ -46,15 +46,15 @@ const Badge = ({ children, className = '' }) => (
 );
 
 const FeatureTag = ({ children }) => (
-  <span className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+  <span className="inline-flex items-center px-3 py-1 rounded-full bg-[#B71C1C]/10 text-[#B71C1C] text-sm font-medium">
     {children}
   </span>
 );
 
 const IconBox = ({ icon: Icon, label, className = '' }) => (
   <div className={`flex items-center gap-3 ${className}`}>
-    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-      <Icon className="w-5 h-5 text-primary" />
+    <div className="w-10 h-10 rounded-full bg-[#B71C1C]/10 flex items-center justify-center">
+      <Icon className="w-5 h-5 text-[#B71C1C]" />
     </div>
     <span className="text-gray-700">{label}</span>
   </div>
@@ -413,8 +413,8 @@ const ApartmentDetail = () => {
         {/* Enhanced Location and Rating Bar */}
         <div className="flex flex-wrap items-center justify-between py-6 border-b mb-8">
           <div className="flex flex-wrap items-center gap-6">
-            <Badge className="bg-primary/10 text-primary px-4 py-2">
-              <MapPin className="w-4 h-4 inline mr-2" />
+            <Badge className="bg-[#B71C1C]/10 text-[#B71C1C] px-4 py-2">
+              <MapPin className="w-5 h-5 text-[#B71C1C] mt-1" />
               {apartment.location}
             </Badge>
             <div className="flex items-center gap-2">
@@ -423,7 +423,7 @@ const ApartmentDetail = () => {
                 <span className="ml-2 font-semibold">{apartment.rating}</span>
               </div>
               <span className="text-gray-400">·</span>
-              <a href="#reviews" className="text-primary hover:underline">
+              <a href="#reviews" className="text-[#B71C1C] hover:underline">
                 {apartment.reviews} reviews
               </a>
             </div>
@@ -470,7 +470,7 @@ const ApartmentDetail = () => {
             </Card> */}
 
             {/* Enhanced About Section */}
-            <div className="bg-gradient-to-r from-primary/5 to-transparent p-8 rounded-xl">
+            <div className="bg-gradient-to-r from-[#B71C1C]/5 to-transparent p-8 rounded-xl">
               <h2 className="text-2xl font-bold mb-6">About this place</h2>
               <p className="text-gray-700 leading-relaxed text-lg">
                 SANTIPHAP ROOM is a spacious en-suite located on the top floor of the renovated 
@@ -496,8 +496,8 @@ const ApartmentDetail = () => {
                   <Card key={idx} hover className="overflow-hidden">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                          <amenity.icon className="w-6 h-6 text-primary" />
+                        <div className="w-12 h-12 rounded-full bg-[#B71C1C]/10 flex items-center justify-center">
+                          <amenity.icon className="w-6 h-6 text-[#B71C1C]" />
                         </div>
                         <div>
                           <h3 className="font-medium">{amenity.label}</h3>
@@ -528,7 +528,7 @@ const ApartmentDetail = () => {
                 <h3 className="font-semibold mb-4">Location Details</h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-primary mt-1" />
+                    <MapPin className="w-5 h-5 text-[#B71C1C] mt-1" />
                     <div>
                       <h4 className="font-medium">Address</h4>
                       <p className="text-gray-600">123 Sukhumvit Road, Bangkok 10110, Thailand</p>
@@ -536,7 +536,7 @@ const ApartmentDetail = () => {
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <Globe className="w-5 h-5 text-primary mt-1" />
+                    <Globe className="w-5 h-5 text-[#B71C1C] mt-1" />
                     <div>
                       <h4 className="font-medium">Getting There</h4>
                       <p className="text-gray-600">
@@ -548,7 +548,7 @@ const ApartmentDetail = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <Star className="w-5 h-5 text-primary mt-1" />
+                    <Star className="w-5 h-5 text-[#B71C1C] mt-1" />
                     <div>
                       <h4 className="font-medium">Neighborhood</h4>
                       <p className="text-gray-600">
@@ -567,7 +567,7 @@ const ApartmentDetail = () => {
             <Card className="sticky top-8 shadow-xl overflow-hidden">
               <div className="bg-primary/5 p-6">
                 <div className="flex justify-between items-center mb-4">
-                  <div className="text-3xl font-bold text-primary">
+                  <div className="text-3xl font-bold text-[#B71C1C]">
                     $ {apartment.price.toLocaleString()}
                     <span className="text-base font-normal text-gray-600"> / night</span>
                   </div>
@@ -668,7 +668,7 @@ const ApartmentDetail = () => {
                   </div>
 
                   <Button 
-                    className="w-full py-4 text-lg font-bold rounded-xl bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary transition-all duration-300"
+                    className="w-full py-4 text-lg font-bold rounded-xl bg-gradient-to-r from-[#B71C1C] to-[#7f1616] hover:from-[#7f1616] hover:to-[#B71C1C] transition-all duration-300"
                     onClick={handleReserveClick}
                   >
                     Reserve now

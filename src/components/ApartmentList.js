@@ -267,7 +267,7 @@ const ApartmentList = () => {
                 whileTap={{ scale: 0.98 }}
                 className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all ${
                   activeFilter === filter.id 
-                    ? 'bg-primary text-white shadow-md' 
+                    ? 'bg-[#B71C1C] text-white shadow-md' 
                     : 'bg-white border border-gray-200 hover:border-gray-300 text-gray-700'
                 }`}
                 onClick={() => setActiveFilter(filter.id)}
