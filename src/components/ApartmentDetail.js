@@ -208,7 +208,7 @@ const VirtualTourSection = ({ scenes, name }) => {
               </div>
             </div>
             
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -226,7 +226,7 @@ const VirtualTourSection = ({ scenes, name }) => {
                 <Heart className="w-5 h-5" />
                 <span>Save</span>
               </motion.button>
-            </div>
+            </div> */}
           </div>
         </div>
       </motion.div>
