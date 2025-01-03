@@ -170,13 +170,18 @@ const SceneInfo = ({ title, description }) => (
 );
 
 const VirtualTourSection = ({ scenes, name }) => {
-  const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
-  const sceneKeys = Object.keys(scenes);
-  const currentScene = scenes[sceneKeys[currentSceneIndex]];
+  const [currentScene, setCurrentScene] = useState(scenes[Object.keys(scenes)[0]]);
+
+  const handleSceneChange = (sceneId) => {
+    setCurrentScene(scenes[sceneId]);
+  };
 
   return (
     <div className="relative h-[85vh] group">
-      <VirtualTour scenes={scenes} />
+      <VirtualTour 
+        scenes={scenes} 
+        onSceneChange={handleSceneChange}
+      />
       
       {/* Gradient Overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/40 pointer-events-none" />
@@ -198,7 +203,7 @@ const VirtualTourSection = ({ scenes, name }) => {
                   Virtual Tour
                 </Badge>
                 <Badge className="bg-white/20 backdrop-blur-sm text-white">
-                  {currentScene.title}
+                  {currentScene?.title || 'Loading...'}
                 </Badge>
               </div>
             </div>
@@ -227,10 +232,10 @@ const VirtualTourSection = ({ scenes, name }) => {
       </motion.div>
 
       {/* Scene Information */}
-      <SceneInfo 
+      {/* <SceneInfo 
         title={currentScene.title}
         description={currentScene.description}
-      />
+      /> */}
 
       {/* Tour Controls */}
       {/* <TourControls 
@@ -379,17 +384,17 @@ const ApartmentDetail = () => {
   };
 
   const scenes = {
-    scene1: {
+    livingRoom: {
       imageSource: "/images/pano01.jpg",
       title: "Living Room",
       hotSpots: []
     },
-    scene2: {
+    kitchen: {
       imageSource: "/images/pano02.jpg",
       title: "Kitchen",
       hotSpots: []
     },
-    scene4: {
+    bathroom: {
       imageSource: "/images/pano03.jpg",
       title: "Bathroom",
       hotSpots: []

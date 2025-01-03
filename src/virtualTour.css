@@ -69,9 +69,9 @@
   height: 100%;
 }
 
-/* Add smooth transitions */
+/* Smooth transitions for scene changes */
 .pannellum-container canvas {
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
 }
 
 /* Custom loading animation */
@@ -83,4 +83,23 @@
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Scene transition animations */
+.scene-transition-enter {
+  opacity: 0;
+}
+
+.scene-transition-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in-out;
+}
+
+.scene-transition-exit {
+  opacity: 1;
+}
+
+.scene-transition-exit-active {
+  opacity: 0;
+  transition: opacity 500ms ease-in-out;
 } 

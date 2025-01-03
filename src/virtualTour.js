@@ -2,69 +2,55 @@ import React, { useState, useEffect } from 'react';
 import { Pannellum } from 'pannellum-react';
 import './virtualTour.css';
 
-const VirtualTour = ({ scenes }) => {
+const VirtualTour = ({ scenes, onSceneChange }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentScene, setCurrentScene] = useState(Object.keys(scenes)[0]);
-  const [previewImage, setPreviewImage] = useState('');
-  const [error, setError] = useState(null);
+  const [preloadedScenes, setPreloadedScenes] = useState({});
 
+  // Preload all scenes
   useEffect(() => {
-    if (!scenes || !scenes[currentScene]?.imageSource) {
-      setError('No panorama image was selected');
-      return;
-    }
-
-    // Create a low-res blur preview
-    const img = new Image();
-    img.src = scenes[currentScene].imageSource;
-    
-    img.onerror = () => {
-      setError('Failed to load panorama image');
+    const preloadImages = async () => {
+      const loadedScenes = {};
+      
+      for (const [sceneId, scene] of Object.entries(scenes)) {
+        try {
+          await new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = scene.imageSource;
+            img.onload = () => {
+              loadedScenes[sceneId] = img;
+              resolve();
+            };
+            img.onerror = reject;
+          });
+        } catch (err) {
+          console.error(`Failed to load scene: ${sceneId}`, err);
+        }
+      }
+      
+      setPreloadedScenes(loadedScenes);
       setIsLoading(false);
     };
 
-    img.onload = () => {
-      try {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 100;
-        canvas.height = 50;
-        
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        ctx.filter = 'blur(8px)';
-        ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
-        setPreviewImage(canvas.toDataURL());
-        setError(null);
-      } catch (err) {
-        setError('Error processing image preview');
-      }
-    };
-  }, [currentScene, scenes]);
+    preloadImages();
+  }, [scenes]);
 
-  if (error) {
-    return (
-      <div className="w-full h-full flex items-center justify-center bg-gray-100">
-        <div className="text-center text-gray-600">
-          <div className="text-lg font-medium mb-2">{error}</div>
-          <div className="text-sm">Please check the image path and try again</div>
-        </div>
-      </div>
-    );
-  }
+  // Handle scene transitions
+  const handleSceneChange = (newScene) => {
+    setCurrentScene(newScene);
+    onSceneChange?.(newScene); // Notify parent component
+  };
+
+  // Debug log current scene
+  useEffect(() => {
+    console.log('Current scene:', currentScene);
+  }, [currentScene]);
 
   return (
     <div className="relative w-full h-full">
-      {/* Blur Preview */}
-      {isLoading && previewImage && (
-        <div 
-          className="absolute inset-0 z-10 animate-pulse"
-          style={{
-            backgroundImage: `url(${previewImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            filter: 'blur(8px)',
-          }}
-        >
+      {/* Initial Loading Screen */}
+      {isLoading && (
+        <div className="absolute inset-0 z-10 bg-gray-100">
           <div className="absolute inset-0 flex items-center justify-center bg-black/30 backdrop-blur-sm">
             <div className="text-center text-white">
               <div className="inline-block w-16 h-16 mb-4">
@@ -85,8 +71,8 @@ const VirtualTour = ({ scenes }) => {
                   />
                 </svg>
               </div>
-              <div className="text-lg font-medium">Loading Virtual Tour</div>
-              <div className="text-sm text-white/70">Please wait while we prepare your experience</div>
+              <div className="text-lg font-medium">Preparing Virtual Tour</div>
+              <div className="text-sm text-white/70">Loading all rooms...</div>
             </div>
           </div>
         </div>
@@ -97,10 +83,10 @@ const VirtualTour = ({ scenes }) => {
         {Object.entries(scenes).map(([sceneId, scene]) => (
           <button 
             key={sceneId} 
-            onClick={() => setCurrentScene(sceneId)}
-            className={`px-6 py-3 rounded-lg backdrop-blur-md transition-colors duration-300
+            onClick={() => handleSceneChange(sceneId)}
+            className={`px-6 py-3 rounded-lg backdrop-blur-md transition-all duration-300
               ${sceneId === currentScene 
-                ? 'bg-primary text-white shadow-lg' 
+                ? 'bg-primary text-white shadow-lg scale-105' 
                 : 'bg-black/30 text-white hover:bg-black/40'
               }`}
           >
@@ -109,22 +95,33 @@ const VirtualTour = ({ scenes }) => {
         ))}
       </div>
 
-      {/* Actual Pannellum View */}
-      <Pannellum
-        width="100%"
-        height="100%"
-        image={scenes[currentScene]?.imageSource}
-        pitch={10}
-        yaw={180}
-        hfov={110}
-        autoLoad
-        onLoad={() => setIsLoading(false)}
-        hotSpots={scenes[currentScene]?.hotSpots || []}
-        onScenechange={(id) => {
-          setIsLoading(true);
-          setCurrentScene(id);
-        }}
-      />
+      {/* Pannellum Views */}
+      <div className="relative w-full h-full">
+        {Object.entries(scenes).map(([sceneId, scene]) => (
+          <div 
+            key={sceneId}
+            className={`absolute inset-0 transition-opacity duration-500 ${
+              sceneId === currentScene ? 'opacity-100 z-10' : 'opacity-0 z-0'
+            }`}
+          >
+            <Pannellum
+              width="100%"
+              height="100%"
+              image={scene.imageSource}
+              pitch={10}
+              yaw={180}
+              hfov={110}
+              autoLoad
+              onLoad={() => {
+                if (sceneId === currentScene) {
+                  setIsLoading(false);
+                }
+              }}
+              hotSpots={scene.hotSpots || []}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
