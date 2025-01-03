@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { motion } from 'framer-motion';
+import { useBooking } from '../context/BookingContext';
 
 const Card = ({ children, className = '', hover = false }) => (
   <div className={`bg-white rounded-xl transition-all duration-300 ${
@@ -269,6 +270,8 @@ const ApartmentDetail = () => {
   const [guests, setGuests] = useState(1);
   const navigate = useNavigate();
 
+  const { updateBookingDetails, calculatePricing } = useBooking();
+
   // Calculate number of nights between dates
   const calculateNights = () => {
     if (!startDate || !endDate) return 0;
@@ -282,28 +285,6 @@ const ApartmentDetail = () => {
   const extraGuestFee = 100; 
   const baseCleaning = 150; // Base cleaning fee
   const baseService = 100; // Base service fee
-
-  const calculatePricing = () => {
-    const nights = calculateNights();
-    const extraGuests = Math.max(0, guests - 1); // First guest is included in base price
-    
-    const nightlyTotal = basePrice * nights;
-    const extraGuestsTotal = extraGuests * extraGuestFee * nights;
-    const cleaningFee = baseCleaning + (extraGuests * 50); // Cleaning fee increases with more guests
-    const serviceFee = Math.round((nightlyTotal + extraGuestsTotal) * 0.12); // 12% service fee
-
-    return {
-      nightlyRate: basePrice,
-      nights,
-      nightlyTotal,
-      extraGuestsTotal,
-      cleaningFee,
-      serviceFee,
-      total: nightlyTotal + extraGuestsTotal + cleaningFee + serviceFee
-    };
-  };
-
-  const pricing = calculatePricing();
 
   const apartment = {
     id,
@@ -374,13 +355,51 @@ const ApartmentDetail = () => {
   ];
 
   const handleReserveClick = () => {
-    navigate('/checkout');  // This should match your route path for ReservationCheckout
+    const nights = calculateNights();
+    const pricing = calculatePricing(basePrice, nights, guests);
+    
+    updateBookingDetails({
+      startDate,
+      endDate,
+      guests,
+      basePrice,
+      apartment: {
+        id,
+        name: apartment.name,
+        location: apartment.location,
+        image: apartment.images?.[0],
+        rating: apartment.rating,
+        reviews: apartment.reviews,
+        type: "Room in rental unit"
+      },
+      ...pricing
+    });
+    
+    navigate('/checkout');
+  };
+
+  const scenes = {
+    scene1: {
+      imageSource: "/images/pano01.jpg",
+      title: "Living Room",
+      hotSpots: []
+    },
+    scene2: {
+      imageSource: "/images/pano02.jpg",
+      title: "Kitchen",
+      hotSpots: []
+    },
+    scene4: {
+      imageSource: "/images/pano03.jpg",
+      title: "Bathroom",
+      hotSpots: []
+    }
   };
 
   return (
     <div className="max-w-[2000px] mx-auto">
       <VirtualTourSection 
-        scenes={apartment.virtualTourScenes} 
+        scenes={scenes} 
         name={apartment.name}
       />
 
@@ -404,10 +423,10 @@ const ApartmentDetail = () => {
               </a>
             </div>
           </div>
-          <FeatureTag>
+          {/* <FeatureTag>
             <Medal className="w-4 h-4 inline mr-2" />
             {apartment.host.type}
-          </FeatureTag>
+          </FeatureTag> */}
         </div>
 
         {/* Main Grid with Enhanced Layout */}
@@ -602,9 +621,9 @@ const ApartmentDetail = () => {
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-lg">
                     <span className="text-gray-600">
-                      $ {pricing.nightlyRate.toLocaleString()} × {pricing.nights} nights
+                      ${basePrice.toLocaleString()} × {calculateNights()} nights
                     </span>
-                    <span>$ {pricing.nightlyTotal.toLocaleString()}</span>
+                    <span>${(basePrice * calculateNights()).toLocaleString()}</span>
                   </div>
                   
                   {guests > 1 && (
@@ -612,7 +631,7 @@ const ApartmentDetail = () => {
                       <span className="text-gray-600">
                         Extra guest fee ({guests - 1} guests)
                       </span>
-                      <span>$ {pricing.extraGuestsTotal.toLocaleString()}</span>
+                      <span>${((guests - 1) * extraGuestFee * calculateNights()).toLocaleString()}</span>
                     </div>
                   )}
 
@@ -623,7 +642,7 @@ const ApartmentDetail = () => {
                         Based on {guests} guests
                       </span>
                     </div>
-                    <span>$ {pricing.cleaningFee.toLocaleString()}</span>
+                    <span>${(baseCleaning + (Math.max(0, guests - 1) * 50)).toLocaleString()}</span>
                   </div>
 
                   <div className="flex justify-between text-lg">
@@ -633,14 +652,14 @@ const ApartmentDetail = () => {
                         12% of booking subtotal
                       </span>
                     </div>
-                    <span>$ {pricing.serviceFee.toLocaleString()}</span>
+                    <span>${(baseService * calculateNights()).toLocaleString()}</span>
                   </div>
 
                   <Separator className="my-6" />
 
                   <div className="flex justify-between text-xl font-bold mb-6">
                     <span>Total</span>
-                    <span>$ {pricing.total.toLocaleString()}</span>
+                    <span>${calculatePricing(basePrice, calculateNights(), guests).total.toLocaleString()}</span>
                   </div>
 
                   <Button 

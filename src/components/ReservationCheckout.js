@@ -13,14 +13,49 @@ import {
   Clock,
   Info
 } from 'lucide-react';
+import { useBooking } from '../context/BookingContext';
 
 const ReservationCheckout = () => {
+  const { bookingDetails, updateBookingDetails, calculatePricing } = useBooking();
   const navigate = useNavigate();
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-  const [guests, setGuests] = useState(1);
+  const [startDate, setStartDate] = useState(bookingDetails.startDate || new Date());
+  const [endDate, setEndDate] = useState(bookingDetails.endDate || new Date());
+  const [guests, setGuests] = useState(bookingDetails.guests || 1);
   const [paymentMethod, setPaymentMethod] = useState('credit');
   const [isProcessing, setIsProcessing] = useState(false);
+
+  const calculateNights = () => {
+    if (!startDate || !endDate) return 0;
+    const diffTime = Math.abs(endDate - startDate);
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  };
+
+  // Update pricing when dates or guests change
+  const handleDateChange = (type, date) => {
+    if (type === 'start') {
+      setStartDate(date);
+    } else {
+      setEndDate(date);
+    }
+    
+    const nights = calculateNights();
+    const newPricing = calculatePricing(bookingDetails.basePrice, nights, guests);
+    updateBookingDetails({
+      startDate: type === 'start' ? date : startDate,
+      endDate: type === 'end' ? date : endDate,
+      ...newPricing
+    });
+  };
+
+  const handleGuestsChange = (newGuests) => {
+    setGuests(newGuests);
+    const nights = calculateNights();
+    const newPricing = calculatePricing(bookingDetails.basePrice, nights, newGuests);
+    updateBookingDetails({
+      guests: newGuests,
+      ...newPricing
+    });
+  };
 
   // Mock data - In a real app, this would come from your booking context/state
   const listing = {
@@ -85,7 +120,7 @@ const ReservationCheckout = () => {
                       <div className="relative">
                         <DatePicker
                           selected={startDate}
-                          onChange={date => setStartDate(date)}
+                          onChange={(date) => handleDateChange('start', date)}
                           selectsStart
                           startDate={startDate}
                           endDate={endDate}
@@ -97,7 +132,7 @@ const ReservationCheckout = () => {
                       <div className="relative">
                         <DatePicker
                           selected={endDate}
-                          onChange={date => setEndDate(date)}
+                          onChange={(date) => handleDateChange('end', date)}
                           selectsEnd
                           startDate={startDate}
                           endDate={endDate}
@@ -115,7 +150,7 @@ const ReservationCheckout = () => {
                     <div className="relative">
                       <select
                         value={guests}
-                        onChange={e => setGuests(e.target.value)}
+                        onChange={(e) => handleGuestsChange(Number(e.target.value))}
                         className="w-full p-3 border rounded-lg appearance-none"
                       >
                         {[1, 2, 3, 4].map(num => (
@@ -253,23 +288,25 @@ const ReservationCheckout = () => {
                   <h3 className="font-semibold text-lg">Price details</h3>
                   
                   <div className="flex justify-between">
-                    <span>GHC{listing.price.nightly} × {listing.price.nights} nights</span>
-                    <span>GHC{listing.price.nightly * listing.price.nights}</span>
+                    <span>
+                      ${bookingDetails.basePrice?.toLocaleString() || 0} × {calculateNights()} nights
+                    </span>
+                    <span>${bookingDetails.nightlyTotal?.toLocaleString() || 0}</span>
                   </div>
                   
                   <div className="flex justify-between">
                     <span>Cleaning fee</span>
-                    <span>GHC{listing.price.cleaning}</span>
+                    <span>${bookingDetails.cleaningFee?.toLocaleString() || 0}</span>
                   </div>
                   
                   <div className="flex justify-between">
                     <span>Service fee</span>
-                    <span>GHC{listing.price.service}</span>
+                    <span>${bookingDetails.serviceFee?.toLocaleString() || 0}</span>
                   </div>
                   
                   <div className="flex justify-between pt-4 border-t font-bold">
-                    <span>Total (GHS)</span>
-                    <span>GHC{listing.price.total}</span>
+                    <span>Total</span>
+                    <span>${bookingDetails.total?.toLocaleString() || 0}</span>
                   </div>
                 </div>
 

@@ -18,15 +18,19 @@ import {
   Tv,
   Wind,
   Filter,
-  X
+  X,
+  Building,
+  Square,
+  Bed,
+  Mountain,
+  SlidersHorizontal
 } from 'lucide-react';
 
 const ApartmentList = () => {
   const navigate = useNavigate();
-  const [activeFilter, setActiveFilter] = useState('All');
-  const [showFilters, setShowFilters] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [favorites, setFavorites] = useState(new Set());
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState('all');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,14 +69,11 @@ const ApartmentList = () => {
       id: 1,
       title: "Luxury Waterfront Villa",
       location: "København, Denmark",
-      host: "Bo · Superhost",
       rating: 4.95,
-      dates: "Jan 6 - 11",
       price: 1743,
       image: "/images/rent01.jpg",
       amenities: ["Wifi", "Pool", "Kitchen", "Parking", "TV", "AC"],
       type: "Luxury",
-      isSuperhost: true,
       description: "Stunning waterfront villa with panoramic views",
       beds: 3,
       baths: 2,
@@ -82,14 +83,11 @@ const ApartmentList = () => {
       id: 2,
       title: "Luxury Waterfront Villa",
       location: "København, Denmark",
-      host: "Bo · Superhost",
       rating: 4.95,
-      dates: "Jan 6 - 11",
       price: 1743,
       image: "/images/rent02.jpg",
       amenities: ["Wifi", "Pool", "Kitchen", "Parking", "TV", "AC"],
       type: "Luxury",
-      isSuperhost: true,
       description: "Stunning waterfront villa with panoramic views",
       beds: 3,
       baths: 2,
@@ -99,14 +97,11 @@ const ApartmentList = () => {
       id: 3,
       title: "Luxury Waterfront Villa",
       location: "København, Denmark",
-      host: "Bo · Superhost",
       rating: 4.95,
-      dates: "Jan 6 - 11",
       price: 1743,
       image: "/images/rent03.jpg",
       amenities: ["Wifi", "Pool", "Kitchen", "Parking", "TV", "AC"],
       type: "Luxury",
-      isSuperhost: true,
       description: "Stunning waterfront villa with panoramic views",
       beds: 3,
       baths: 2,
@@ -116,14 +111,11 @@ const ApartmentList = () => {
       id: 4,
       title: "Luxury Waterfront Villa",
       location: "København, Denmark",
-      host: "Bo · Superhost",
       rating: 4.95,
-      dates: "Jan 6 - 11",
       price: 1743,
       image: "/images/test01.jpg",
       amenities: ["Wifi", "Pool", "Kitchen", "Parking", "TV", "AC"],
       type: "Luxury",
-      isSuperhost: true,
       description: "Stunning waterfront villa with panoramic views",
       beds: 3,
       baths: 2,
@@ -133,14 +125,11 @@ const ApartmentList = () => {
       id: 4,
       title: "Luxury Waterfront Villa",
       location: "København, Denmark",
-      host: "Bo · Superhost",
       rating: 4.95,
-      dates: "Jan 6 - 11",
       price: 1743,
       image: "/images/test02.jpg",
       amenities: ["Wifi", "Pool", "Kitchen", "Parking", "TV", "AC"],
       type: "Luxury",
-      isSuperhost: true,
       description: "Stunning waterfront villa with panoramic views",
       beds: 3,
       baths: 2,
@@ -150,14 +139,11 @@ const ApartmentList = () => {
       id: 5,
       title: "Luxury Waterfront Villa",
       location: "København, Denmark",
-      host: "Bo · Superhost",
       rating: 4.95,
-      dates: "Jan 6 - 11",
       price: 1743,
       image: "/images/test03.jpg",
       amenities: ["Wifi", "Pool", "Kitchen", "Parking", "TV", "AC"],
       type: "Luxury",
-      isSuperhost: true,
       description: "Stunning waterfront villa with panoramic views",
       beds: 3,
       baths: 2,
@@ -167,14 +153,11 @@ const ApartmentList = () => {
       id: 6,
       title: "Luxury Waterfront Villa",
       location: "København, Denmark",
-      host: "Bo · Superhost",
       rating: 4.95,
-      dates: "Jan 6 - 11",
       price: 1743,
       image: "/images/rent01.jpg",
       amenities: ["Wifi", "Pool", "Kitchen", "Parking", "TV", "AC"],
       type: "Luxury",
-      isSuperhost: true,
       description: "Stunning waterfront villa with panoramic views",
       beds: 3,
       baths: 2,
@@ -184,14 +167,11 @@ const ApartmentList = () => {
       id: 7,
       title: "Luxury Waterfront Villa",
       location: "København, Denmark",
-      host: "Bo · Superhost",
       rating: 4.95,
-      dates: "Jan 6 - 11",
       price: 1743,
       image: "/images/rent02.jpg",
       amenities: ["Wifi", "Pool", "Kitchen", "Parking", "TV", "AC"],
       type: "Luxury",
-      isSuperhost: true,
       description: "Stunning waterfront villa with panoramic views",
       beds: 3,
       baths: 2,
@@ -200,40 +180,32 @@ const ApartmentList = () => {
   ];
 
   const filters = [
-    { id: 'all', label: 'All', icon: <Filter /> },
-    { id: 'luxury', label: 'Luxury', icon: <Star /> },
-    { id: 'beach', label: 'Beachfront', icon: <Waves /> },
-    { id: 'modern', label: 'Modern', icon: <Tv /> },
-    { id: 'cozy', label: 'Cozy', icon: <Wind /> }
+    { id: 'all', label: 'All Properties', icon: <Building className="w-4 h-4" /> },
+    { id: 'apartment', label: 'Apartments', icon: <Square className="w-4 h-4" /> },
+    { id: 'studio', label: 'Studios', icon: <Bed className="w-4 h-4" /> },
+    { id: 'penthouse', label: 'Penthouses', icon: <Mountain className="w-4 h-4" /> },
+    { id: 'family', label: 'Family-Sized', icon: <Users className="w-4 h-4" /> }
   ];
-
-  const toggleFavorite = (e, id) => {
-    e.stopPropagation();
-    setFavorites(prev => {
-      const newFavorites = new Set(prev);
-      if (newFavorites.has(id)) {
-        newFavorites.delete(id);
-      } else {
-        newFavorites.add(id);
-      }
-      return newFavorites;
-    });
-  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
-      <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm' : 'bg-white'}`}>
+      <nav className={`fixed w-full z-50 transition-all duration-300 ${
+        scrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm' : 'bg-white'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
+            {/* Logo */}
             <div className="flex items-center space-x-8">
-              <motion.img 
-                src="/logo.svg" 
-                alt="Logo" 
-                className="h-8"
+              <motion.div 
+                className="text-xl font-bold text-primary"
                 whileHover={{ scale: 1.05 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              />
+                onClick={() => navigate('/')}
+                style={{ cursor: 'pointer' }}
+              >
+                ApartmentVR
+              </motion.div>
             </div>
 
             {/* Search Bar */}
@@ -243,38 +215,45 @@ const ApartmentList = () => {
               animate={{ opacity: 1, y: 0 }}
             >
               <div className="relative">
-                <div className="flex items-center bg-white border border-gray-200 rounded-full p-2 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center bg-white border border-gray-200 rounded-lg p-2 shadow-sm hover:shadow-md transition-shadow">
+                  <Search className="h-5 w-5 text-gray-400 ml-2" />
                   <input
                     type="text"
-                    placeholder="Search destinations..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search by location, price, or features..."
                     className="w-full px-4 py-1 text-sm border-none focus:outline-none bg-transparent"
                   />
-                  <Button className="rounded-full">
-                    <Search className="h-4 w-4" />
+                  <Button 
+                    variant="ghost"
+                    className="p-2 hover:bg-gray-100 rounded-lg"
+                  >
+                    <SlidersHorizontal className="h-5 w-5 text-gray-500" />
                   </Button>
                 </div>
               </div>
             </motion.div>
 
+            {/* User Actions */}
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" className="hidden lg:flex">
-                Become a Host
+              <Button variant="outline" className="hidden lg:flex">
+                List Property
               </Button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="flex items-center space-x-2 bg-white rounded-full px-4 py-2 shadow-sm hover:shadow-md transition-shadow"
+                className="flex items-center space-x-2 bg-white rounded-lg px-4 py-2 border border-gray-200 hover:border-gray-300 transition-all"
               >
-                <Menu className="h-4 w-4" />
-                <User className="h-6 w-6" />
+                <User className="h-5 w-5 text-gray-600" />
+                <span className="hidden md:inline">Account</span>
               </motion.button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Filters */}
-      <div className="pt-24 pb-4 px-4 bg-white">
+      {/* Filter Bar */}
+      <div className="pt-24 pb-4 px-4 bg-white border-b">
         <div className="max-w-7xl mx-auto">
           <motion.div 
             className="flex space-x-4 overflow-x-auto pb-4 scrollbar-hide"
@@ -284,17 +263,17 @@ const ApartmentList = () => {
             {filters.map((filter) => (
               <motion.button
                 key={filter.id}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-full transition-all ${
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-all ${
                   activeFilter === filter.id 
-                    ? 'bg-black text-white' 
-                    : 'bg-white border border-gray-200 hover:border-gray-300'
+                    ? 'bg-primary text-white shadow-md' 
+                    : 'bg-white border border-gray-200 hover:border-gray-300 text-gray-700'
                 }`}
                 onClick={() => setActiveFilter(filter.id)}
               >
                 {filter.icon}
-                <span>{filter.label}</span>
+                <span className="whitespace-nowrap">{filter.label}</span>
               </motion.button>
             ))}
           </motion.div>
@@ -326,21 +305,6 @@ const ApartmentList = () => {
                     alt={listing.title}
                     className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105"
                   />
-                  <button
-                    onClick={(e) => toggleFavorite(e, listing.id)}
-                    className="absolute top-4 right-4 p-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transition-all"
-                  >
-                    <Heart 
-                      className={`h-5 w-5 transition-colors ${
-                        favorites.has(listing.id) ? 'fill-red-500 text-red-500' : 'text-gray-600'
-                      }`}
-                    />
-                  </button>
-                  {listing.isSuperhost && (
-                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/80 backdrop-blur-sm text-xs font-medium">
-                      Superhost
-                    </div>
-                  )}
                 </div>
                 
                 <div className="p-6">
@@ -369,10 +333,10 @@ const ApartmentList = () => {
                   <div className="flex items-end justify-between">
                     <div>
                       <span className="text-xl font-bold">${listing.price}</span>
-                      <span className="text-gray-600 text-sm"> / night</span>
+                      <span className="text-gray-600 text-sm"> / month</span>
                     </div>
                     <div className="text-sm text-gray-500">
-                      {listing.dates}
+                      {listing.beds} beds · {listing.baths} baths
                     </div>
                   </div>
                 </div>
