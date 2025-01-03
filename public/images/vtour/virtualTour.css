@@ -1,0 +1,18 @@
+.room-button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  background-color: #f0f0f0;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.room-button.active {
+  background-color: #B71C1C; /* Theme color */
+  color: white;
+}
+
+.room-button:hover {
+  background-color: #e0e0e0;
+} 

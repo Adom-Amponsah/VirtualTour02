@@ -1,27 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import './virtualTour.css';
 
-// Simplified scene configuration without hotspots
-const sceneConfig = {
-  scene1: {
-    panorama: '/images/test01.jpg',
-    title: 'Living Room',
-    description: 'Spacious living area with natural lighting'
-  },
-  scene2: {
-    panorama: '/images/test02.jpg',
-    title: 'Kitchen',
-    description: 'Modern kitchen with updated appliances'
-  },
-  scene3: {
-    panorama: '/images/test03.jpg',
-    title: 'Bedroom',
-    description: 'Comfortable bedroom with built-in storage'
-  }
-};
-
-const VirtualTour = () => {
-  const [currentScene, setCurrentScene] = useState('scene1');
+const VirtualTour = ({ scenes }) => {
+  const [currentScene, setCurrentScene] = useState(Object.keys(scenes)[0]);
   const viewerRef = useRef(null);
   const panoramaRef = useRef(null);
 
@@ -29,7 +9,7 @@ const VirtualTour = () => {
     if (window.pannellum && panoramaRef.current) {
       viewerRef.current = window.pannellum.viewer(panoramaRef.current, {
         type: 'equirectangular',
-        panorama: sceneConfig[currentScene].panorama,
+        panorama: scenes[currentScene].panorama,
         autoLoad: true,
         compass: true,
         northOffset: 90,
@@ -50,30 +30,29 @@ const VirtualTour = () => {
         viewerRef.current.destroy();
       }
     };
-  }, [currentScene]);
+  }, [currentScene, scenes]);
 
   return (
-    <div className="virtual-tour">
-      <div className="room-selector">
-        {Object.entries(sceneConfig).map(([sceneId, scene]) => (
+    <div className="h-full">
+      <div 
+        ref={panoramaRef} 
+        className="w-full h-full bg-gray-200"
+      />
+      
+      <div className="absolute bottom-4 left-4 right-4 flex justify-center space-x-2 text-white">
+        {Object.entries(scenes).map(([sceneId, scene]) => (
           <button 
             key={sceneId} 
             onClick={() => setCurrentScene(sceneId)}
-            className={`room-button ${sceneId === currentScene ? 'active' : ''}`}
+            className={`px-6 py-3 rounded-lg backdrop-blur-md transition-colors duration-300
+              ${sceneId === currentScene 
+                ? 'bg-[#B71C1C]/90 text-white' 
+                : 'bg-black/30 text-white hover:bg-black/40'
+              }`}
           >
             {scene.title}
           </button>
         ))}
-      </div>
-
-      <div 
-        ref={panoramaRef} 
-        className="panorama-viewer"
-      />
-      
-      <div className="room-info">
-        <h2>{sceneConfig[currentScene].title}</h2>
-        <p>{sceneConfig[currentScene].description}</p>
       </div>
     </div>
   );
