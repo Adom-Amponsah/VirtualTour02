@@ -488,6 +488,71 @@ const ApartmentDetail = () => {
               </div>
             </div>
 
+            {/* Additional Apartment Images */}
+            <div className="mt-10">
+              <h2 className="text-2xl font-bold mb-6">Additional Views</h2>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-4">
+                  {/* Large image on the left */}
+                  <div className="aspect-[4/3] rounded-xl overflow-hidden">
+                    <img 
+                      src="/images/add01.jpg" 
+                      alt="Kitchen Details"
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                  {/* Two smaller images below */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="aspect-square rounded-xl overflow-hidden">
+                      <img 
+                        src="/images/app02.jpg" 
+                        alt="Bathroom Amenities"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="aspect-square rounded-xl overflow-hidden">
+                      <img 
+                        src="/images/details03.jpg" 
+                        alt="Work Space"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="space-y-4">
+                  {/* Two smaller images on top */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="aspect-square rounded-xl overflow-hidden">
+                      <img 
+                        src="/images/app03.jpg" 
+                        alt="Bedroom Storage"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="aspect-square rounded-xl overflow-hidden">
+                      <img 
+                        src="/images/app04.jpg" 
+                        alt="Window View"
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  </div>
+                  {/* Large image below */}
+                  <div className="aspect-[4/3] rounded-xl overflow-hidden">
+                    <img 
+                      src="/images/app05.jpg" 
+                      alt="Living Area Details"
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
+                </div>
+              </div>
+              <p className="text-gray-500 text-sm mt-4">
+                These images show additional details and angles not visible in the 360° tour
+              </p>
+            </div>
+
             {/* Enhanced Amenities Section */}
             <div>
               <h2 className="text-2xl font-bold mb-6">What this place offers</h2>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Pannellum } from 'pannellum-react';
 import './virtualTour.css';
 
@@ -6,6 +6,11 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [currentScene, setCurrentScene] = useState(Object.keys(scenes)[0]);
   const [preloadedScenes, setPreloadedScenes] = useState({});
+  const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const viewerRefs = useRef({});
+  const autoRotationInterval = useRef(null);
+  const currentYawRef = useRef(180); // Initial yaw value
+  const autoRotationSpeed = 5; // Degrees per second
 
   // Preload all scenes
   useEffect(() => {
@@ -35,19 +40,102 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
     preloadImages();
   }, [scenes]);
 
+  // Handle auto-rotation
+  useEffect(() => {
+    const startAutoRotation = () => {
+      if (autoRotationInterval.current) return;
+
+      autoRotationInterval.current = setInterval(() => {
+        if (!isUserInteracting && viewerRefs.current[currentScene]) {
+          try {
+            // Get the underlying Pannellum viewer instance
+            const viewer = viewerRefs.current[currentScene].getViewer();
+            
+            if (viewer) {
+              // Update the yaw value
+              currentYawRef.current += autoRotationSpeed / 10;
+              viewer.setYaw(currentYawRef.current);
+            }
+          } catch (error) {
+            console.error('Error updating viewer position:', error);
+          }
+        }
+      }, 100); // Update every 100ms for smooth rotation
+    };
+
+    const stopAutoRotation = () => {
+      if (autoRotationInterval.current) {
+        clearInterval(autoRotationInterval.current);
+        autoRotationInterval.current = null;
+      }
+    };
+
+    // Start auto-rotation when component mounts
+    startAutoRotation();
+
+    // Cleanup on unmount
+    return () => stopAutoRotation();
+  }, [currentScene, isUserInteracting]);
+
+  // Track viewer movement
+  const handleViewerMove = (evt) => {
+    if (!isUserInteracting) return;
+    const viewer = viewerRefs.current[currentScene]?.getViewer();
+    if (viewer) {
+      currentYawRef.current = viewer.getYaw();
+    }
+  };
+
+  // Handle user interaction events
+  const handleMouseDown = () => {
+    setIsUserInteracting(true);
+  };
+
+  const handleMouseUp = () => {
+    const viewer = viewerRefs.current[currentScene]?.getViewer();
+    if (viewer) {
+      currentYawRef.current = viewer.getYaw();
+    }
+    setIsUserInteracting(false);
+  };
+
+  const handleTouchStart = () => {
+    setIsUserInteracting(true);
+  };
+
+  const handleTouchEnd = () => {
+    const viewer = viewerRefs.current[currentScene]?.getViewer();
+    if (viewer) {
+      currentYawRef.current = viewer.getYaw();
+    }
+    setIsUserInteracting(false);
+  };
+
   // Handle scene transitions
   const handleSceneChange = (newScene) => {
     setCurrentScene(newScene);
-    onSceneChange?.(newScene); // Notify parent component
+    onSceneChange?.(newScene);
+    // Reset yaw for new scene
+    currentYawRef.current = 180;
   };
 
-  // Debug log current scene
+  // Add event listeners to document
   useEffect(() => {
-    console.log('Current scene:', currentScene);
-  }, [currentScene]);
+    document.addEventListener('mouseup', handleMouseUp);
+    document.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, []);
 
   return (
-    <div className="relative w-full h-full">
+    <div 
+      className="relative w-full h-full"
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchStart}
+    >
       {/* Initial Loading Screen */}
       {isLoading && (
         <div className="absolute inset-0 z-10 bg-gray-100">
@@ -105,19 +193,43 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
             }`}
           >
             <Pannellum
+              ref={el => viewerRefs.current[sceneId] = el}
               width="100%"
               height="100%"
               image={scene.imageSource}
               pitch={10}
               yaw={180}
-              hfov={110}
+              hfov={200}
               autoLoad
+              hotSpots={scene.hotSpots || []}
+              loadButtonLabel=""
+              loadingLabel=""
+              showLoadingBox={false}
+              showFullscreenCtrl={false}
+              showControls={false}
+              onMousedown={handleMouseDown}
+              onMouseup={handleMouseUp}
+              onTouchstart={handleTouchStart}
+              onTouchend={handleTouchEnd}
+              onRender={handleViewerMove}
+              config={{
+                showLoadingBar: false,
+                showFullscreenCtrl: false,
+                autoLoad: true,
+                loadingHTML: "",
+                loadingMessage: "",
+                uiText: {
+                  loadingLabel: "",
+                  loadButtonLabel: "",
+                },
+                showControls: false,
+                showLoadingBox: false,
+              }}
               onLoad={() => {
                 if (sceneId === currentScene) {
                   setIsLoading(false);
                 }
               }}
-              hotSpots={scene.hotSpots || []}
             />
           </div>
         ))}
