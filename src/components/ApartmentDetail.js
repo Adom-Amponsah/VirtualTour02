@@ -512,7 +512,7 @@ const ApartmentDetail = () => {
                     </div>
                     <div className="aspect-square rounded-xl overflow-hidden">
                       <img 
-                        src="/images/details03.jpg" 
+                        src="/images/app06.jpg" 
                         alt="Work Space"
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
