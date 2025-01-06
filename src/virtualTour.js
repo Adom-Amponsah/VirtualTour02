@@ -8,11 +8,11 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
   const [currentScene, setCurrentScene] = useState(Object.keys(scenes)[0]);
   const [preloadedScenes, setPreloadedScenes] = useState({});
   const [isUserInteracting, setIsUserInteracting] = useState(false);
+  const [showZoomHint, setShowZoomHint] = useState(false);
   const viewerRefs = useRef({});
   const autoRotationInterval = useRef(null);
   const currentYawRef = useRef(180); // Initial yaw value
   const autoRotationSpeed = 3; // Degrees per second
-  const [showZoomHint, setShowZoomHint] = useState(true);
 
   // Preload all scenes
   useEffect(() => {
@@ -132,12 +132,21 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
     };
   }, []);
 
-  // Add this useEffect to hide the hint after a few seconds
+  // Modify the onLoad handler in the Pannellum component
+  const handleSceneLoad = (sceneId) => {
+    if (sceneId === currentScene) {
+      setIsLoading(false);
+      // Show zoom hint only after loading is complete
+      setShowZoomHint(true);
+    }
+  };
+
+  // Update the useEffect for hiding the zoom hint
   useEffect(() => {
     if (showZoomHint) {
       const timer = setTimeout(() => {
         setShowZoomHint(false);
-      }, 4000); // Hide after 4 seconds
+      }, 4000);
       return () => clearTimeout(timer);
     }
   }, [showZoomHint]);
@@ -237,11 +246,7 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
                 showControls: false,
                 showLoadingBox: false,
               }}
-              onLoad={() => {
-                if (sceneId === currentScene) {
-                  setIsLoading(false);
-                }
-              }}
+              onLoad={() => handleSceneLoad(sceneId)}
             />
           </div>
         ))}
