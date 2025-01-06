@@ -12,7 +12,7 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
   const viewerRefs = useRef({});
   const autoRotationInterval = useRef(null);
   const currentYawRef = useRef(180); // Initial yaw value
-  const autoRotationSpeed = 3; // Degrees per second
+  const autoRotationSpeed = 2; // Degrees per second
 
   // Preload all scenes
   useEffect(() => {
