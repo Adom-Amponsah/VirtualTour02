@@ -298,7 +298,7 @@ const ApartmentList = () => {
               onClick={() => navigate(`/apartment/${listing.id}`)}
               className="group cursor-pointer"
             >
-              <div className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
                 <div className="relative aspect-[4/3]">
                   <img
                     src={listing.image}
