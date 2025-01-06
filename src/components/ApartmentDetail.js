@@ -138,37 +138,6 @@ const LocationMap = ({ latitude, longitude, name }) => {
   );
 };
 
-const TourControls = ({ onPrevScene, onNextScene, currentScene, totalScenes }) => (
-  <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 bg-black/30 backdrop-blur-md rounded-full px-6 py-3 text-white">
-    <button 
-      onClick={onPrevScene}
-      className="p-2 hover:bg-white/20 rounded-full transition-all"
-    >
-      <ChevronLeft className="w-6 h-6" />
-    </button>
-    <div className="font-medium">
-      {currentScene} / {totalScenes}
-    </div>
-    <button 
-      onClick={onNextScene}
-      className="p-2 hover:bg-white/20 rounded-full transition-all"
-    >
-      <ChevronRight className="w-6 h-6" />
-    </button>
-  </div>
-);
-
-const SceneInfo = ({ title, description }) => (
-  <motion.div 
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    className="absolute bottom-28 left-8 max-w-md bg-black/30 backdrop-blur-md rounded-2xl p-6 text-white"
-  >
-    <h3 className="text-2xl font-bold mb-2">{title}</h3>
-    <p className="text-white/80">{description}</p>
-  </motion.div>
-);
-
 const VirtualTourSection = ({ scenes, name }) => {
   const [currentScene, setCurrentScene] = useState(scenes[Object.keys(scenes)[0]]);
 
@@ -177,7 +146,7 @@ const VirtualTourSection = ({ scenes, name }) => {
   };
 
   return (
-    <div className="relative h-[85vh] group">
+    <div className="relative h-[70vh] group">
       <VirtualTour 
         scenes={scenes} 
         onSceneChange={handleSceneChange}
@@ -413,8 +382,8 @@ const ApartmentDetail = () => {
         {/* Enhanced Location and Rating Bar */}
         <div className="flex flex-wrap items-center justify-between py-6 border-b mb-8">
           <div className="flex flex-wrap items-center gap-6">
-            <Badge className="bg-[#B71C1C]/10 text-[#B71C1C] px-4 py-2">
-              <MapPin className="w-5 h-5 text-[#B71C1C] mt-1" />
+            <Badge className="bg-[#B71C1C]/10 text-[#B71C1C] px-4 py-2 flex items-center gap-2">
+              <MapPin className="w-5 h-5" />
               {apartment.location}
             </Badge>
             <div className="flex items-center gap-2">

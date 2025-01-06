@@ -211,7 +211,7 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
               image={scene.imageSource}
               pitch={10}
               yaw={180}
-              hfov={200}
+              hfov={130}
               autoLoad
               hotSpots={scene.hotSpots || []}
               loadButtonLabel=""
