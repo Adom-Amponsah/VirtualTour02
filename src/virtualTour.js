@@ -9,10 +9,30 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
   const [preloadedScenes, setPreloadedScenes] = useState({});
   const [isUserInteracting, setIsUserInteracting] = useState(false);
   const [showZoomHint, setShowZoomHint] = useState(false);
+  const [hfov, setHfov] = useState(130);
   const viewerRefs = useRef({});
   const autoRotationInterval = useRef(null);
-  const currentYawRef = useRef(180); // Initial yaw value
-  const autoRotationSpeed = 2; // Degrees per second
+  const currentYawRef = useRef(180);
+  const autoRotationSpeed = 2;
+
+  useEffect(() => {
+    const updateHfov = () => {
+      const width = window.innerWidth;
+      if (width < 768) {
+        setHfov(90);
+      } else if (width < 1024) {
+        setHfov(110);
+      } else {
+        setHfov(130);
+      }
+    };
+
+    updateHfov();
+
+    window.addEventListener('resize', updateHfov);
+
+    return () => window.removeEventListener('resize', updateHfov);
+  }, []);
 
   // Preload all scenes
   useEffect(() => {
@@ -220,7 +240,7 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
               image={scene.imageSource}
               pitch={10}
               yaw={180}
-              hfov={130}
+              hfov={hfov}
               autoLoad
               hotSpots={scene.hotSpots || []}
               loadButtonLabel=""
