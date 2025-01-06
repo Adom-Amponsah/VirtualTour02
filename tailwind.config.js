@@ -10,6 +10,23 @@ module.exports = {
           dark: '#7f1616',  // A darker shade for hover states
           light: '#e53935', // A lighter shade for highlights
         }
+      },
+      keyframes: {
+        'fade-out': {
+          '0%': { opacity: '0' },
+          '10%': { opacity: '1' },
+          '90%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
+        'pinch': {
+          '0%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(0.8)' },
+          '100%': { transform: 'scale(1)' },
+        }
+      },
+      animation: {
+        'fade-out': 'fade-out 4s ease-in-out forwards',
+        'pinch': 'pinch 2s ease-in-out infinite',
       }
     },
   },

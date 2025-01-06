@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Pannellum } from 'pannellum-react';
 import './virtualTour.css';
+import { ZoomIn } from 'lucide-react';
 
 const VirtualTour = ({ scenes, onSceneChange }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,7 +11,8 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
   const viewerRefs = useRef({});
   const autoRotationInterval = useRef(null);
   const currentYawRef = useRef(180); // Initial yaw value
-  const autoRotationSpeed = 5; // Degrees per second
+  const autoRotationSpeed = 3; // Degrees per second
+  const [showZoomHint, setShowZoomHint] = useState(true);
 
   // Preload all scenes
   useEffect(() => {
@@ -130,6 +132,16 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
     };
   }, []);
 
+  // Add this useEffect to hide the hint after a few seconds
+  useEffect(() => {
+    if (showZoomHint) {
+      const timer = setTimeout(() => {
+        setShowZoomHint(false);
+      }, 4000); // Hide after 4 seconds
+      return () => clearTimeout(timer);
+    }
+  }, [showZoomHint]);
+
   return (
     <div 
       className="relative w-full h-full"
@@ -234,6 +246,15 @@ const VirtualTour = ({ scenes, onSceneChange }) => {
           </div>
         ))}
       </div>
+
+      {showZoomHint && (
+        <div className="absolute inset-0 pointer-events-none z-30 flex items-center justify-center">
+          <div className="bg-black/40 backdrop-blur-sm px-6 py-3 rounded-full text-white flex items-center gap-2 animate-fade-out">
+            <ZoomIn className="w-5 h-5 animate-pinch" />
+            <span className="text-sm font-medium">Pinch to zoom</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
