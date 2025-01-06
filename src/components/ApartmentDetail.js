@@ -301,7 +301,7 @@ const ApartmentDetail = () => {
     price: basePrice,
     virtualTourScenes: {
       scene1: {
-        panorama: '/images/pano01.jpg',
+        panorama: '/images/pano011.jpeg',
         title: 'Living Room',
         description: 'Spacious living area with natural lighting'
       },
@@ -385,17 +385,17 @@ const ApartmentDetail = () => {
 
   const scenes = {
     livingRoom: {
-      imageSource: "/images/pano01.jpg",
+      imageSource: "/images/pano0111.jpeg",
       title: "Living Room",
       hotSpots: []
     },
     kitchen: {
-      imageSource: "/images/pano02.jpg",
+      imageSource: "/images/pano022.jpeg",
       title: "Kitchen",
       hotSpots: []
     },
     bathroom: {
-      imageSource: "/images/pano03.jpg",
+      imageSource: "/images/pano033.jpeg",
       title: "Bathroom",
       hotSpots: []
     }
@@ -496,7 +496,7 @@ const ApartmentDetail = () => {
                   {/* Large image on the left */}
                   <div className="aspect-[4/3] rounded-xl overflow-hidden">
                     <img 
-                      src="/images/add01.jpg" 
+                      src="/images/add011.jpeg" 
                       alt="Kitchen Details"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
@@ -505,14 +505,14 @@ const ApartmentDetail = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="aspect-square rounded-xl overflow-hidden">
                       <img 
-                        src="/images/app02.jpg" 
+                        src="/images/app022.jpeg" 
                         alt="Bathroom Amenities"
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                     <div className="aspect-square rounded-xl overflow-hidden">
                       <img 
-                        src="/images/app06.jpg" 
+                        src="/images/app066.jpeg" 
                         alt="Work Space"
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
@@ -525,14 +525,14 @@ const ApartmentDetail = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="aspect-square rounded-xl overflow-hidden">
                       <img 
-                        src="/images/app03.jpg" 
+                        src="/images/app033.jpeg" 
                         alt="Bedroom Storage"
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                     <div className="aspect-square rounded-xl overflow-hidden">
                       <img 
-                        src="/images/app04.jpg" 
+                        src="/images/app044.jpeg" 
                         alt="Window View"
                         className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                       />
@@ -541,7 +541,7 @@ const ApartmentDetail = () => {
                   {/* Large image below */}
                   <div className="aspect-[4/3] rounded-xl overflow-hidden">
                     <img 
-                      src="/images/app05.jpg" 
+                      src="/images/app055.jpeg" 
                       alt="Living Area Details"
                       className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                     />
