@@ -354,7 +354,7 @@ const ApartmentDetail = () => {
 
   const scenes = {
     livingRoom: {
-      imageSource: "/images/pano0111.jpeg",
+      imageSource: "/images/pano011.jpeg",
       title: "Living Room",
       hotSpots: []
     },
