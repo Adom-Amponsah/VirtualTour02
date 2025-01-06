@@ -187,6 +187,12 @@ const ApartmentList = () => {
     { id: 'family', label: 'Family-Sized', icon: <Users className="w-4 h-4" /> }
   ];
 
+  const handleApartmentClick = (listingId) => {
+    // Scroll to top before navigation
+    window.scrollTo(0, 0);
+    navigate(`/apartment/${listingId}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation */}
@@ -295,7 +301,7 @@ const ApartmentList = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              onClick={() => navigate(`/apartment/${listing.id}`)}
+              onClick={() => handleApartmentClick(listing.id)}
               className="group cursor-pointer"
             >
               <div className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100">
