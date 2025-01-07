@@ -22,11 +22,16 @@ module.exports = {
           '0%': { transform: 'scale(1)' },
           '50%': { transform: 'scale(0.8)' },
           '100%': { transform: 'scale(1)' },
-        }
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
       animation: {
         'fade-out': 'fade-out 4s ease-in-out forwards',
         'pinch': 'pinch 2s ease-in-out infinite',
+        'fade-in': 'fadeIn 0.3s ease-in-out',
       }
     },
   },
