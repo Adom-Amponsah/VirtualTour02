@@ -176,12 +176,6 @@ const SearchResults = () => {
                 Properties in {region || 'Ghana'}
               </h1>
             </div>
-            <button 
-              onClick={() => setShowMap(!showMap)}
-              className="md:hidden px-3 py-1.5 text-sm border rounded-lg"
-            >
-              {showMap ? 'Show List' : 'Show Map'}
-            </button>
           </div>
 
           {/* Filter Bar */}
@@ -255,8 +249,8 @@ const SearchResults = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Property Listings */}
-        <div className={`${showMap ? 'hidden md:block' : 'block'} w-full md:w-[45%] overflow-y-auto`}>
+        {/* Property Listings - Always visible on mobile */}
+        <div className="w-full md:w-[45%] overflow-y-auto">
           {/* Filters */}
           <div className="sticky top-0 bg-white border-b border-gray-200 p-4">
             <div className="flex items-center justify-between">
@@ -395,8 +389,8 @@ const SearchResults = () => {
           </div>
         </div>
 
-        {/* Map */}
-        <div className={`${!showMap ? 'hidden md:block' : 'block'} flex-1 relative`}>
+        {/* Map - Only visible on desktop */}
+        <div className="hidden md:block md:flex-1 relative">
           <Map 
             properties={properties}
             selectedProperty={selectedProperty}
