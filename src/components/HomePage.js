@@ -275,7 +275,7 @@ const HomePage = () => {
       <div 
         className="relative min-h-[85vh] bg-cover bg-center flex items-center"
         style={{ 
-          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/cover.jpg)'
+          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/coverrr.jpeg)'
         }}
       >
         <div className="max-w-7xl mx-auto px-4 w-full">
