@@ -6,8 +6,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { 
   Lock, Wifi, Briefcase, Car, Tv, Wind, Sun, Camera,
   Star, MapPin, Medal, Share, Heart, Coffee, Utensils,
-  Bath, KeyRound, Leaf, Music, Globe, Square, Bed, Mountain, Building, Users, Baby, cigarette, Key,
-  ChevronLeft, ChevronRight
+  Bath, KeyRound, Leaf, Music, Globe, Square, Bed, Mountain, 
+  Building, Users, Baby, cigarette, Key, Calendar,
+  ChevronLeft, ChevronRight, BedDouble, X, Check
 } from 'lucide-react';
 import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { motion } from 'framer-motion';
@@ -237,6 +238,246 @@ const VirtualTourSection = ({ scenes, name }) => {
   );
 };
 
+const RoomTypeCard = ({ type, selected, onClick, index }) => {
+  const cardRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('animate');
+            }, index * 200); // 200ms delay between each card
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+      }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
+    };
+  }, [index]);
+
+  return (
+    <div
+      ref={cardRef}
+      onClick={onClick}
+      className={`
+        relative cursor-pointer rounded-xl overflow-hidden transition-all duration-300
+        ${selected ? 'ring-2 ring-[#B71C1C] shadow-xl' : 'hover:shadow-lg'}
+        opacity-0 translate-y-8 animate-on-scroll
+      `}
+    >
+      <div className="aspect-[16/9] relative">
+        <img 
+          src={type.image} 
+          alt={type.name}
+          className="w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+        <div className="absolute bottom-4 left-4 text-white">
+          <h3 className="text-lg font-bold">{type.name}</h3>
+          <p className="text-sm opacity-90">{type.size} sq.ft</p>
+        </div>
+        {type.availability === 'Available Now' && (
+          <div className="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm">
+            Available Now
+          </div>
+        )}
+      </div>
+      <div className="p-4 bg-white">
+        <div className="flex items-center gap-4 mb-3">
+          <div className="flex items-center gap-2">
+            <BedDouble className="w-4 h-4 text-gray-500" />
+            <span className="text-sm">{type.bedrooms}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Bath className="w-4 h-4 text-gray-500" />
+            <span className="text-sm">{type.bathrooms}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <Square className="w-4 h-4 text-gray-500" />
+            <span className="text-sm">{type.size} sq.ft</span>
+          </div>
+        </div>
+        <div className="flex justify-between items-end">
+          <div>
+            <div className="text-2xl font-bold text-[#B71C1C]">
+              ₵{type.price.toLocaleString()}
+              <span className="text-sm font-normal text-gray-500">/month</span>
+            </div>
+            <div className="flex gap-2 mt-1">
+              <Badge className="bg-blue-50 text-blue-700">1 Year: ₵{(type.price * 11).toLocaleString()}/mo</Badge>
+              <Badge className="bg-green-50 text-green-700">2 Years: ₵{(type.price * 10).toLocaleString()}/mo</Badge>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* Amenities Grid */}
+      <div className="px-4 pb-4 grid grid-cols-2 gap-2">
+        {type.amenities.map((amenity, index) => (
+          <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
+            <div className="w-6 h-6 rounded-full bg-[#B71C1C]/10 flex items-center justify-center">
+              <amenity.icon className="w-3 h-3 text-[#B71C1C]" />
+            </div>
+            {amenity.name}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const ComparisonModal = ({ isOpen, onClose, roomTypes }) => {
+  if (!isOpen) return null;
+
+  const allFeatures = [...new Set(roomTypes.flatMap(room => 
+    room.amenities.map(a => a.name)
+  ))].sort();
+
+  return (
+    <div 
+      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        transition={{ type: "spring", duration: 0.5 }}
+        className="bg-white rounded-xl max-w-5xl w-full max-h-[90vh] overflow-hidden"
+      >
+        <motion.div 
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+          className="p-6 border-b sticky top-0 bg-white z-10"
+        >
+          <div className="flex justify-between items-center">
+            <h3 className="text-xl font-bold">Compare Apartment Features</h3>
+            <button 
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-full"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </motion.div>
+
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="overflow-x-auto"
+        >
+          <table className="w-full">
+            <thead className="bg-gray-50 sticky top-[76px]">
+              <tr>
+                <th className="p-4 text-left font-medium text-gray-500 w-[200px]">Features</th>
+                {roomTypes.map(type => (
+                  <th key={type.id} className="p-4 text-left min-w-[200px]">
+                    <div className="font-bold text-lg">{type.name}</div>
+                    <div className="text-[#B71C1C] font-bold mt-1">
+                      ₵{type.price.toLocaleString()}/mo
+                    </div>
+                    <div className="text-sm text-gray-500 mt-1">{type.size} sq.ft</div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="divide-y">
+              {/* Basic Info */}
+              <tr className="bg-gray-50">
+                <td className="p-4 font-medium">Basic Information</td>
+                {roomTypes.map(type => (
+                  <td key={type.id} className="p-4">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <BedDouble className="w-4 h-4 text-gray-500" />
+                        {type.bedrooms}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Bath className="w-4 h-4 text-gray-500" />
+                        {type.bathrooms}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="w-4 h-4 text-gray-500" />
+                        {type.availability}
+                      </div>
+                    </div>
+                  </td>
+                ))}
+              </tr>
+
+              {/* Lease Terms */}
+              <tr>
+                <td className="p-4 font-medium">Lease Terms</td>
+                {roomTypes.map(type => (
+                  <td key={type.id} className="p-4">
+                    <div className="space-y-2">
+                      <div className="text-sm">
+                        1 Year: ₵{(type.price * 11).toLocaleString()}/mo
+                      </div>
+                      <div className="text-sm">
+                        2 Years: ₵{(type.price * 10).toLocaleString()}/mo
+                      </div>
+                    </div>
+                  </td>
+                ))}
+              </tr>
+
+              {/* Amenities */}
+              {allFeatures.map(feature => (
+                <tr key={feature}>
+                  <td className="p-4 text-gray-600">{feature}</td>
+                  {roomTypes.map(type => (
+                    <td key={type.id} className="p-4">
+                      {type.amenities.some(a => a.name === feature) ? (
+                        <Check className="w-5 h-5 text-green-500" />
+                      ) : (
+                        <X className="w-5 h-5 text-gray-300" />
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </motion.div>
+
+        <motion.div 
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="p-6 border-t sticky bottom-0 bg-white"
+        >
+          <div className="flex justify-end">
+            <button
+              onClick={onClose}
+              className="px-6 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
+
 const ApartmentDetail = () => {
   const { id } = useParams();
   const [startDate, setStartDate] = useState(new Date());
@@ -370,12 +611,107 @@ const ApartmentDetail = () => {
     }
   };
 
+  const [selectedRoomType, setSelectedRoomType] = useState(null);
+
+  const roomTypes = [
+    {
+      id: 1,
+      name: "Studio Apartment",
+      size: 450,
+      bedrooms: "Studio",
+      bathrooms: "1 Bathroom",
+      price: 1200,
+      availability: "Available Now",
+      image: "/images/studio.jpg",
+      amenities: [
+        { name: "Air Conditioning", icon: Wind },
+        { name: "High-Speed WiFi", icon: Wifi },
+        { name: "Built-in Wardrobe", icon: Square },
+        { name: "Kitchen", icon: Utensils }
+      ]
+    },
+    {
+      id: 2,
+      name: "1 Bedroom Apartment",
+      size: 650,
+      bedrooms: "1 Bedroom",
+      bathrooms: "1 Bathroom",
+      price: 1800,
+      availability: "October 1st",
+      image: "/images/1bed.jpg",
+      amenities: [
+        { name: "Air Conditioning", icon: Wind },
+        { name: "High-Speed WiFi", icon: Wifi },
+        { name: "Built-in Wardrobe", icon: Square },
+        { name: "Full Kitchen", icon: Utensils },
+        { name: "Washer/Dryer", icon: Wind },
+        { name: "Balcony", icon: Mountain }
+      ]
+    },
+    {
+      id: 3,
+      name: "2 Bedroom Apartment",
+      size: 950,
+      bedrooms: "2 Bedrooms",
+      bathrooms: "2 Bathrooms",
+      price: 2500,
+      availability: "Available Now",
+      image: "/images/2bed.jpg",
+      amenities: [
+        { name: "Air Conditioning", icon: Wind },
+        { name: "High-Speed WiFi", icon: Wifi },
+        { name: "Built-in Wardrobes", icon: Square },
+        { name: "Full Kitchen", icon: Utensils },
+        { name: "Washer/Dryer", icon: Wind },
+        { name: "Balcony", icon: Mountain },
+        { name: "Storage Room", icon: Lock },
+        { name: "Parking Space", icon: Car }
+      ]
+    }
+  ];
+
+  const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+
   return (
     <div className="max-w-[2000px] mx-auto">
       <VirtualTourSection 
         scenes={scenes} 
         name={apartment.name}
       />
+
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold mb-4">Choose Your Perfect Space</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Select from our range of thoughtfully designed floor plans, 
+            each offering unique features and amenities to match your lifestyle.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {roomTypes.map((type, index) => (
+            <RoomTypeCard
+              key={type.id}
+              type={type}
+              index={index}
+              selected={selectedRoomType?.id === type.id}
+              onClick={() => setSelectedRoomType(type)}
+            />
+          ))}
+        </div>
+
+        {/* Compare Features Button */}
+        <div className="text-center mt-8">
+          <button 
+            onClick={() => setIsComparisonOpen(true)}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-100 rounded-xl 
+                       hover:bg-gray-200 transition-colors text-gray-700"
+          >
+            <Square className="w-4 h-4" />
+            Compare All Features
+          </button>
+        </div>
+      </div>
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 pb-16">
@@ -716,6 +1052,12 @@ const ApartmentDetail = () => {
           </div>
         </div>
       </div>
+
+      <ComparisonModal 
+        isOpen={isComparisonOpen}
+        onClose={() => setIsComparisonOpen(false)}
+        roomTypes={roomTypes}
+      />
     </div>
   );
 };
