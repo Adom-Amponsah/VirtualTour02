@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, ChevronDown, MapPin, Menu, X, Home, Building, DollarSign, BookOpen, Heart, BedDouble, ArrowRight } from 'lucide-react';
 import useLocations from '../hooks/useLocations';
+import { motion } from 'framer-motion';
 
 const PropertyCard = ({ property, index }) => {
   const [isHovered, setIsHovered] = React.useState(false);
@@ -140,6 +141,158 @@ const AnimatedSection = ({ children, delay = 0 }) => {
   return (
     <div ref={sectionRef} className="animate-on-scroll">
       {children}
+    </div>
+  );
+};
+
+const locationAreas = [
+  {
+    id: 1,
+    name: "East Legon, GA",
+    properties: "120+ rentals",
+    image: "/images/apart011.jpeg",
+    layout: "full"
+  },
+  {
+    id: 2,
+    name: "Osu, GA",
+    properties: "85+ rentals",
+    image: "/images/apart022.jpeg",
+    layout: "half-top"
+  },
+  {
+    id: 3,
+    name: "Cantonments, GA",
+    properties: "95+ rentals",
+    image: "/images/apart044.jpeg",
+    layout: "half-bottom"
+  },
+  {
+    id: 4,
+    name: "Haatso, GA",
+    properties: "120+ rentals",
+    image: "/images/apart011.jpeg",
+    layout: "full"
+  },
+  {
+    id: 5,
+    name: "Airport, GA",
+    properties: "85+ rentals",
+    image: "/images/apart022.jpeg",
+    layout: "half-top"
+  },
+  {
+    id: 6,
+    name: "Spintex, GA",
+    properties: "95+ rentals",
+    image: "/images/apart044.jpeg",
+    layout: "half-bottom"
+  },
+];
+
+const LocationCard = ({ location, index, navigate }) => {
+  if (location.layout === "full-image") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
+        className="group relative rounded-2xl overflow-hidden cursor-pointer min-w-[300px] w-[300px]"
+        onClick={() => navigate(`/search?region=${location.name}`)}
+      >
+        {/* Full Image Card */}
+        <div className="aspect-[3/4] relative">
+          <img
+            src={location.image}
+            alt={location.name}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+          
+          {/* Content at bottom */}
+          <div className="absolute bottom-0 left-0 right-0 p-6">
+            <h3 className="text-2xl font-bold text-white mb-2">{location.name}</h3>
+            <span className="text-sm font-medium text-white/80">{location.properties}</span>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="group relative rounded-2xl overflow-hidden cursor-pointer min-w-[400px] w-[400px] bg-white"
+      onClick={() => navigate(`/search?region=${location.name}`)}
+    >
+      {/* Split Content Card */}
+      <div className="flex h-[400px]">
+        {/* Text Content */}
+        <div className="w-1/2 p-6 flex flex-col justify-between">
+          <div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">{location.name}</h3>
+            <p className="text-gray-600 leading-relaxed">{location.description}</p>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-500">{location.properties}</span>
+            <button className="flex items-center gap-2 text-[#0C2340] font-medium">
+              View Homes
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+        
+        {/* Image Half */}
+        <div className="w-1/2 relative">
+          <img
+            src={location.image}
+            alt={location.name}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Add this new component for scroll-triggered animations
+const ScrollAnimatedSection = ({ children, className = '' }) => {
+  const sectionRef = React.useRef(null);
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px'
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  return (
+    <div ref={sectionRef} className={className}>
+      {/* Only render children when section is visible */}
+      {isVisible && children}
     </div>
   );
 };
@@ -409,31 +562,107 @@ const HomePage = () => {
       {/* Available Rentals Section */}
       <div className="py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4">
-          {/* Section Header */}
           <AnimatedSection>
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold text-[#0C2340] mb-2">
-                Explore Rentals in Accra
+                Explore Popular Areas
               </h2>
               <p className="text-gray-600">
-                Discover the perfect home from our extensive collection of properties
+                Discover available rentals in Ghana's most sought-after neighborhoods
               </p>
             </div>
           </AnimatedSection>
 
-          {/* Property Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-            {properties.map((property, index) => (
-              <PropertyCard key={property.id} property={property} index={index} />
-            ))}
-          </div>
+          {/* Wrap the location cards section with ScrollAnimatedSection */}
+          <ScrollAnimatedSection className="relative">
+            <div className="overflow-x-auto scrollbar-hide">
+              <div className="flex gap-6 pb-8">
+                {Array.from({ length: Math.ceil(locationAreas.length / 3) }).map((_, groupIndex) => (
+                  <motion.div
+                    key={groupIndex}
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.5,
+                      delay: groupIndex * 0.3,
+                      ease: "easeOut"
+                    }}
+                    className="flex gap-6"
+                  >
+                    {/* Full height card */}
+                    <div 
+                      className="relative rounded-2xl overflow-hidden cursor-pointer w-[300px] h-[600px] group"
+                      onClick={() => navigate(`/search?region=${locationAreas[groupIndex * 3]?.name}`)}
+                    >
+                      <img
+                        src={locationAreas[groupIndex * 3]?.image}
+                        alt={locationAreas[groupIndex * 3]?.name}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 className="text-2xl font-bold text-white mb-2">
+                          {locationAreas[groupIndex * 3]?.name}
+                        </h3>
+                        <span className="text-sm font-medium text-white/80">
+                          {locationAreas[groupIndex * 3]?.properties}
+                        </span>
+                      </div>
+                    </div>
 
-          {/* View More Button */}
-          <div className="text-center">
-            <button className="bg-[#0C2340] text-white px-8 py-3 rounded-lg hover:bg-[#163156] transition-all transform hover:scale-105">
-              View More Properties
-            </button>
-          </div>
+                    {/* Stacked cards container */}
+                    <div className="flex flex-col gap-6">
+                      {/* Top card */}
+                      <div 
+                        className="relative rounded-2xl overflow-hidden cursor-pointer w-[300px] h-[290px] group"
+                        onClick={() => navigate(`/search?region=${locationAreas[groupIndex * 3 + 1]?.name}`)}
+                      >
+                        <img
+                          src={locationAreas[groupIndex * 3 + 1]?.image}
+                          alt={locationAreas[groupIndex * 3 + 1]?.name}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-6">
+                          <h3 className="text-xl font-bold text-white mb-2">
+                            {locationAreas[groupIndex * 3 + 1]?.name}
+                          </h3>
+                          <span className="text-sm font-medium text-white/80">
+                            {locationAreas[groupIndex * 3 + 1]?.properties}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Bottom card */}
+                      <div 
+                        className="relative rounded-2xl overflow-hidden cursor-pointer w-[300px] h-[290px] group"
+                        onClick={() => navigate(`/search?region=${locationAreas[groupIndex * 3 + 2]?.name}`)}
+                      >
+                        <img
+                          src={locationAreas[groupIndex * 3 + 2]?.image}
+                          alt={locationAreas[groupIndex * 3 + 2]?.name}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                        <div className="absolute bottom-0 left-0 right-0 p-6">
+                          <h3 className="text-xl font-bold text-white mb-2">
+                            {locationAreas[groupIndex * 3 + 2]?.name}
+                          </h3>
+                          <span className="text-sm font-medium text-white/80">
+                            {locationAreas[groupIndex * 3 + 2]?.properties}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Gradient edges */}
+            <div className="absolute left-0 top-0 bottom-0 bg-gradient-to-r from-white to-transparent w-12 pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 bg-gradient-to-l from-white to-transparent w-12 pointer-events-none" />
+          </ScrollAnimatedSection>
         </div>
       </div>
     </div>

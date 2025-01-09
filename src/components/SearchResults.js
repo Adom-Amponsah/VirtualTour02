@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { MapPin, Heart, BedDouble, ArrowLeft, ListFilter, ChevronDown, Sliders, Bath, Home, DollarSign, Maximize, ArrowRight } from 'lucide-react';
+import { MapPin, Heart, BedDouble, ArrowLeft, ListFilter, ChevronDown, Sliders, Bath, Home, DollarSign, Maximize, ArrowRight, Badge } from 'lucide-react';
 import Map from './Map';
 
 const FilterDropdown = ({ label, icon: Icon, options, value, onChange, prefix = '' }) => {
@@ -53,25 +53,27 @@ const SearchResults = () => {
   const properties = [
     {
       id: 1,
-      title: "Modern Apartment in East Legon",
+      title: "Modern Apartment Complex in East Legon",
       location: "East Legon, Greater Accra",
       price: "₵2,500",
       beds: "2 Beds",
       baths: "2 Baths",
       sqft: "1,200 sqft",
       image: "/images/apart011.jpeg",
-      coordinates: [5.6037, -0.1870] // Latitude, Longitude for East Legon
+      coordinates: [5.6037, -0.1870],
+      propertyType: "apartment-complex"
     },
     {
       id: 2,
-      title: "Luxury Villa in Cantonments",
+      title: "Standalone Villa in Cantonments",
       location: "Cantonments, Greater Accra",
       price: "₵3,500",
       beds: "3 Beds",
       baths: "3 Baths",
       sqft: "2,000 sqft",
       image: "/images/apart022.jpeg",
-      coordinates: [5.5913, -0.1743] // Latitude, Longitude for Cantonments
+      coordinates: [5.5913, -0.1743],
+      propertyType: "single-unit"
     },
     {
       id: 3,
@@ -100,8 +102,13 @@ const SearchResults = () => {
   // Handle property selection
   const handlePropertySelect = (property) => {
     setSelectedProperty(property);
-    // Navigate to your existing apartment details page
-    navigate(`/apartment/${property.id}`);
+    
+    // Navigate based on property type
+    if (property.propertyType === 'single-unit') {
+      navigate(`/apartment/single/${property.id}`);
+    } else {
+      navigate(`/apartment/${property.id}`);
+    }
   };
 
   // Add this function to handle filter changes
