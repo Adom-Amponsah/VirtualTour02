@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { MapPin, Heart, BedDouble, ArrowLeft, ListFilter, ChevronDown, Sliders, Bath, Home, DollarSign, Maximize, ArrowRight, Badge } from 'lucide-react';
+import { MapPin, Heart, BedDouble, ArrowLeft, ListFilter, ChevronDown, Sliders, Bath, Home, DollarSign, Maximize, ArrowRight, Badge, Square, List, MapIcon } from 'lucide-react';
 import Map from './Map';
 
 const FilterDropdown = ({ label, icon: Icon, options, value, onChange, prefix = '' }) => {
@@ -42,6 +42,7 @@ const SearchResults = () => {
   });
   const [favorites, setFavorites] = useState(new Set());
   const navigate = useNavigate();
+  const [viewType, setViewType] = useState('list');
   
   // Get search parameters
   const region = searchParams.get('region');
@@ -55,13 +56,19 @@ const SearchResults = () => {
       id: 1,
       title: "Modern Apartment Complex in East Legon",
       location: "East Legon, Greater Accra",
-      price: "₵2,500",
-      beds: "2 Beds",
-      baths: "2 Baths",
-      sqft: "1,200 sqft",
+      price: "₵2,500 - ₵5,995",
+      beds: "Studio - 2 Beds",
+      baths: "1 - 2 Baths",
+      sqft: "386 - 1,126 sqft",
       image: "/images/apart011.jpeg",
       coordinates: [5.6037, -0.1870],
-      propertyType: "apartment-complex"
+      propertyType: "apartment-complex",
+      hasMultipleUnits: true,
+      units: [
+        { type: "Studio", price: "₵2,500", sqft: "386" },
+        { type: "1 Bedroom", price: "₵3,500", sqft: "750" },
+        { type: "2 Bedroom", price: "₵5,995", sqft: "1,126" }
+      ]
     },
     {
       id: 2,
@@ -73,7 +80,8 @@ const SearchResults = () => {
       sqft: "2,000 sqft",
       image: "/images/apart022.jpeg",
       coordinates: [5.5913, -0.1743],
-      propertyType: "single-unit"
+      propertyType: "single-unit",
+      hasMultipleUnits: false
     },
     {
       id: 3,
@@ -84,7 +92,8 @@ const SearchResults = () => {
       baths: "1 Bath",
       sqft: "800 sqft",
       image: "/images/apart044.jpeg",
-      coordinates: [5.5500, -0.1833] // Latitude, Longitude for Osu
+      coordinates: [5.5500, -0.1833],
+      hasMultipleUnits: false
     },
     {
         id: 4,
@@ -97,17 +106,72 @@ const SearchResults = () => {
         image: "/images/apart055.jpeg",
         coordinates: [5.5500, -0.1833] // Latitude, Longitude for Osu
       },
+      {
+        id: 5,
+        title: "Modern Apartment Complex in East Legon",
+        location: "East Legon, Greater Accra",
+        price: "₵2,500 - ₵5,995",
+        beds: "Studio - 2 Beds",
+        baths: "1 - 2 Baths",
+        sqft: "386 - 1,126 sqft",
+        image: "/images/apart011.jpeg",
+        coordinates: [5.6037, -0.1870],
+        propertyType: "apartment-complex",
+        hasMultipleUnits: true,
+        units: [
+          { type: "Studio", price: "₵2,500", sqft: "386" },
+          { type: "1 Bedroom", price: "₵3,500", sqft: "750" },
+          { type: "2 Bedroom", price: "₵5,995", sqft: "1,126" }
+        ]
+      },
+      {
+        id: 6,
+        title: "Standalone Villa in Cantonments",
+        location: "Cantonments, Greater Accra",
+        price: "₵3,500",
+        beds: "3 Beds",
+        baths: "3 Baths",
+        sqft: "2,000 sqft",
+        image: "/images/apart022.jpeg",
+        coordinates: [5.5913, -0.1743],
+        propertyType: "single-unit",
+        hasMultipleUnits: false
+      },
+      {
+        id: 7,
+        title: "Cozy Studio in Osu",
+        location: "Osu, Greater Accra",
+        price: "₵1,800",
+        beds: "Studio",
+        baths: "1 Bath",
+        sqft: "800 sqft",
+        image: "/images/apart044.jpeg",
+        coordinates: [5.5500, -0.1833] // Latitude, Longitude for Osu
+      },
+      {
+          id: 8,
+          title: "Cozy Studio in Osu",
+          location: "Osu, Greater Accra",
+          price: "₵1,800",
+          beds: "Studio",
+          baths: "1 Bath",
+          sqft: "800 sqft",
+          image: "/images/apart055.jpeg",
+          coordinates: [5.5500, -0.1833] // Latitude, Longitude for Osu
+        },
   ];
 
   // Handle property selection
   const handlePropertySelect = (property) => {
     setSelectedProperty(property);
     
-    // Navigate based on property type
-    if (property.propertyType === 'single-unit') {
-      navigate(`/apartment/single/${property.id}`);
-    } else {
+    // Check if property has multiple units
+    if (property.hasMultipleUnits) {
+      // Route to ApartmentDetail for properties with multiple units
       navigate(`/apartment/${property.id}`);
+    } else {
+      // Route to SinglePropertyShowcase for single unit properties
+      navigate(`/apartment/single/${property.id}`);
     }
   };
 
@@ -170,9 +234,8 @@ const SearchResults = () => {
   };
 
   return (
-    <div className="h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white border-b sticky top-0 z-50">
         <div className="max-w-8xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
@@ -252,60 +315,69 @@ const SearchResults = () => {
             )}
           </div>
         </div>
-      </header>
 
-      {/* Main Content */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Property Listings - Always visible on mobile */}
-        <div className="w-full md:w-[45%] overflow-y-auto">
-          {/* Filters */}
-          <div className="sticky top-0 bg-white border-b border-gray-200 p-4">
-            <div className="flex items-center justify-between">
-              <span className="text-gray-600">
-                {properties.length} properties found
-              </span>
-              <button className="flex items-center space-x-2 text-gray-600 hover:text-gray-900">
-                <ListFilter className="w-4 h-4" />
-                <span>Filters</span>
+        {/* Add View Toggle below the filters */}
+        <div className="max-w-7xl mx-auto px-4 py-3 border-t">
+          <div className="flex items-center justify-end space-x-2">
+            <div className="bg-gray-100 rounded-lg p-1 flex">
+              <button
+                onClick={() => setViewType('list')}
+                className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all ${
+                  viewType === 'list'
+                    ? 'bg-white shadow text-[#0C2340]'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <List className="w-4 h-4" />
+                <span className="text-sm font-medium">List</span>
+              </button>
+              <button
+                onClick={() => setViewType('map')}
+                className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-all ${
+                  viewType === 'map'
+                    ? 'bg-white shadow text-[#0C2340]'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                <MapIcon className="w-4 h-4" />
+                <span className="text-sm font-medium">Map</span>
               </button>
             </div>
           </div>
+        </div>
+      </header>
 
-          {/* Property List */}
-          <div className="p-4 space-y-6">
+      {/* Main Content */}
+      {viewType === 'list' ? (
+        // List View - Full width
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="py-4">
+            <span className="text-gray-600">
+              {properties.length} properties found
+            </span>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-8">
             {properties.map((property) => (
               <div
-                id={`property-${property.id}`}
                 key={property.id}
-                className={`
-                  group relative bg-white rounded-2xl transition-all duration-300
-                  hover:shadow-xl hover:-translate-y-1
-                  ${selectedProperty?.id === property.id ? 'ring-2 ring-blue-500' : 'shadow-md'}
-                `}
                 onClick={() => handlePropertySelect(property)}
+                className="bg-white rounded-xl overflow-hidden cursor-pointer group hover:shadow-xl transition-all duration-300"
               >
-                <div className="flex flex-col sm:flex-row h-full">
+                {/* Main Card Layout */}
+                <div className="flex flex-col h-full">
                   {/* Image Section */}
-                  <div className="relative w-full sm:w-72 h-48 sm:h-auto overflow-hidden">
-                    {/* Image with zoom effect */}
-                    <div className="absolute inset-0 w-full h-full transition-transform duration-700 ease-out group-hover:scale-110">
-                      <img
-                        src={property.image}
-                        alt={property.title}
-                        className="w-full h-full object-cover rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none"
-                      />
-                    </div>
-                    
-                    {/* Gradient overlay - moved above the image */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent 
-                                    rounded-t-2xl sm:rounded-l-2xl sm:rounded-tr-none
-                                    transition-opacity duration-700 group-hover:opacity-75" />
+                  <div className="relative h-48 overflow-hidden">
+                    <img
+                      src={property.image}
+                      alt={property.title}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     
                     {/* Status Badge */}
                     <div className="absolute top-4 left-4 z-10">
-                      <div className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-sm 
-                                      text-sm font-medium text-blue-600
-                                      transform transition-transform duration-700 group-hover:scale-105">
+                      <div className="px-3 py-1 rounded-full bg-green-600 text-white text-sm font-medium">
                         Available Now
                       </div>
                     </div>
@@ -313,80 +385,49 @@ const SearchResults = () => {
                     {/* Favorite Button */}
                     <button
                       onClick={(e) => toggleFavorite(e, property.id)}
-                      className="absolute top-4 right-4 p-2 rounded-full 
-                                 bg-white/90 backdrop-blur-sm z-10
-                                 transition-all duration-200 hover:bg-white
-                                 transform group-hover:scale-105"
+                      className="absolute top-4 right-4 p-2 rounded-full bg-white/90 backdrop-blur-sm z-10
+                                 hover:bg-white transition-colors"
                     >
                       <Heart
-                        className={`w-5 h-5 transition-colors ${
+                        className={`w-5 h-5 ${
                           favorites.has(property.id)
                             ? 'fill-red-500 stroke-red-500'
                             : 'stroke-gray-600'
                         }`}
                       />
                     </button>
-
-                    {/* Price Tag */}
-                    <div className="absolute bottom-4 left-4 z-10">
-                      <div className="text-2xl font-bold text-white
-                                      transform transition-transform duration-700 group-hover:scale-105">
-                        {property.price}
-                        <span className="text-sm font-medium text-gray-200">/month</span>
-                      </div>
-                    </div>
                   </div>
 
                   {/* Content Section */}
-                  <div className="flex-1 p-6">
-                    <div className="space-y-4">
-                      {/* Header */}
-                      <div>
-                        <h3 className="text-xl font-semibold text-gray-900">{property.title}</h3>
-                        <div className="flex items-center mt-2 text-gray-500">
-                          <MapPin className="w-4 h-4 mr-1.5" />
-                          <span className="text-sm">{property.location}</span>
-                        </div>
-                      </div>
+                  <div className="p-4">
+                    {/* Price */}
+                    <div className="text-xl font-bold text-[#0C2340] mb-2">
+                      {property.price}
+                      <span className="text-sm font-normal text-gray-500">/month</span>
+                    </div>
 
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2">
-                        {['Parking', 'Gym', 'Pool', 'Security'].map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-3 py-1 rounded-full bg-blue-50 text-blue-600 text-sm font-medium"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                    {/* Title */}
+                    <h3 className="font-medium text-gray-900 mb-2">{property.title}</h3>
 
-                      {/* Details */}
-                      <div className="flex items-center gap-6 text-gray-600">
-                        <div className="flex items-center gap-2">
-                          <BedDouble className="w-5 h-5" />
-                          <span className="text-sm">{property.beds}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Bath className="w-5 h-5" />
-                          <span className="text-sm">{property.baths}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Maximize className="w-5 h-5" />
-                          <span className="text-sm">{property.sqft}</span>
-                        </div>
-                      </div>
+                    {/* Location */}
+                    <div className="flex items-center text-gray-500 mb-3">
+                      <MapPin className="w-4 h-4 mr-1" />
+                      <span className="text-sm">{property.location}</span>
+                    </div>
 
-                      {/* View Details Button */}
-                      <div className="flex items-end justify-end pt-4">
-                        <button 
-                          onClick={(e) => handleViewDetails(e, property)}
-                          className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-50 text-gray-600 
-                            font-medium transition-all hover:bg-gray-100 group"
-                        >
-                          View Details
-                          <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                        </button>
+                    {/* Property Details */}
+                    <div className="flex items-center gap-4 text-gray-600">
+                      <div className="flex items-center gap-1">
+                        <BedDouble className="w-4 h-4" />
+                        <span className="text-sm">{property.beds}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Bath className="w-4 h-4" />
+                        <span className="text-sm">{property.baths}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Square className="w-4 h-4" />
+                        <span className="text-sm">{property.sqft}</span>
                       </div>
                     </div>
                   </div>
@@ -395,16 +436,101 @@ const SearchResults = () => {
             ))}
           </div>
         </div>
+      ) : (
+        // Map View - Split screen
+        <div className="flex-1 flex overflow-hidden">
+          {/* Property Listings - Left side */}
+          <div className="w-[45%] overflow-y-auto">
+            <div className="p-4 space-y-6">
+              {properties.map((property) => (
+                <div
+                  key={property.id}
+                  onClick={() => handlePropertySelect(property)}
+                  className="bg-white rounded-xl overflow-hidden cursor-pointer group hover:shadow-xl transition-all duration-300"
+                >
+                  {/* Main Card Layout */}
+                  <div className="flex flex-col h-full">
+                    {/* Image Section */}
+                    <div className="relative h-48 overflow-hidden">
+                      <img
+                        src={property.image}
+                        alt={property.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                      
+                      {/* Status Badge */}
+                      <div className="absolute top-4 left-4 z-10">
+                        <div className="px-3 py-1 rounded-full bg-green-600 text-white text-sm font-medium">
+                          Available Now
+                        </div>
+                      </div>
 
-        {/* Map - Only visible on desktop */}
-        <div className="hidden md:block md:flex-1 relative">
-          <Map 
-            properties={properties}
-            selectedProperty={selectedProperty}
-            onPropertySelect={handlePropertySelect}
-          />
+                      {/* Favorite Button */}
+                      <button
+                        onClick={(e) => toggleFavorite(e, property.id)}
+                        className="absolute top-4 right-4 p-2 rounded-full bg-white/90 backdrop-blur-sm z-10
+                                   hover:bg-white transition-colors"
+                      >
+                        <Heart
+                          className={`w-5 h-5 ${
+                            favorites.has(property.id)
+                              ? 'fill-red-500 stroke-red-500'
+                              : 'stroke-gray-600'
+                          }`}
+                        />
+                      </button>
+                    </div>
+
+                    {/* Content Section */}
+                    <div className="p-4">
+                      {/* Price */}
+                      <div className="text-xl font-bold text-[#0C2340] mb-2">
+                        {property.price}
+                        <span className="text-sm font-normal text-gray-500">/month</span>
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="font-medium text-gray-900 mb-2">{property.title}</h3>
+
+                      {/* Location */}
+                      <div className="flex items-center text-gray-500 mb-3">
+                        <MapPin className="w-4 h-4 mr-1" />
+                        <span className="text-sm">{property.location}</span>
+                      </div>
+
+                      {/* Property Details */}
+                      <div className="flex items-center gap-4 text-gray-600">
+                        <div className="flex items-center gap-1">
+                          <BedDouble className="w-4 h-4" />
+                          <span className="text-sm">{property.beds}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Bath className="w-4 h-4" />
+                          <span className="text-sm">{property.baths}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Square className="w-4 h-4" />
+                          <span className="text-sm">{property.sqft}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Map - Right side */}
+          <div className="flex-1 relative">
+            <Map 
+              properties={properties}
+              selectedProperty={selectedProperty}
+              onPropertySelect={handlePropertySelect}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

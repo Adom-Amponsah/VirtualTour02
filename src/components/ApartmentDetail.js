@@ -1044,7 +1044,7 @@ const ApartmentDetail = () => {
           </div>
 
           {/* Right Column - Enhanced Booking Card */}
-          <div className="lg:col-span-1">
+          {/* <div className="lg:col-span-1">
             <Card className="sticky top-8 shadow-xl overflow-hidden">
               <div className="bg-primary/5 p-6">
                 <div className="flex justify-between items-center mb-4">
@@ -1059,7 +1059,6 @@ const ApartmentDetail = () => {
                 </div>
               </div>
               <CardContent className="p-6">
-                {/* Date Picker Section */}
                 <div className="space-y-4 mb-6">
                   <div className="grid grid-cols-2 gap-4">
                     <div className="p-4 border rounded-xl bg-gray-50">
@@ -1103,7 +1102,6 @@ const ApartmentDetail = () => {
                   </div>
                 </div>
 
-                {/* Updated Price Breakdown Section */}
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-lg">
                     <span className="text-gray-600">
@@ -1160,7 +1158,85 @@ const ApartmentDetail = () => {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </div> */}
+          <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h2 className="text-xl font-semibold mb-4">Request a Tour</h2>
+                <form className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Preferred Date
+                      </label>
+                      <input
+                        type="date"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Preferred Time
+                      </label>
+                      <select className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent">
+                        <option>Morning (9AM - 12PM)</option>
+                        <option>Afternoon (12PM - 4PM)</option>
+                        <option>Evening (4PM - 7PM)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      placeholder="Enter your phone number"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      placeholder="Enter your email"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Message (Optional)
+                    </label>
+                    <textarea
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      rows="3"
+                      placeholder="Any specific questions or requests?"
+                    ></textarea>
+                  </div>
+
+                  <button 
+                    type="submit"
+                    className="w-full px-8 py-3 bg-[#B71C1C] text-white rounded-xl hover:bg-[#8B1515] transition-colors"
+                  >
+                    Schedule Tour
+                  </button>
+                </form>
+              </div>
         </div>
       </div>
 
