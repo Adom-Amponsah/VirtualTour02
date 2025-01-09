@@ -233,6 +233,10 @@ const SearchResults = () => {
     navigate(`/apartment/${property.id}`);
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b sticky top-0 z-50">

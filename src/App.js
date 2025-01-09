@@ -5,11 +5,13 @@ import SearchResults from './components/SearchResults';
 import ApartmentDetail from './components/ApartmentDetail';
 import { BookingProvider } from './context/BookingContext';
 import SinglePropertyShowcase from './components/SinglePropertyShowcase';
+import ScrollToTop from './components/ScrollToTop';
 
 function App() {
   return (
     <BookingProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/search" element={<SearchResults />} />
