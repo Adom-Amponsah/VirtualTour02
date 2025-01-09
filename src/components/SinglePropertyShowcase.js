@@ -152,6 +152,11 @@ const SinglePropertyShowcase = () => {
       {/* Virtual Tour Section */}
       <div className="relative h-[70vh]">
         <VirtualTour scenes={property.scenes} />
+        <div className="absolute top-4 left-4 z-10">
+          <div className="px-3 py-1 rounded-full bg-[#0C2340] text-white text-sm font-medium">
+            Available Now
+          </div>
+        </div>
       </div>
 
       {/* Photo Gallery */}
@@ -180,7 +185,7 @@ const SinglePropertyShowcase = () => {
 
                 {/* Price Section */}
                 <div>
-                  <div className="text-3xl font-bold text-[#B71C1C]">
+                  <div className="text-3xl font-bold text-[#0C2340]">
                     ₵{property.price.toLocaleString()}
                     <span className="text-sm font-normal text-gray-500">/month</span>
                   </div>
@@ -197,15 +202,15 @@ const SinglePropertyShowcase = () => {
                 {/* Property Features */}
                 <div className="flex items-center gap-6">
                   <div className="flex items-center gap-2">
-                    <BedDouble className="w-5 h-5 text-[#B71C1C]" />
+                    <BedDouble className="w-5 h-5 text-[#0C2340]" />
                     <span>{property.bedrooms}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Bath className="w-5 h-5 text-[#B71C1C]" />
+                    <Bath className="w-5 h-5 text-[#0C2340]" />
                     <span>{property.bathrooms}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Square className="w-5 h-5 text-[#B71C1C]" />
+                    <Square className="w-5 h-5 text-[#0C2340]" />
                     <span>{property.size} sqft</span>
                   </div>
                 </div>
@@ -224,8 +229,8 @@ const SinglePropertyShowcase = () => {
                         key={index} 
                         className="flex items-center gap-3 p-2 rounded-lg bg-gray-50"
                       >
-                        <div className="w-8 h-8 rounded-full bg-[#B71C1C]/10 flex items-center justify-center">
-                          <amenity.icon className="w-4 h-4 text-[#B71C1C]" />
+                        <div className="w-8 h-8 rounded-full bg-[#0C2340]/10 flex items-center justify-center">
+                          <amenity.icon className="w-4 h-4 text-[#0C2340]" />
                         </div>
                         <span className="text-gray-700">{amenity.name}</span>
                       </div>
@@ -318,7 +323,7 @@ const SinglePropertyShowcase = () => {
                       </label>
                       <input
                         type="date"
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       />
                     </div>
 
@@ -326,7 +331,7 @@ const SinglePropertyShowcase = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Preferred Time
                       </label>
-                      <select className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent">
+                      <select className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent">
                         <option>Morning (9AM - 12PM)</option>
                         <option>Afternoon (12PM - 4PM)</option>
                         <option>Evening (4PM - 7PM)</option>
@@ -340,7 +345,7 @@ const SinglePropertyShowcase = () => {
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -351,7 +356,7 @@ const SinglePropertyShowcase = () => {
                     </label>
                     <input
                       type="tel"
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -362,7 +367,7 @@ const SinglePropertyShowcase = () => {
                     </label>
                     <input
                       type="email"
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -372,7 +377,7 @@ const SinglePropertyShowcase = () => {
                       Message (Optional)
                     </label>
                     <textarea
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       rows="3"
                       placeholder="Any specific questions or requests?"
                     ></textarea>
@@ -380,7 +385,7 @@ const SinglePropertyShowcase = () => {
 
                   <button 
                     type="submit"
-                    className="w-full px-8 py-3 bg-[#B71C1C] text-white rounded-xl hover:bg-[#8B1515] transition-colors"
+                    className="w-full px-8 py-3 bg-[#0C2340] text-white rounded-xl hover:bg-[#0C2340]/90 transition-colors"
                   >
                     Schedule Tour
                   </button>

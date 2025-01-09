@@ -292,8 +292,10 @@ const RoomTypeCard = ({ type, selected, onClick, index }) => {
           <p className="text-sm opacity-90">{type.size} sq.ft</p>
         </div>
         {type.availability === 'Available Now' && (
-          <div className="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded-full text-sm">
-            Available Now
+          <div className="absolute top-4 left-4 z-10">
+            <div className="px-3 py-1 rounded-full bg-[#0C2340] text-white text-sm font-medium">
+              Available Now
+            </div>
           </div>
         )}
       </div>
@@ -314,7 +316,7 @@ const RoomTypeCard = ({ type, selected, onClick, index }) => {
         </div>
         <div className="flex justify-between items-end">
           <div>
-            <div className="text-2xl font-bold text-[#B71C1C]">
+            <div className="text-2xl font-bold text-[#0C2340]">
               ₵{type.price.toLocaleString()}
               <span className="text-sm font-normal text-gray-500">/month</span>
             </div>
@@ -330,8 +332,8 @@ const RoomTypeCard = ({ type, selected, onClick, index }) => {
       <div className="px-4 pb-4 grid grid-cols-2 gap-2">
         {type.amenities.map((amenity, index) => (
           <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
-            <div className="w-6 h-6 rounded-full bg-[#B71C1C]/10 flex items-center justify-center">
-              <amenity.icon className="w-3 h-3 text-[#B71C1C]" />
+            <div className="w-6 h-6 rounded-full bg-[#0C2340]/10 flex items-center justify-center">
+              <amenity.icon className="w-3 h-3 text-[#0C2340]" />
             </div>
             {amenity.name}
           </div>
@@ -390,7 +392,7 @@ const ComparisonModal = ({ isOpen, onClose, roomTypes }) => {
                 {roomTypes.map(type => (
                   <th key={type.id} className="p-4 text-left min-w-[200px]">
                     <div className="font-bold text-lg">{type.name}</div>
-                    <div className="text-[#B71C1C] font-bold mt-1">
+                    <div className="text-[#0C2340] font-bold mt-1">
                       ₵{type.price.toLocaleString()}/mo
                     </div>
                     <div className="text-sm text-gray-500 mt-1">{type.size} sq.ft</div>
@@ -497,7 +499,7 @@ const SinglePropertyShowcase = ({ property }) => {
           <div className="absolute bottom-6 left-6 text-white">
             <h1 className="text-3xl font-bold mb-2">{property.title}</h1>
             <div className="flex items-center gap-4">
-              <Badge className="bg-green-600">Available Now</Badge>
+              <Badge className="bg-[#0C2340] text-white">Available Now</Badge>
               <Badge className="bg-white/20 backdrop-blur-sm">
                 {property.type}
               </Badge>
@@ -508,22 +510,22 @@ const SinglePropertyShowcase = ({ property }) => {
         {/* Key Features */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-gray-50">
           <div className="text-center p-4 rounded-xl bg-white shadow-sm">
-            <BedDouble className="w-6 h-6 text-[#B71C1C] mx-auto mb-2" />
+            <BedDouble className="w-6 h-6 text-[#0C2340] mx-auto mb-2" />
             <div className="font-semibold">{property.bedrooms}</div>
             <div className="text-sm text-gray-500">Bedrooms</div>
           </div>
           <div className="text-center p-4 rounded-xl bg-white shadow-sm">
-            <Bath className="w-6 h-6 text-[#B71C1C] mx-auto mb-2" />
+            <Bath className="w-6 h-6 text-[#0C2340] mx-auto mb-2" />
             <div className="font-semibold">{property.bathrooms}</div>
             <div className="text-sm text-gray-500">Bathrooms</div>
           </div>
           <div className="text-center p-4 rounded-xl bg-white shadow-sm">
-            <Square className="w-6 h-6 text-[#B71C1C] mx-auto mb-2" />
+            <Square className="w-6 h-6 text-[#0C2340] mx-auto mb-2" />
             <div className="font-semibold">{property.size} sq.ft</div>
             <div className="text-sm text-gray-500">Living Space</div>
           </div>
           <div className="text-center p-4 rounded-xl bg-white shadow-sm">
-            <Key className="w-6 h-6 text-[#B71C1C] mx-auto mb-2" />
+            <Key className="w-6 h-6 text-[#0C2340] mx-auto mb-2" />
             <div className="font-semibold">Ready to Move</div>
             <div className="text-sm text-gray-500">Availability</div>
           </div>
@@ -533,7 +535,7 @@ const SinglePropertyShowcase = ({ property }) => {
         <div className="p-6 border-t">
           <div className="flex flex-wrap gap-6 items-end justify-between">
             <div>
-              <div className="text-3xl font-bold text-[#B71C1C]">
+              <div className="text-3xl font-bold text-[#0C2340]">
                 ₵{property.price.toLocaleString()}
                 <span className="text-sm font-normal text-gray-500">/month</span>
               </div>
@@ -549,8 +551,8 @@ const SinglePropertyShowcase = ({ property }) => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="px-6 py-3 bg-[#B71C1C] text-white rounded-xl 
-                         hover:bg-[#8B1515] transition-colors"
+              className="px-6 py-3 bg-[#0C2340] text-white rounded-xl 
+                         hover:bg-[#0C2340]/90 transition-colors"
             >
               Schedule Viewing
             </motion.button>
@@ -569,8 +571,8 @@ const SinglePropertyShowcase = ({ property }) => {
                 transition={{ delay: index * 0.1 }}
                 className="flex items-center gap-3 p-3 rounded-lg bg-gray-50"
               >
-                <div className="w-8 h-8 rounded-full bg-[#B71C1C]/10 flex items-center justify-center">
-                  <amenity.icon className="w-4 h-4 text-[#B71C1C]" />
+                <div className="w-8 h-8 rounded-full bg-[#0C2340]/10 flex items-center justify-center">
+                  <amenity.icon className="w-4 h-4 text-[#0C2340]" />
                 </div>
                 <span className="text-gray-700">{amenity.name}</span>
               </motion.div>
@@ -726,7 +728,7 @@ const ApartmentDetail = () => {
       bathrooms: "1 Bathroom",
       price: 1200,
       availability: "Available Now",
-      image: "/images/studio.jpg",
+      image: "/images/apart011.jpeg",
       amenities: [
         { name: "Air Conditioning", icon: Wind },
         { name: "High-Speed WiFi", icon: Wifi },
@@ -742,7 +744,7 @@ const ApartmentDetail = () => {
       bathrooms: "1 Bathroom",
       price: 1800,
       availability: "October 1st",
-      image: "/images/1bed.jpg",
+      image: "/images/apart022.jpeg",
       amenities: [
         { name: "Air Conditioning", icon: Wind },
         { name: "High-Speed WiFi", icon: Wifi },
@@ -760,7 +762,7 @@ const ApartmentDetail = () => {
       bathrooms: "2 Bathrooms",
       price: 2500,
       availability: "Available Now",
-      image: "/images/2bed.jpg",
+      image: "/images/apart044.jpeg",
       amenities: [
         { name: "Air Conditioning", icon: Wind },
         { name: "High-Speed WiFi", icon: Wifi },
@@ -828,8 +830,8 @@ const ApartmentDetail = () => {
       <div className="max-w-7xl mx-auto px-4 pb-16">
         {/* Enhanced Location and Rating Bar */}
         <div className="flex flex-wrap items-center justify-between py-6 border-b mb-8">
-          <div className="flex flex-wrap items-center gap-6">
-            <Badge className="bg-[#B71C1C]/10 text-[#B71C1C] px-4 py-2 flex items-center gap-2">
+          {/* <div className="flex flex-wrap items-center gap-6">
+            <Badge className="bg-[#0C2340]/10 text-[#0C2340] px-4 py-2 flex items-center gap-2">
               <MapPin className="w-5 h-5" />
               {apartment.location}
             </Badge>
@@ -839,11 +841,11 @@ const ApartmentDetail = () => {
                 <span className="ml-2 font-semibold">{apartment.rating}</span>
               </div>
               <span className="text-gray-400">·</span>
-              <a href="#reviews" className="text-[#B71C1C] hover:underline">
+              <a href="#reviews" className="text-[#0C2340] hover:underline">
                 {apartment.reviews} reviews
               </a>
             </div>
-          </div>
+          </div> */}
           {/* <FeatureTag>
             <Medal className="w-4 h-4 inline mr-2" />
             {apartment.host.type}
@@ -886,7 +888,7 @@ const ApartmentDetail = () => {
             </Card> */}
 
             {/* Enhanced About Section */}
-            <div className="bg-gradient-to-r from-[#B71C1C]/5 to-transparent p-8 rounded-xl">
+            <div className="bg-gradient-to-r from-[#0C2340]/5 to-transparent p-8 rounded-xl">
               <h2 className="text-2xl font-bold mb-6">About this place</h2>
               <p className="text-gray-700 leading-relaxed text-lg">
                 SANTIPHAP ROOM is a spacious en-suite located on the top floor of the renovated 
@@ -977,8 +979,8 @@ const ApartmentDetail = () => {
                   <Card key={idx} hover className="overflow-hidden">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-[#B71C1C]/10 flex items-center justify-center">
-                          <amenity.icon className="w-6 h-6 text-[#B71C1C]" />
+                        <div className="w-12 h-12 rounded-full bg-[#0C2340]/10 flex items-center justify-center">
+                          <amenity.icon className="w-6 h-6 text-[#0C2340]" />
                         </div>
                         <div>
                           <h3 className="font-medium">{amenity.label}</h3>
@@ -1009,7 +1011,7 @@ const ApartmentDetail = () => {
                 <h3 className="font-semibold mb-4">Location Details</h3>
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-[#B71C1C] mt-1" />
+                    <MapPin className="w-5 h-5 text-[#0C2340] mt-1" />
                     <div>
                       <h4 className="font-medium">Address</h4>
                       <p className="text-gray-600">123 Sukhumvit Road, Bangkok 10110, Thailand</p>
@@ -1017,7 +1019,7 @@ const ApartmentDetail = () => {
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <Globe className="w-5 h-5 text-[#B71C1C] mt-1" />
+                    <Globe className="w-5 h-5 text-[#0C2340] mt-1" />
                     <div>
                       <h4 className="font-medium">Getting There</h4>
                       <p className="text-gray-600">
@@ -1029,7 +1031,7 @@ const ApartmentDetail = () => {
                   </div>
 
                   <div className="flex items-start gap-3">
-                    <Star className="w-5 h-5 text-[#B71C1C] mt-1" />
+                    <Star className="w-5 h-5 text-[#0C2340] mt-1" />
                     <div>
                       <h4 className="font-medium">Neighborhood</h4>
                       <p className="text-gray-600">
@@ -1169,7 +1171,7 @@ const ApartmentDetail = () => {
                       </label>
                       <input
                         type="date"
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                        className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       />
                     </div>
 
@@ -1177,7 +1179,7 @@ const ApartmentDetail = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Preferred Time
                       </label>
-                      <select className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent">
+                      <select className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent">
                         <option>Morning (9AM - 12PM)</option>
                         <option>Afternoon (12PM - 4PM)</option>
                         <option>Evening (4PM - 7PM)</option>
@@ -1191,7 +1193,7 @@ const ApartmentDetail = () => {
                     </label>
                     <input
                       type="text"
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       placeholder="Enter your full name"
                     />
                   </div>
@@ -1202,7 +1204,7 @@ const ApartmentDetail = () => {
                     </label>
                     <input
                       type="tel"
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       placeholder="Enter your phone number"
                     />
                   </div>
@@ -1213,7 +1215,7 @@ const ApartmentDetail = () => {
                     </label>
                     <input
                       type="email"
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       placeholder="Enter your email"
                     />
                   </div>
@@ -1223,7 +1225,7 @@ const ApartmentDetail = () => {
                       Message (Optional)
                     </label>
                     <textarea
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#B71C1C] focus:border-transparent"
+                      className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#0C2340] focus:border-transparent"
                       rows="3"
                       placeholder="Any specific questions or requests?"
                     ></textarea>
@@ -1231,7 +1233,7 @@ const ApartmentDetail = () => {
 
                   <button 
                     type="submit"
-                    className="w-full px-8 py-3 bg-[#B71C1C] text-white rounded-xl hover:bg-[#8B1515] transition-colors"
+                    className="w-full px-8 py-3 bg-[#0C2340] text-white rounded-xl hover:bg-[#0C2340]/90 transition-colors"
                   >
                     Schedule Tour
                   </button>

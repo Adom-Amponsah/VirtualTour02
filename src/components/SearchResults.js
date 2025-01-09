@@ -381,7 +381,7 @@ const SearchResults = () => {
                     
                     {/* Status Badge */}
                     <div className="absolute top-4 left-4 z-10">
-                      <div className="px-3 py-1 rounded-full bg-green-600 text-white text-sm font-medium">
+                      <div className="px-3 py-1 rounded-full bg-[#0C2340] text-white text-sm font-medium">
                         Available Now
                       </div>
                     </div>
@@ -465,7 +465,7 @@ const SearchResults = () => {
                       
                       {/* Status Badge */}
                       <div className="absolute top-4 left-4 z-10">
-                        <div className="px-3 py-1 rounded-full bg-green-600 text-white text-sm font-medium">
+                        <div className="px-3 py-1 rounded-full bg-[#0C2340] text-white text-sm font-medium">
                           Available Now
                         </div>
                       </div>
