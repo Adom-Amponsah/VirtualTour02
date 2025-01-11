@@ -418,25 +418,7 @@ const reviews = [
     content: "The location is fantastic, and the amenities exceeded my expectations.",
     fullContent: "The location is fantastic, and the amenities exceeded my expectations. The spacious layout, the modern decor, and the peaceful environment made my stay memorable. The customer service team was always responsive and helpful. Highly recommended for anyone looking for a luxurious experience in Cantonments.",
     likes: 42,
-    replies: 5,
-    comments: [
-      {
-        id: 1,
-        user: "John D.",
-        content: "I had a similar experience! The amenities are truly exceptional.",
-        timestamp: "2024-03-10T10:30:00Z",
-        likes: 5,
-        isLiked: false
-      },
-      {
-        id: 2,
-        user: "Emma W.",
-        content: "Did you try the rooftop garden? It's amazing!",
-        timestamp: "2024-03-09T15:20:00Z",
-        likes: 3,
-        isLiked: false
-      }
-    ]
+    replies: 5
   },
   {
     id: 2,
