@@ -233,7 +233,7 @@ const ReviewCard = ({ review, onViewMore, index }) => {
       whileHover={{ y: -5 }}
       onClick={onViewMore}
       className={`bg-gradient-to-br ${gradientColor} rounded-xl p-6 cursor-pointer
-                  w-[300px] h-[320px] flex flex-col justify-between 
+                  w-[240px] h-[320px] flex flex-col justify-between 
                   shadow-lg hover:shadow-xl transition-all duration-300`}
     >
       {/* User Info */}
@@ -798,7 +798,7 @@ const reviews = [
             id="reviews-container"
           >
             {reviews.map((review, index) => (
-              <div key={review.id} className="flex-none snap-center" style={{ width: '320px' }}>
+              <div key={review.id} className="flex-none snap-center" style={{ width: '260px' }}>
                 <ReviewCard
                   review={review}
                   index={index}
