@@ -347,136 +347,130 @@ const RoomTypeCard = ({ type, selected, onClick, index }) => {
 const ComparisonModal = ({ isOpen, onClose, roomTypes }) => {
   if (!isOpen) return null;
 
-  const allFeatures = [...new Set(roomTypes.flatMap(room => 
-    room.amenities.map(a => a.name)
-  ))].sort();
-
   return (
-    <div 
-      className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        transition={{ type: "spring", duration: 0.5 }}
-        className="bg-white rounded-xl max-w-5xl w-full max-h-[90vh] overflow-hidden"
-      >
-        <motion.div 
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.1 }}
-          className="p-6 border-b sticky top-0 bg-white z-10"
-        >
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-bold">Compare Apartment Features</h3>
-            <button 
-              onClick={onClose}
-              className="p-2 hover:bg-gray-100 rounded-full"
-            >
-              <X className="w-5 h-5" />
-            </button>
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="sticky top-0 bg-white p-4 border-b flex justify-between items-center">
+          <h2 className="text-xl font-bold">Compare Room Types</h2>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Comparison Content */}
+        <div className="p-4">
+          {/* Mobile View - Stacked Cards */}
+          <div className="lg:hidden space-y-6">
+            {roomTypes.map((type) => (
+              <div key={type.id} className="bg-gray-50 rounded-xl p-4">
+                <h3 className="font-bold text-lg mb-4">{type.name}</h3>
+                
+                {/* Features Grid */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Size</span>
+                    <span className="font-medium">{type.size} sq ft</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Price</span>
+                    <span className="font-medium">₵{type.price.toLocaleString()}/mo</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Bedrooms</span>
+                    <span className="font-medium">{type.bedrooms}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-gray-600">Bathrooms</span>
+                    <span className="font-medium">{type.bathrooms}</span>
+                  </div>
+                  
+                  {/* Features List */}
+                  <div className="border-t pt-4 mt-4">
+                    <h4 className="font-medium mb-2">Features</h4>
+                    <div className="grid grid-cols-2 gap-2">
+                      {type.features?.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <Check className="w-4 h-4 text-green-500" />
+                          <span className="text-sm">{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        </motion.div>
 
-        <motion.div 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="overflow-x-auto"
-        >
-          <table className="w-full">
-            <thead className="bg-gray-50 sticky top-[76px]">
-              <tr>
-                <th className="p-4 text-left font-medium text-gray-500 w-[200px]">Features</th>
-                {roomTypes.map(type => (
-                  <th key={type.id} className="p-4 text-left min-w-[200px]">
-                    <div className="font-bold text-lg">{type.name}</div>
-                    <div className="text-[#0C2340] font-bold mt-1">
-                      ₵{type.price.toLocaleString()}/mo
-                    </div>
-                    <div className="text-sm text-gray-500 mt-1">{type.size} sq.ft</div>
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {/* Basic Info */}
-              <tr className="bg-gray-50">
-                <td className="p-4 font-medium">Basic Information</td>
-                {roomTypes.map(type => (
-                  <td key={type.id} className="p-4">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <BedDouble className="w-4 h-4 text-gray-500" />
-                        {type.bedrooms}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Bath className="w-4 h-4 text-gray-500" />
-                        {type.bathrooms}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-gray-500" />
-                        {type.availability}
-                      </div>
-                    </div>
-                  </td>
-                ))}
-              </tr>
-
-              {/* Lease Terms */}
-              <tr>
-                <td className="p-4 font-medium">Lease Terms</td>
-                {roomTypes.map(type => (
-                  <td key={type.id} className="p-4">
-                    <div className="space-y-2">
-                      <div className="text-sm">
-                        1 Year: ₵{(type.price * 11).toLocaleString()}/mo
-                      </div>
-                      <div className="text-sm">
-                        2 Years: ₵{(type.price * 10).toLocaleString()}/mo
-                      </div>
-                    </div>
-                  </td>
-                ))}
-              </tr>
-
-              {/* Amenities */}
-              {allFeatures.map(feature => (
-                <tr key={feature}>
-                  <td className="p-4 text-gray-600">{feature}</td>
-                  {roomTypes.map(type => (
-                    <td key={type.id} className="p-4">
-                      {type.amenities.some(a => a.name === feature) ? (
-                        <Check className="w-5 h-5 text-green-500" />
-                      ) : (
-                        <X className="w-5 h-5 text-gray-300" />
-                      )}
+          {/* Desktop View - Table Format */}
+          <div className="hidden lg:block">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left p-4">Features</th>
+                  {roomTypes.map((type) => (
+                    <th key={type.id} className="p-4 text-left">
+                      <h3 className="font-bold text-lg">{type.name}</h3>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b">
+                  <td className="p-4 text-gray-600">Size</td>
+                  {roomTypes.map((type) => (
+                    <td key={type.id} className="p-4 font-medium">
+                      {type.size} sq ft
                     </td>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </motion.div>
-
-        <motion.div 
-          initial={{ y: 20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="p-6 border-t sticky bottom-0 bg-white"
-        >
-          <div className="flex justify-end">
-            <button
-              onClick={onClose}
-              className="px-6 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-            >
-              Close
-            </button>
+                <tr className="border-b">
+                  <td className="p-4 text-gray-600">Price</td>
+                  {roomTypes.map((type) => (
+                    <td key={type.id} className="p-4 font-medium">
+                      ₵{type.price.toLocaleString()}/mo
+                    </td>
+                  ))}
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-gray-600">Bedrooms</td>
+                  {roomTypes.map((type) => (
+                    <td key={type.id} className="p-4 font-medium">
+                      {type.bedrooms}
+                    </td>
+                  ))}
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-gray-600">Bathrooms</td>
+                  {roomTypes.map((type) => (
+                    <td key={type.id} className="p-4 font-medium">
+                      {type.bathrooms}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className="p-4 text-gray-600">Features</td>
+                  {roomTypes.map((type) => (
+                    <td key={type.id} className="p-4">
+                      <div className="space-y-2">
+                        {type.features?.map((feature, idx) => (
+                          <div key={idx} className="flex items-center gap-2">
+                            <Check className="w-4 h-4 text-green-500" />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </div>
   );
 };
@@ -613,7 +607,7 @@ const ReviewCard = ({ review, onViewMore, index }) => {
       whileHover={{ y: -5 }}
       onClick={onViewMore}
       className={`bg-gradient-to-br ${gradientColor} rounded-xl p-6 cursor-pointer
-                  w-[300px] h-[320px] flex flex-col justify-between 
+                  w-[250px] h-[320px] flex flex-col justify-between 
                   shadow-lg hover:shadow-xl transition-all duration-300`}
     >
       {/* User Info */}
@@ -1399,7 +1393,7 @@ const ApartmentDetail = () => {
                   id="reviews-container"
                 >
                   {reviews.map((review, index) => (
-                    <div key={review.id} className="flex-none snap-center" style={{ width: '320px' }}>
+                    <div key={review.id} className="flex-none snap-center" style={{ width: '260px' }}>
                       <ReviewCard
                         review={review}
                         index={index}
