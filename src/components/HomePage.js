@@ -307,6 +307,29 @@ const HomePage = () => {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
 
+  const popularPlaces = [
+    { id: 1, name: "Accra" },
+    { id: 2, name: "Haatso" },
+    { id: 3, name: "East Legon" },
+    { id: 4, name: "Madina" },
+    { id: 5, name: "Airport" },
+    { id: 6, name: "Cantoments" },
+    { id: 7, name: "Osu" },
+    { id: 8, name: "Circle" },
+    { id: 9, name: "Kwabenya" },
+    { id: 10, name: "Dome" },
+    { id: 11, name: "West Legon" },
+    { id: 12, name: "Labadi" },
+    { id: 13, name: "Agogba" },
+    { id: 14, name: "Pokuase" },
+    { id: 15, name: "Spintex" },
+    { id: 16, name: "Kaneshie" },
+    { id: 17, name: "Kokomlemle" },
+    { id: 18, name: "Kanda" },
+    { id: 19, name: "Teshie" },
+    { id: 20, name: "Dansoman" }
+  ];
+
   const properties = [
     {
       id: 1,
@@ -468,7 +491,7 @@ const HomePage = () => {
               </div>
 
               {/* Location Dropdown */}
-              <div className="flex-1 relative group px-2">
+              {/* <div className="flex-1 relative group px-2">
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 text-gray-400 absolute left-4" />
                   <select
@@ -490,7 +513,30 @@ const HomePage = () => {
                   <ChevronDown className="h-4 w-4 text-gray-400 absolute right-4" />
                 </div>
                 <div className="absolute bottom-0 left-2 right-2 h-px bg-gray-200 group-hover:bg-[#0C2340] transition-colors" />
-              </div>
+              </div> */}
+              <div className="flex-1 relative group px-2">
+  <div className="flex items-center">
+    <MapPin className="h-4 w-4 text-gray-400 absolute left-4" />
+    <select
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+      className="w-full pl-10 pr-8 py-3 appearance-none bg-transparent focus:outline-none text-sm"
+    >
+      <option value="">Popular Places in Ghana</option>
+      {loading ? (
+        <option disabled>Loading...</option>
+      ) : (
+        popularPlaces.map((place) => (
+          <option key={place.id} value={place.name}>
+            {place.name}
+          </option>
+        ))
+      )}
+    </select>
+    <ChevronDown className="h-4 w-4 text-gray-400 absolute right-4" />
+  </div>
+  <div className="absolute bottom-0 left-2 right-2 h-px bg-gray-200 group-hover:bg-[#0C2340] transition-colors" />
+</div>
 
               {/* Price Range */}
               <div className="hidden md:flex items-center space-x-2 px-4 border-l border-gray-200">
