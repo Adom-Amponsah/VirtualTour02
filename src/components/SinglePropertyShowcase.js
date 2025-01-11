@@ -707,7 +707,7 @@ const reviews = [
 
 
               {/* Right Column - Request Tour Form */}
-              <div className="bg-white rounded-2xl shadow-lg p-6">
+              <div className="bg-white rounded-2xl shadow-lg p-6 h-[620px]">
                 <h2 className="text-xl font-semibold mb-4">Request a Tour</h2>
                 <form className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
@@ -790,7 +790,7 @@ const reviews = [
         </div>
       </div>
 
-      <div className="mt-16 ml-36 mr-36">
+      <div className="mt-16 mx-4 md:mx-8 lg:ml-36 lg:mr-36">
         <h2 className="text-2xl font-bold mb-6">What Residents Are Saying</h2>
         <div className="relative px-8">
           <div 

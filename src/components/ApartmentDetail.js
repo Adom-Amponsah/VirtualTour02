@@ -1193,7 +1193,7 @@ const ApartmentDetail = () => {
                 type={type}
                 index={index}
                 selected={selectedRoomType?.id === type.id}
-                onClick={() => setSelectedRoomType(type)}
+                // onClick={() => {}}
               />
             ))}
           </div>
@@ -1206,7 +1206,7 @@ const ApartmentDetail = () => {
                          hover:bg-gray-200 transition-colors text-gray-700"
             >
               <Square className="w-4 h-4" />
-              Compare All Features
+              Compare All Apartments
             </button>
           </div>
         </div>
@@ -1215,64 +1215,13 @@ const ApartmentDetail = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 pb-16">
         {/* Enhanced Location and Rating Bar */}
-        <div className="flex flex-wrap items-center justify-between py-6 border-b mb-8">
-          {/* <div className="flex flex-wrap items-center gap-6">
-            <Badge className="bg-[#0C2340]/10 text-[#0C2340] px-4 py-2 flex items-center gap-2">
-              <MapPin className="w-5 h-5" />
-              {apartment.location}
-            </Badge>
-            <div className="flex items-center gap-2">
-              <div className="flex items-center">
-                <Star className="w-5 h-5 text-yellow-400" />
-                <span className="ml-2 font-semibold">{apartment.rating}</span>
-              </div>
-              <span className="text-gray-400">·</span>
-              <a href="#reviews" className="text-[#0C2340] hover:underline">
-                {apartment.reviews} reviews
-              </a>
-            </div>
-          </div> */}
-          {/* <FeatureTag>
-            <Medal className="w-4 h-4 inline mr-2" />
-            {apartment.host.type}
-          </FeatureTag> */}
-        </div>
+      
 
         {/* Main Grid with Enhanced Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column */}
           <div className="lg:col-span-2 space-y-10">
-            {/* Host Section */}
-            {/* <Card className="overflow-hidden hover:shadow-xl transition-shadow">
-              <CardContent className="p-8">
-                <div className="flex items-start gap-6">
-                  <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-primary/10">
-                    <img 
-                      src={apartment.host.image} 
-                      alt={apartment.host.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-bold mb-2">
-                      Meet your host, {apartment.host.name}
-                    </h2>
-                    <p className="text-gray-600 mb-4">{apartment.host.experience}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {apartment.languages.map((lang, idx) => (
-                        <Badge 
-                          key={idx}
-                          className="bg-gray-100 text-gray-700 px-4 py-1"
-                        >
-                          {lang}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
-
+          
             {/* Enhanced About Section */}
             <div className="bg-gradient-to-r from-[#0C2340]/5 to-transparent p-8 rounded-xl">
               <h2 className="text-2xl font-bold mb-6">About this place</h2>
@@ -1295,7 +1244,7 @@ const ApartmentDetail = () => {
             {/* Additional Apartment Images */}
             <div className="mt-10">
               <h2 className="text-2xl font-bold mb-6">Additional Views</h2>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-4 ">
                 <div className="space-y-4">
                   {/* Large image on the left */}
                   <div className="aspect-[4/3] rounded-xl overflow-hidden">
@@ -1380,62 +1329,11 @@ const ApartmentDetail = () => {
             </div>
 
            
-
-            {/* Location Map Section */}
-            {/* <div>
-              <h2 className="text-2xl font-bold mb-6">Location</h2>
-              <Card className="overflow-hidden">
-                <CardContent className="p-0">
-                  <LocationMap 
-                    latitude={apartment.coordinates.latitude}
-                    longitude={apartment.coordinates.longitude}
-                    name={apartment.name}
-                  />
-                </CardContent>
-              </Card>
-               */}
-              {/* Location Details */}
-              {/* <div className="mt-6 bg-gray-50 rounded-xl p-6">
-                <h3 className="font-semibold mb-4">Location Details</h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <MapPin className="w-5 h-5 text-[#0C2340] mt-1" />
-                    <div>
-                      <h4 className="font-medium">Address</h4>
-                      <p className="text-gray-600">123 Sukhumvit Road, Bangkok 10110, Thailand</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start gap-3">
-                    <Globe className="w-5 h-5 text-[#0C2340] mt-1" />
-                    <div>
-                      <h4 className="font-medium">Getting There</h4>
-                      <p className="text-gray-600">
-                        10 minutes walk from BTS Asok Station
-                        <br />
-                        15 minutes from Suvarnabhumi Airport by taxi
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <Star className="w-5 h-5 text-[#0C2340] mt-1" />
-                    <div>
-                      <h4 className="font-medium">Neighborhood</h4>
-                      <p className="text-gray-600">
-                        Located in the heart of Sukhumvit, surrounded by restaurants, 
-                        shopping centers, and nightlife venues.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> */}
           </div>
 
           {/* Right Column - Request Tour Form */}
-          <div className="bg-white rounded-2xl shadow-lg p-6 w-[400px] flex-shrink-0 h-[400px]">
-            <h2 className="text-xl font-semibold mb-4">Request a Tour</h2>
+          <div className="bg-white rounded-2xl shadow-lg p-6 h-fit ">         
+             <h2 className="text-xl font-semibold mb-4">Request a Tour</h2>
             <form className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -1493,7 +1391,7 @@ const ApartmentDetail = () => {
       </div>
 
  {/* Add Reviews Section Here */}
- <div className="mt-16 ml-36">
+ <div className="mt-16 mx-4 md:mx-8 lg:ml-36">
               <h2 className="text-2xl font-bold mb-6">What Residents Are Saying</h2>
               <div className="relative px-8">
                 <div 
