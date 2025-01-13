@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Hospital, ShoppingCart, Utensils, Clock, X, MapPin, 
   ChevronRight, Building, Car, School, Bus, Coffee,
-  Dumbbell, ChevronLeft, Shield, AlertTriangle 
+  Dumbbell, ChevronLeft, Shield, AlertTriangle, Users, BookOpen
 } from 'lucide-react';
 
 const NeighborhoodModal = ({ isOpen, onClose }) => {
@@ -79,6 +79,40 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
           type: "Gym & Wellness",
           rating: "4.6",
           features: ["24/7 Access", "Classes", "Personal Training"]
+        }
+      ]
+    },
+    {
+      title: "Education Hub",
+      subtitle: "Schools & Learning Centers",
+      icon: BookOpen,
+      color: "text-orange-600",
+      bgColor: "bg-orange-50",
+      gradient: "from-orange-500/20 via-orange-500/10 to-transparent",
+      places: [
+        {
+          name: "Schools Nearby",
+          type: "Educational Facilities",
+          distance: "5-15 min radius",
+          rating: "4.8",
+          features: [
+            "🏫 International schools",
+            "📚 Public schools",
+            "👶 Montessori preschools",
+            "📝 Tutorial centers"
+          ]
+        },
+        {
+          name: "Learning Resources",
+          type: "Educational Support",
+          distance: "In the Area",
+          rating: "4.7",
+          features: [
+            "📖 Public library",
+            "💻 Coding bootcamp",
+            "🎨 Art school",
+            "🎵 Music academy"
+          ]
         }
       ]
     },
@@ -183,6 +217,118 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
           "Join the neighborhood watch program"
         ]
       }
+    },
+    {
+      title: "Transportation & Connectivity",
+      subtitle: "Getting Around Made Easy",
+      icon: Bus,
+      color: "text-cyan-600",
+      bgColor: "bg-cyan-50",
+      gradient: "from-cyan-500/20 via-cyan-500/10 to-transparent",
+      places: [
+        {
+          name: "Public Transport",
+          type: "Transit Options",
+          distance: "Nearby",
+          rating: "4.6",
+          features: [
+            "🚌 Bus stops within 2 min walk",
+            "🚗 Uber/Bolt readily available",
+            "🚖 24/7 taxi service",
+            "🚶‍♂️ Walkable neighborhood"
+          ]
+        },
+        {
+          name: "Key Destinations",
+          type: "Travel Times",
+          distance: "From Property",
+          rating: "4.7",
+          features: [
+            "✈️ Airport - 25 mins",
+            "🏢 CBD - 15 mins",
+            "🏫 Universities - 10 mins",
+            "🏥 Major hospitals - 10 mins"
+          ]
+        }
+      ]
+    },
+    {
+      title: "Future Development",
+      subtitle: "Area Growth & Investment",
+      icon: Building,
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-50",
+      gradient: "from-emerald-500/20 via-emerald-500/10 to-transparent",
+      places: [
+        {
+          name: "Upcoming Projects",
+          type: "Area Development",
+          distance: "Next 2 Years",
+          rating: "Exciting",
+          features: [
+            "🏗️ New shopping complex",
+            "🌳 Public park renovation",
+            "🛣️ Road expansion project",
+            "🏢 Business district development"
+          ]
+        },
+        {
+          name: "Property Value Trend",
+          type: "Investment Potential",
+          distance: "Analysis",
+          rating: "Positive",
+          features: [
+            "📈 15% value increase last year",
+            "💰 High rental demand",
+            "🏘️ Growing neighborhood",
+            "📊 Strong investment outlook"
+          ]
+        }
+      ],
+      alert: {
+        type: "info",
+        message: "This area has shown consistent growth in property values over the past 5 years, with several major development projects planned that could further increase the area's desirability.",
+        recommendations: [
+          "Perfect timing for investment",
+          "Growing rental market",
+          "Infrastructure improvements coming",
+          "Rising property values"
+        ]
+      }
+    },
+    {
+      title: "Community & Lifestyle",
+      subtitle: "Local Culture & Social Life",
+      icon: Users,
+      color: "text-indigo-600",
+      bgColor: "bg-indigo-50",
+      gradient: "from-indigo-500/20 via-indigo-500/10 to-transparent",
+      places: [
+        {
+          name: "Community Demographics",
+          type: "Resident Profile",
+          distance: "Your Neighbors",
+          rating: "4.8",
+          features: [
+            "👨‍👩‍👧👦 Family-friendly neighborhood",
+            "👔 Young professionals",
+            "🎓 University students nearby",
+            "🌍 Diverse international community"
+          ]
+        },
+        {
+          name: "Social Activities",
+          type: "Community Events",
+          distance: "In the Area",
+          rating: "4.7",
+          features: [
+            "🎉 Weekend community markets",
+            "🏃‍♂️ Morning jogging groups",
+            "🎨 Art & culture events",
+            "🍜 Food festivals"
+          ]
+        }
+      ]
     }
   ];
 
