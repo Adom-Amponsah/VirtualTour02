@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MapPin, Heart, BedDouble, ArrowLeft, ListFilter, ChevronDown, Sliders, Bath, Home, DollarSign, Maximize, ArrowRight, Badge, Square, List, MapIcon } from 'lucide-react';
 import Map from './Map';
+import RatingModal from './RatingModal';
 
 const FilterDropdown = ({ label, icon: Icon, options, value, onChange, prefix = '' }) => {
   return (
@@ -43,6 +44,9 @@ const SearchResults = () => {
   const [favorites, setFavorites] = useState(new Set());
   const navigate = useNavigate();
   const [viewType, setViewType] = useState('list');
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [selectedPropertyRatings, setSelectedPropertyRatings] = useState(null);
+  const [pendingNavigation, setPendingNavigation] = useState(null);
   
   // Get search parameters
   const region = searchParams.get('region');
@@ -163,16 +167,24 @@ const SearchResults = () => {
 
   // Handle property selection
   const handlePropertySelect = (property) => {
-    setSelectedProperty(property);
+    // Set the ratings data
+    setSelectedPropertyRatings({
+      internet: property.areaRatings?.internet || 'good',
+      road: property.areaRatings?.road || 'excellent',
+      streetLights: property.areaRatings?.streetLights || 'good'
+    });
     
-    // Check if property has multiple units
-    if (property.hasMultipleUnits) {
-      // Route to ApartmentDetail for properties with multiple units
-      navigate(`/apartment/${property.id}`);
-    } else {
-      // Route to SinglePropertyShowcase for single unit properties
-      navigate(`/apartment/single/${property.id}`);
-    }
+    // Store the pending navigation
+    setPendingNavigation(() => () => {
+      if (property.hasMultipleUnits) {
+        navigate(`/apartment/${property.id}`);
+      } else {
+        navigate(`/apartment/single/${property.id}`);
+      }
+    });
+    
+    // Show the rating modal
+    setShowRatingModal(true);
   };
 
   // Add this function to handle filter changes
@@ -535,6 +547,16 @@ const SearchResults = () => {
           </div>
         </div>
       )}
+
+      <RatingModal
+        isOpen={showRatingModal}
+        onClose={() => {
+          setShowRatingModal(false);
+          // Execute the pending navigation
+          pendingNavigation?.();
+        }}
+        ratings={selectedPropertyRatings}
+      />
     </div>
   );
 };

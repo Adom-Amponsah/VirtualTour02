@@ -6,6 +6,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^6.3.0",
+    "@radix-ui/react-alert-dialog": "^1.1.4",
     "@react-google-maps/api": "^2.20.5",
     "@reduxjs/toolkit": "^2.5.0",
     "cra-template": "1.2.0",
