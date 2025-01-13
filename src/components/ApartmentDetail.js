@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import VirtualTour from '../virtualTour';
 import DatePicker from 'react-datepicker';
@@ -14,6 +14,7 @@ import {
 import { useLoadScript, GoogleMap, Marker } from '@react-google-maps/api';
 import { motion } from 'framer-motion';
 import { useBooking } from '../context/BookingContext';
+import NeighborhoodModal from './NeighborhoodModal';
 
 const Card = ({ children, className = '', hover = false }) => (
   <div className={`bg-white rounded-xl transition-all duration-300 ${
@@ -1161,6 +1162,25 @@ const ApartmentDetail = () => {
     // }
   ];
 
+  const [showNeighborhoodModal, setShowNeighborhoodModal] = useState(false);
+  const [hasShownModal, setHasShownModal] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const additionalViewsSection = document.getElementById('additional-views');
+      if (additionalViewsSection && !hasShownModal) {
+        const rect = additionalViewsSection.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          setShowNeighborhoodModal(true);
+          setHasShownModal(true);  // Prevent showing again
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasShownModal]);
+
   return (
     <div className="max-w-[2000px] mx-auto">
       <VirtualTourSection 
@@ -1235,8 +1255,32 @@ const ApartmentDetail = () => {
               </div>
             </div>
 
+
+              {/* Enhanced Amenities Section */}
+              <div className="mb-12">
+              <h2 className="text-2xl font-bold mb-6">What this place offers</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 ">
+                {amenities.map((amenity, idx) => (
+                  <Card key={idx} hover className="overflow-hidden">
+                    <CardContent className="p-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full bg-[#0C2340]/10 flex items-center justify-center">
+                          <amenity.icon className="w-6 h-6 text-[#0C2340]" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium">{amenity.label}</h3>
+                          <p className="text-sm text-gray-500">{amenity.category}</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+
+
             {/* Additional Apartment Images */}
-            <div className="mt-10">
+            <div id="additional-views" className="mt-10">
               <h2 className="text-2xl font-bold mb-6">Additional Views</h2>
               <div className="grid grid-cols-2 gap-4 ">
                 <div className="space-y-4">
@@ -1300,28 +1344,7 @@ const ApartmentDetail = () => {
               </p>
             </div>
 
-            {/* Enhanced Amenities Section */}
-            <div className="mb-12">
-              <h2 className="text-2xl font-bold mb-6">What this place offers</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 ">
-                {amenities.map((amenity, idx) => (
-                  <Card key={idx} hover className="overflow-hidden">
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-full bg-[#0C2340]/10 flex items-center justify-center">
-                          <amenity.icon className="w-6 h-6 text-[#0C2340]" />
-                        </div>
-                        <div>
-                          <h3 className="font-medium">{amenity.label}</h3>
-                          <p className="text-sm text-gray-500">{amenity.category}</p>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-
+          
            
           </div>
 
@@ -1431,6 +1454,10 @@ const ApartmentDetail = () => {
         isOpen={isComparisonOpen}
         onClose={() => setIsComparisonOpen(false)}
         roomTypes={roomTypes}
+      />
+      <NeighborhoodModal 
+        isOpen={showNeighborhoodModal}
+        onClose={() => setShowNeighborhoodModal(false)}
       />
     </div>
   );

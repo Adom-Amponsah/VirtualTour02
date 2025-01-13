@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Wifi, Construction, Lightbulb, Info, X, AlertTriangle, CheckCircle2, Shield, ArrowRight } from 'lucide-react';
+import { Wifi, Construction, Lightbulb, Info, X, AlertTriangle, CheckCircle2, Shield, ArrowRight, ChevronLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const RatingModal = ({ isOpen, onClose }) => {
@@ -82,6 +82,12 @@ const RatingModal = ({ isOpen, onClose }) => {
     }
   };
 
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+    }
+  };
+
   if (!isOpen) return null;
 
   const currentCategory = categories[currentStep];
@@ -99,18 +105,45 @@ const RatingModal = ({ isOpen, onClose }) => {
       >
         {/* Header */}
         <div className="p-6 bg-gradient-to-br from-[#0C2340] to-[#1B3B66]">
-          <button 
-            onClick={onClose}
-            className="absolute right-4 top-4 p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
-          <h2 className="text-2xl font-bold text-white">Area Infrastructure Review</h2>
-          <p className="text-white/80 mt-1">Step {currentStep + 1} of {categories.length}</p>
+          <div className="flex justify-between items-center">
+            {/* Back button on the left */}
+            <div>
+              {currentStep > 0 && (
+                <motion.button
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  onClick={handleBack}
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </motion.button>
+              )}
+            </div>
+
+            {/* Title in center */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex-1 text-center"
+            >
+              <h2 className="text-2xl font-bold text-white">Area Infrastructure Review</h2>
+              <p className="text-white/80 mt-1">
+                {`Step ${currentStep + 1} of ${categories.length}: ${currentCategory.title}`}
+              </p>
+            </motion.div>
+
+            {/* Close button on the right */}
+            <button 
+              onClick={onClose}
+              className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
-        <div className="p-8">
-          <div className="flex gap-8">
+        <div className="p-4 md:p-8">
+          <div className="flex flex-col md:flex-row md:gap-8">
             {/* Rating Card with enhanced animations */}
             <AnimatePresence mode="wait">
               <motion.div
@@ -123,7 +156,7 @@ const RatingModal = ({ isOpen, onClose }) => {
                   stiffness: 300,
                   damping: 30
                 }}
-                className={`w-1/3 rounded-xl border ${style.border} overflow-hidden`}
+                className="w-full md:w-1/3 rounded-xl border mb-6 md:mb-0 ${style.border} overflow-hidden"
               >
                 <div className={`p-6 bg-gradient-to-br ${style.gradient}`}>
                   <motion.div 
@@ -165,9 +198,9 @@ const RatingModal = ({ isOpen, onClose }) => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -50 }}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50 }}
                 transition={{ 
                   type: "spring",
                   stiffness: 300,
@@ -188,7 +221,7 @@ const RatingModal = ({ isOpen, onClose }) => {
                     {currentCategory.mainPoints.map((point, index) => (
                       <motion.li
                         key={index}
-                        initial={{ opacity: 0, x: 50 }}
+                        initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ 
                           delay: 0.4 + (index * 0.1),
@@ -214,7 +247,7 @@ const RatingModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Footer with animated button */}
+        {/* Footer */}
         <div className="p-6 bg-gray-50 border-t">
           <motion.button
             whileHover={{ scale: 1.02 }}

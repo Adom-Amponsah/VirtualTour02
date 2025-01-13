@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import VirtualTour from '../virtualTour';
@@ -8,6 +8,7 @@ import {
   Star, Share, Heart, ChevronLeft, ChevronRight,
   ThumbsUp, MessageCircle, User, Send, Reply, MoreVertical
 } from 'lucide-react';
+import NeighborhoodModal from './NeighborhoodModal';
 
 const CommentSection = ({ review }) => {
   const [comments, setComments] = useState(review.comments || []);
@@ -515,6 +516,24 @@ const reviews = [
 
 
   const [selectedReview, setSelectedReview] = useState(null);
+  const [showNeighborhoodModal, setShowNeighborhoodModal] = useState(false);
+  const [hasShownModal, setHasShownModal] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const additionalViewsSection = document.getElementById('additional-views');
+      if (additionalViewsSection && !hasShownModal) {
+        const rect = additionalViewsSection.getBoundingClientRect();
+        if (rect.top < window.innerHeight) {
+          setShowNeighborhoodModal(true);
+          setHasShownModal(true);  // Prevent showing again
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [hasShownModal]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -614,6 +633,12 @@ const reviews = [
                   <PhotoGallery images={property.images} />
                 </div> */}
 
+                 {/* Description */}
+                 <div>
+                  <h2 className="text-xl font-semibold mb-2">About this property</h2>
+                  <p className="text-gray-600">{property.description}</p>
+                </div>
+
                 {/* Amenities */}
                 <div>
                   <h2 className="text-xl font-semibold mb-4">Amenities & Features</h2>
@@ -632,14 +657,10 @@ const reviews = [
                   </div>
                 </div>
 
-                {/* Description */}
-                <div>
-                  <h2 className="text-xl font-semibold mb-2">About this property</h2>
-                  <p className="text-gray-600">{property.description}</p>
-                </div>
+               
 
                 {/* Additional Apartment Images */}
-                <div className="mt-10">
+                <div id="additional-views" className="mt-10">
                   <h2 className="text-2xl font-bold mb-6">Additional Views</h2>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-4">
@@ -831,6 +852,11 @@ const reviews = [
         review={selectedReview}
         isOpen={!!selectedReview}
         onClose={() => setSelectedReview(null)}
+      />
+
+      <NeighborhoodModal 
+        isOpen={showNeighborhoodModal}
+        onClose={() => setShowNeighborhoodModal(false)}
       />
     </div>
   );
