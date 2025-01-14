@@ -3,13 +3,122 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Hospital, ShoppingCart, Utensils, Clock, X, MapPin, 
   ChevronRight, Building, Car, School, Bus, Coffee,
-  Dumbbell, ChevronLeft, Shield, AlertTriangle, Users, BookOpen
+  Dumbbell, ChevronLeft, Shield, AlertTriangle, Users, BookOpen,
+  Wifi, Construction, Lightbulb
 } from 'lucide-react';
 
 const NeighborhoodModal = ({ isOpen, onClose }) => {
   const [currentCategory, setCurrentCategory] = useState(0);
 
   const categories = [
+    {
+      title: "Internet Infrastructure",
+      subtitle: "Network Connectivity & Speed",
+      icon: Wifi,
+      color: "text-blue-600",
+      bgColor: "bg-blue-50",
+      gradient: "from-blue-500/20 via-blue-500/10 to-transparent",
+      places: [
+        {
+          name: "Fiber Optic Coverage",
+          distance: "Area-wide",
+          type: "High-Speed Internet",
+          rating: "4.8",
+          status: "Excellent",
+          features: [
+            "🌐 Fiber optic connection available",
+            "📡 Multiple ISP choices (Vodafone, MTN)",
+            "⚡ Average speeds of 100Mbps+",
+            "💻 Reliable for work from home"
+          ]
+        },
+        {
+          name: "Mobile Network",
+          distance: "Area Coverage",
+          type: "Cellular Data",
+          rating: "4.7",
+          status: "Excellent",
+          features: [
+            "📱 Strong 4G/5G coverage",
+            "📶 Excellent signal strength",
+            "🔄 Fast mobile data speeds",
+            "📞 Clear voice calls"
+          ]
+        }
+      ]
+    },
+    {
+      title: "Road Infrastructure",
+      subtitle: "Transportation & Access",
+      icon: Construction,
+      color: "text-amber-600",
+      bgColor: "bg-amber-50",
+      gradient: "from-amber-500/20 via-amber-500/10 to-transparent",
+      places: [
+        {
+          name: "Main Roads",
+          distance: "Immediate Access",
+          type: "Primary Routes",
+          rating: "4.5",
+          status: "Good",
+          features: [
+            "🛣️ Well-maintained paved roads",
+            "🚗 Easy highway access",
+            "🚦 Traffic light system",
+            "🚙 Multiple access routes"
+          ]
+        },
+        {
+          name: "Local Streets",
+          distance: "Neighborhood",
+          type: "Secondary Routes",
+          rating: "4.3",
+          status: "Good",
+          features: [
+            "🛵 Good condition side roads",
+            "🚶‍♂️ Pedestrian friendly",
+            "🔧 Regular maintenance",
+            "🚐 Suitable for all vehicles"
+          ]
+        }
+      ]
+    },
+    {
+      title: "Street Lighting",
+      subtitle: "Night Safety & Visibility",
+      icon: Lightbulb,
+      color: "text-yellow-600",
+      bgColor: "bg-yellow-50",
+      gradient: "from-yellow-500/20 via-yellow-500/10 to-transparent",
+      places: [
+        {
+          name: "Main Streets",
+          distance: "Primary Roads",
+          type: "Public Lighting",
+          rating: "4.2",
+          status: "Good",
+          features: [
+            "💡 Well-lit major roads",
+            "🌙 Regular maintenance",
+            "⚡ LED lighting system",
+            "🚶‍♂️ Safe night walking"
+          ]
+        },
+        {
+          name: "Residential Areas",
+          distance: "Local Streets",
+          type: "Community Lighting",
+          rating: "3.8",
+          status: "Fair",
+          features: [
+            "🏘️ Residential coverage",
+            "🔦 Some areas need improvement",
+            "📅 Upgrade plan in progress",
+            "🏃‍♂️ Evening activity possible"
+          ]
+        }
+      ]
+    },
     {
       title: "Essential Services",
       subtitle: "Healthcare & Emergency",
@@ -251,85 +360,85 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
           ]
         }
       ]
-    },
-    {
-      title: "Future Development",
-      subtitle: "Area Growth & Investment",
-      icon: Building,
-      color: "text-emerald-600",
-      bgColor: "bg-emerald-50",
-      gradient: "from-emerald-500/20 via-emerald-500/10 to-transparent",
-      places: [
-        {
-          name: "Upcoming Projects",
-          type: "Area Development",
-          distance: "Next 2 Years",
-          rating: "Exciting",
-          features: [
-            "🏗️ New shopping complex",
-            "🌳 Public park renovation",
-            "🛣️ Road expansion project",
-            "🏢 Business district development"
-          ]
-        },
-        {
-          name: "Property Value Trend",
-          type: "Investment Potential",
-          distance: "Analysis",
-          rating: "Positive",
-          features: [
-            "📈 15% value increase last year",
-            "💰 High rental demand",
-            "🏘️ Growing neighborhood",
-            "📊 Strong investment outlook"
-          ]
-        }
-      ],
-      alert: {
-        type: "info",
-        message: "This area has shown consistent growth in property values over the past 5 years, with several major development projects planned that could further increase the area's desirability.",
-        recommendations: [
-          "Perfect timing for investment",
-          "Growing rental market",
-          "Infrastructure improvements coming",
-          "Rising property values"
-        ]
-      }
-    },
-    {
-      title: "Community & Lifestyle",
-      subtitle: "Local Culture & Social Life",
-      icon: Users,
-      color: "text-indigo-600",
-      bgColor: "bg-indigo-50",
-      gradient: "from-indigo-500/20 via-indigo-500/10 to-transparent",
-      places: [
-        {
-          name: "Community Demographics",
-          type: "Resident Profile",
-          distance: "Your Neighbors",
-          rating: "4.8",
-          features: [
-            "👨‍👩‍👧👦 Family-friendly neighborhood",
-            "👔 Young professionals",
-            "🎓 University students nearby",
-            "🌍 Diverse international community"
-          ]
-        },
-        {
-          name: "Social Activities",
-          type: "Community Events",
-          distance: "In the Area",
-          rating: "4.7",
-          features: [
-            "🎉 Weekend community markets",
-            "🏃‍♂️ Morning jogging groups",
-            "🎨 Art & culture events",
-            "🍜 Food festivals"
-          ]
-        }
-      ]
     }
+    // {
+    //   title: "Future Development",
+    //   subtitle: "Area Growth & Investment",
+    //   icon: Building,
+    //   color: "text-emerald-600",
+    //   bgColor: "bg-emerald-50",
+    //   gradient: "from-emerald-500/20 via-emerald-500/10 to-transparent",
+    //   places: [
+    //     {
+    //       name: "Upcoming Projects",
+    //       type: "Area Development",
+    //       distance: "Next 2 Years",
+    //       rating: "Exciting",
+    //       features: [
+    //         "🏗️ New shopping complex",
+    //         "🌳 Public park renovation",
+    //         "🛣️ Road expansion project",
+    //         "🏢 Business district development"
+    //       ]
+    //     },
+    //     {
+    //       name: "Property Value Trend",
+    //       type: "Investment Potential",
+    //       distance: "Analysis",
+    //       rating: "Positive",
+    //       features: [
+    //         "📈 15% value increase last year",
+    //         "💰 High rental demand",
+    //         "🏘️ Growing neighborhood",
+    //         "📊 Strong investment outlook"
+    //       ]
+    //     }
+    //   ],
+    //   alert: {
+    //     type: "info",
+    //     message: "This area has shown consistent growth in property values over the past 5 years, with several major development projects planned that could further increase the area's desirability.",
+    //     recommendations: [
+    //       "Perfect timing for investment",
+    //       "Growing rental market",
+    //       "Infrastructure improvements coming",
+    //       "Rising property values"
+    //     ]
+    //   }
+    // },
+    // {
+    //   title: "Community & Lifestyle",
+    //   subtitle: "Local Culture & Social Life",
+    //   icon: Users,
+    //   color: "text-indigo-600",
+    //   bgColor: "bg-indigo-50",
+    //   gradient: "from-indigo-500/20 via-indigo-500/10 to-transparent",
+    //   places: [
+    //     {
+    //       name: "Community Demographics",
+    //       type: "Resident Profile",
+    //       distance: "Your Neighbors",
+    //       rating: "4.8",
+    //       features: [
+    //         "👨‍👩‍👧👦 Family-friendly neighborhood",
+    //         "👔 Young professionals",
+    //         "🎓 University students nearby",
+    //         "🌍 Diverse international community"
+    //       ]
+    //     },
+    //     {
+    //       name: "Social Activities",
+    //       type: "Community Events",
+    //       distance: "In the Area",
+    //       rating: "4.7",
+    //       features: [
+    //         "🎉 Weekend community markets",
+    //         "🏃‍♂️ Morning jogging groups",
+    //         "🎨 Art & culture events",
+    //         "🍜 Food festivals"
+    //       ]
+    //     }
+    //   ]
+    // }
   ];
 
   const handleNext = () => {
@@ -470,22 +579,26 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
                   {category.places.map((place, index) => (
                     <motion.div
                       key={place.name}
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: 50 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="group relative overflow-hidden rounded-xl border border-gray-200 
-                               hover:border-[#0C2340]/20 transition-colors bg-white"
+                      className="flex-1"
                     >
-                      <div className="p-4 md:p-6">
+                      <div className="p-6 rounded-xl border border-gray-200 hover:border-[#0C2340]/20 transition-colors bg-white">
                         <div className="flex justify-between items-start mb-3">
                           <div>
                             <h4 className="text-lg font-semibold text-gray-900">{place.name}</h4>
                             <p className="text-sm text-gray-600">{place.type}</p>
                           </div>
-                          <span className="px-3 py-1 rounded-full text-sm font-medium 
-                                       bg-[#0C2340]/10 text-[#0C2340]">
-                            {place.distance}
-                          </span>
+                          {place.status && (
+                            <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                              place.status === 'excellent' ? 'bg-green-100 text-green-700' :
+                              place.status === 'good' ? 'bg-blue-100 text-blue-700' :
+                              'bg-yellow-100 text-yellow-700'
+                            }`}>
+                              {place.status.charAt(0).toUpperCase() + place.status.slice(1)}
+                            </span>
+                          )}
                         </div>
 
                         {/* Features */}
@@ -498,7 +611,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
                               transition={{ delay: 0.2 + (idx * 0.1) }}
                               className="flex items-center gap-2"
                             >
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#0C2340]" />
                               <span className="text-sm text-gray-600">{feature}</span>
                             </motion.div>
                           ))}
@@ -513,7 +625,7 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
                                 initial={{ opacity: 0, scale: 0 }}
                                 animate={{ opacity: 1, scale: 1 }}
                                 transition={{ delay: 0.3 + (i * 0.1) }}
-                                className="w-4 h-4 text-yellow-400 fill-current"
+                                className={`w-4 h-4 ${i < Math.floor(place.rating) ? 'text-yellow-400' : 'text-gray-300'} fill-current`}
                                 viewBox="0 0 20 20"
                               >
                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />

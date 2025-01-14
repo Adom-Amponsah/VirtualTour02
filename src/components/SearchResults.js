@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { MapPin, Heart, BedDouble, ArrowLeft, ListFilter, ChevronDown, Sliders, Bath, Home, DollarSign, Maximize, ArrowRight, Badge, Square, List, MapIcon } from 'lucide-react';
 import Map from './Map';
-import RatingModal from './RatingModal';
 
 const FilterDropdown = ({ label, icon: Icon, options, value, onChange, prefix = '' }) => {
   return (
@@ -33,7 +32,6 @@ const SearchResults = () => {
   const searchParams = new URLSearchParams(location.search);
   const [showMap, setShowMap] = useState(true);
   const [selectedProperty, setSelectedProperty] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     priceMin: '',
     priceMax: '',
@@ -45,25 +43,13 @@ const SearchResults = () => {
   const [favorites, setFavorites] = useState(new Set());
   const navigate = useNavigate();
   const [viewType, setViewType] = useState('list');
-  const [showRatingModal, setShowRatingModal] = useState(false);
-  const [selectedPropertyRatings, setSelectedPropertyRatings] = useState(null);
-  const [pendingNavigation, setPendingNavigation] = useState(null);
   
   // Get search parameters
   const region = searchParams.get('region');
   const type = searchParams.get('type');
   const minPrice = searchParams.get('minPrice');
   const maxPrice = searchParams.get('maxPrice');
-  const preferences = searchParams.get('preferences') ? JSON.parse(searchParams.get('preferences')) : null;
-
-  useEffect(() => {
-    // Simulate loading time to show the darkened background
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, []);
+  const preferences = searchParams.get('preferences');
 
   // Mock data with coordinates
   const properties = [
@@ -178,24 +164,11 @@ const SearchResults = () => {
 
   // Handle property selection
   const handlePropertySelect = (property) => {
-    // Set the ratings data
-    setSelectedPropertyRatings({
-      internet: property.areaRatings?.internet || 'good',
-      road: property.areaRatings?.road || 'excellent',
-      streetLights: property.areaRatings?.streetLights || 'good'
-    });
-    
-    // Store the pending navigation
-    setPendingNavigation(() => () => {
-      if (property.hasMultipleUnits) {
-        navigate(`/apartment/${property.id}`);
-      } else {
-        navigate(`/apartment/single/${property.id}`);
-      }
-    });
-    
-    // Show the rating modal
-    setShowRatingModal(true);
+    if (property.hasMultipleUnits) {
+      navigate(`/apartment/${property.id}`, { state: { fromPropertyDetails: true } });
+    } else {
+      navigate(`/apartment/single/${property.id}`, { state: { fromPropertyDetails: true } });
+    }
   };
 
   // Add this function to handle filter changes
@@ -262,13 +235,6 @@ const SearchResults = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Darkened overlay while loading */}
-      {isLoading && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="text-white text-xl">Finding your perfect match...</div>
-        </div>
-      )}
-
       <header className="bg-white border-b sticky top-0 z-40">
         <div className="max-w-8xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
@@ -565,16 +531,6 @@ const SearchResults = () => {
           </div>
         </div>
       )}
-
-      <RatingModal
-        isOpen={showRatingModal}
-        onClose={() => {
-          setShowRatingModal(false);
-          // Execute the pending navigation
-          pendingNavigation?.();
-        }}
-        ratings={selectedPropertyRatings}
-      />
     </div>
   );
 };
