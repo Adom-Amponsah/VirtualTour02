@@ -33,6 +33,7 @@ const SearchResults = () => {
   const searchParams = new URLSearchParams(location.search);
   const [showMap, setShowMap] = useState(true);
   const [selectedProperty, setSelectedProperty] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [filters, setFilters] = useState({
     priceMin: '',
     priceMax: '',
@@ -53,6 +54,16 @@ const SearchResults = () => {
   const type = searchParams.get('type');
   const minPrice = searchParams.get('minPrice');
   const maxPrice = searchParams.get('maxPrice');
+  const preferences = searchParams.get('preferences') ? JSON.parse(searchParams.get('preferences')) : null;
+
+  useEffect(() => {
+    // Simulate loading time to show the darkened background
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Mock data with coordinates
   const properties = [
@@ -251,7 +262,14 @@ const SearchResults = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b sticky top-0 z-50">
+      {/* Darkened overlay while loading */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="text-white text-xl">Finding your perfect match...</div>
+        </div>
+      )}
+
+      <header className="bg-white border-b sticky top-0 z-40">
         <div className="max-w-8xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">

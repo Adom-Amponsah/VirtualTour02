@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Search, ChevronDown, MapPin, Menu, X, Home, Building, DollarSign, BookOpen, Heart, BedDouble, ArrowRight } from 'lucide-react';
 import useLocations from '../hooks/useLocations';
 import { motion } from 'framer-motion';
+import PreferencesModal from './PreferencesModal';
 
 const PropertyCard = ({ property, index }) => {
   const [isHovered, setIsHovered] = React.useState(false);
@@ -306,6 +307,7 @@ const HomePage = () => {
   const { locations, loading, error } = useLocations();
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
+  const [showPreferencesModal, setShowPreferencesModal] = useState(false);
 
   const popularPlaces = [
     { id: 1, name: "Accra" },
@@ -364,6 +366,16 @@ const HomePage = () => {
       image: "/images/apart044.jpeg"
     }
   ];
+
+  const handleSearch = () => {
+    setShowPreferencesModal(true);
+  };
+
+  const handlePreferencesComplete = (preferences) => {
+    setShowPreferencesModal(false);
+    // Navigate to search results with preferences
+    navigate(`/search?region=${location}&type=${searchType}&minPrice=${minPrice}&maxPrice=${maxPrice}&preferences=${JSON.stringify(preferences)}`);
+  };
 
   return (
     <div className="min-h-screen">
@@ -573,9 +585,7 @@ const HomePage = () => {
 
               {/* Search Button */}
               <button 
-                onClick={() => {
-                  navigate(`/search?region=${location}&type=${searchType}&minPrice=${minPrice}&maxPrice=${maxPrice}`);
-                }}
+                onClick={handleSearch}
                 className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#0C2340] to-[#1B3B66] 
                            text-white rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
               >
@@ -707,6 +717,13 @@ const HomePage = () => {
           </ScrollAnimatedSection>
         </div>
       </div>
+
+      {/* PreferencesModal */}
+      <PreferencesModal
+        isOpen={showPreferencesModal}
+        onClose={() => setShowPreferencesModal(false)}
+        onComplete={handlePreferencesComplete}
+      />
     </div>
   );
 };
