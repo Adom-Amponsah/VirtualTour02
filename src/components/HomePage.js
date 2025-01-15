@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, ChevronDown, MapPin, Menu, X, Home, Building, DollarSign, BookOpen, Heart, BedDouble, ArrowRight } from 'lucide-react';
 import useLocations from '../hooks/useLocations';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import PreferencesModal from './PreferencesModal';
 
 const PropertyCard = ({ property, index }) => {
@@ -308,6 +308,14 @@ const HomePage = () => {
   const [minPrice, setMinPrice] = useState('');
   const [maxPrice, setMaxPrice] = useState('');
   const [showPreferencesModal, setShowPreferencesModal] = useState(false);
+  const { scrollY } = useScroll();
+
+  // Transform values for parallax and cutout effects
+  const heroScale = useTransform(scrollY, [0, 300], [1, 1.1]);
+  const heroOpacity = useTransform(scrollY, [0, 300], [1, 0.3]);
+  const textY = useTransform(scrollY, [0, 300], [0, -50]);
+  const cutoutScale = useTransform(scrollY, [0, 300], [1, 15]);
+  const cutoutOpacity = useTransform(scrollY, [0, 100, 300], [1, 0.8, 0]);
 
   const popularPlaces = [
     { id: 1, name: "Accra" },
@@ -368,17 +376,43 @@ const HomePage = () => {
   ];
 
   const handleSearch = () => {
+    console.log('Opening preferences modal with:', {
+      searchType,
+      location,
+      minPrice,
+      maxPrice
+    });
+    // Store the current search parameters
+    localStorage.setItem('searchParams', JSON.stringify({
+      searchType,
+      location,
+      minPrice,
+      maxPrice
+    }));
+    // Open the preferences modal
     setShowPreferencesModal(true);
   };
 
   const handlePreferencesComplete = (preferences) => {
+    // Get the stored search parameters
+    const searchParams = JSON.parse(localStorage.getItem('searchParams') || '{}');
     setShowPreferencesModal(false);
-    // Navigate to search results with preferences
-    navigate(`/search?region=${location}&type=${searchType}&minPrice=${minPrice}&maxPrice=${maxPrice}&preferences=${JSON.stringify(preferences)}`);
+    
+    // Construct the search URL with all parameters
+    const searchQuery = new URLSearchParams({
+      region: searchParams.location || '',
+      type: searchParams.searchType || 'Rent',
+      minPrice: searchParams.minPrice || '',
+      maxPrice: searchParams.maxPrice || '',
+      preferences: JSON.stringify(preferences)
+    }).toString();
+
+    // Navigate to search results with all parameters
+    navigate(`/search?${searchQuery}`);
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-white overflow-hidden">
       {/* Navigation - Updated colors */}
       <nav className="bg-[#0C2340] text-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
@@ -459,29 +493,142 @@ const HomePage = () => {
         )}
       </nav>
 
-      {/* Hero Section - Updated gradient */}
-      <div 
-        className="relative min-h-[85vh] bg-cover bg-center flex items-center"
+      {/* Initial Hero Section with House Cutout */}
+      <motion.div className="relative h-screen">
+        {/* Background Image */}
+        <motion.div 
+          className="absolute inset-0 z-0"
+          style={{ scale: heroScale, opacity: heroOpacity }}
+        >
+          <div 
+            className="absolute inset-0 bg-black/40 z-10"
+            style={{ mixBlendMode: 'multiply' }}
+          />
+          <img 
+            src="/images/apart011.jpeg" 
+            alt="Luxury Apartment"
+            className="w-full h-full object-cover"
+          />
+        </motion.div>
+
+        {/* Hero Content with House Cutout */}
+        <motion.div 
+          className="relative z-20 h-full flex flex-col px-6 md:ml-32"
+          style={{ y: textY }}
+        >
+          {/* Hero Text */}
+          <motion.div 
+            className="mt-32"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <h1 className="text-4xl sm:text-6xl md:text-8xl font-bold text-white mb-6 leading-tight">
+              CHANGE THE WAY
+              <br />
+              YOU LIVE
+            </h1>
+            <p className="text-lg sm:text-xl text-white/90">
+              For those who want more from their home search,
+              <br className="hidden sm:block" />
+              there's ApartmentGhana. Find your perfect match.
+            </p>
+          </motion.div>
+
+          {/* House Cutout at Bottom */}
+          <motion.div
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 sm:w-96 md:w-128 h-64 sm:h-96 md:h-128"
+            style={{ 
+              scale: cutoutScale,
+              opacity: cutoutOpacity,
+            }}
+          >
+            <svg
+              viewBox="0 0 100 100"
+              className="w-full h-full"
+              style={{ 
+                stroke: 'white',
+                strokeWidth: '2',
+                fill: 'none'
+              }}
+            >
+              <path d="M20,50 L50,20 L80,50 L80,85 L20,85 L20,50 Z" />
+              <path d="M45,85 L45,65 L55,65 L55,85" />
+            </svg>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+
+      {/* Search Section with Scroll Animation */}
+      <motion.div 
+        className="relative min-h-[85vh] bg-cover bg-center flex items-center z-30"
+        initial={{ y: 100, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ 
+          once: true,
+          amount: 0.3,
+          margin: "-100px"
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 50,
+          damping: 20,
+          duration: 0.8
+        }}
         style={{ 
           backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/coverrr.jpeg)'
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 w-full">
+        <div className="max-w-7xl mx-auto px-4 w-full relative z-40">
           {/* Hero Text */}
-          <div className="max-w-3xl mx-auto text-center mb-12 animate-fade-in">
-            <h1 className="text-5xl md:text-6xl text-white font-bold mb-6">
+          <motion.div 
+            className="max-w-3xl mx-auto text-center mb-8 sm:mb-12"
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            <h1 className="text-3xl sm:text-5xl md:text-6xl text-white font-bold mb-4 sm:mb-6">
               Find Your Perfect Home in Ghana
             </h1>
-            <p className="text-xl text-gray-200">
+            <p className="text-base sm:text-xl text-gray-200">
               The easiest way to rent, buy & now <span className="text-[#ff4444]">sell</span> properties
             </p>
-          </div>
+          </motion.div>
 
-          {/* Search Interface - Compact Single Line */}
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-2 max-w-5xl mx-auto animate-slide-up">
-            <div className="flex items-center">
-              {/* Search Type Toggle */}
-              <div className="hidden md:flex items-center border-r border-gray-200 px-4">
+          {/* Search Interface - Mobile Friendly */}
+          <motion.div 
+            className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-2 sm:p-4 max-w-5xl mx-auto"
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+          >
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-2 items-stretch sm:items-center">
+              {/* Search Type Toggle - Mobile Friendly */}
+              <div className="sm:hidden flex justify-center mb-2">
+                <div className="flex space-x-1 bg-gray-300 p-1 rounded-lg">
+                  {['Rent', 'Buy'].map((type) => (
+                    <div
+                      key={type}
+                      onClick={() => setSearchType(type)}
+                      className={`
+                        flex-1 px-8 py-2 rounded-md cursor-pointer text-sm font-medium text-center
+                        transition-all duration-200 ease-in-out select-none
+                        ${searchType === type 
+                          ? 'bg-white shadow-sm text-[#0C2340]' 
+                          : 'text-gray-500 hover:text-gray-700'
+                        }
+                      `}
+                    >
+                      {type}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Desktop Search Type Toggle */}
+              <div className="hidden sm:flex items-center border-r border-gray-200 px-4">
                 <div className="flex space-x-1 bg-gray-300 p-1 rounded-lg">
                   {['Rent', 'Buy'].map((type) => (
                     <div
@@ -502,8 +649,8 @@ const HomePage = () => {
                 </div>
               </div>
 
-              {/* Location Dropdown */}
-              {/* <div className="flex-1 relative group px-2">
+              {/* Location Dropdown - Mobile Friendly */}
+              <div className="flex-1 relative group">
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 text-gray-400 absolute left-4" />
                   <select
@@ -511,13 +658,13 @@ const HomePage = () => {
                     onChange={(e) => setLocation(e.target.value)}
                     className="w-full pl-10 pr-8 py-3 appearance-none bg-transparent focus:outline-none text-sm"
                   >
-                    <option value="">Region in Ghana</option>
+                    <option value="">Popular Places in Ghana</option>
                     {loading ? (
                       <option disabled>Loading...</option>
                     ) : (
-                      locations.map((loc) => (
-                        <option key={loc.state_name} value={loc.state_name}>
-                          {loc.state_name}
+                      popularPlaces.map((place) => (
+                        <option key={place.id} value={place.name}>
+                          {place.name}
                         </option>
                       ))
                     )}
@@ -525,33 +672,40 @@ const HomePage = () => {
                   <ChevronDown className="h-4 w-4 text-gray-400 absolute right-4" />
                 </div>
                 <div className="absolute bottom-0 left-2 right-2 h-px bg-gray-200 group-hover:bg-[#0C2340] transition-colors" />
-              </div> */}
-              <div className="flex-1 relative group px-2">
-  <div className="flex items-center">
-    <MapPin className="h-4 w-4 text-gray-400 absolute left-4" />
-    <select
-      value={location}
-      onChange={(e) => setLocation(e.target.value)}
-      className="w-full pl-10 pr-8 py-3 appearance-none bg-transparent focus:outline-none text-sm"
-    >
-      <option value="">Popular Places in Ghana</option>
-      {loading ? (
-        <option disabled>Loading...</option>
-      ) : (
-        popularPlaces.map((place) => (
-          <option key={place.id} value={place.name}>
-            {place.name}
-          </option>
-        ))
-      )}
-    </select>
-    <ChevronDown className="h-4 w-4 text-gray-400 absolute right-4" />
-  </div>
-  <div className="absolute bottom-0 left-2 right-2 h-px bg-gray-200 group-hover:bg-[#0C2340] transition-colors" />
-</div>
+              </div>
 
-              {/* Price Range */}
-              <div className="hidden md:flex items-center space-x-2 px-4 border-l border-gray-200">
+              {/* Price Range - Mobile Friendly */}
+              <div className="flex sm:hidden flex-col gap-2">
+                <div className="relative group">
+                  <select 
+                    value={minPrice}
+                    onChange={(e) => setMinPrice(e.target.value)}
+                    className="w-full appearance-none bg-transparent pl-3 pr-8 py-3 focus:outline-none text-sm border-b"
+                  >
+                    <option value="">Min Price</option>
+                    {[1000, 2000, 3000, 5000, 10000].map((price) => (
+                      <option key={price} value={price}>₵{price.toLocaleString()}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="h-4 w-4 text-gray-400 absolute right-2 top-1/2 -translate-y-1/2" />
+                </div>
+                <div className="relative group">
+                  <select 
+                    value={maxPrice}
+                    onChange={(e) => setMaxPrice(e.target.value)}
+                    className="w-full appearance-none bg-transparent pl-3 pr-8 py-3 focus:outline-none text-sm border-b"
+                  >
+                    <option value="">Max Price</option>
+                    {[2000, 5000, 10000, 20000, 50000].map((price) => (
+                      <option key={price} value={price}>₵{price.toLocaleString()}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="h-4 w-4 text-gray-400 absolute right-2 top-1/2 -translate-y-1/2" />
+                </div>
+              </div>
+
+              {/* Desktop Price Range */}
+              <div className="hidden sm:flex items-center space-x-2 px-4 border-l border-gray-200">
                 <div className="relative group">
                   <select 
                     value={minPrice}
@@ -583,30 +737,36 @@ const HomePage = () => {
                 </div>
               </div>
 
-              {/* Search Button */}
+              {/* Search Button - Mobile Friendly */}
               <button 
                 onClick={handleSearch}
-                className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#0C2340] to-[#1B3B66] 
-                           text-white rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
+                className="w-full sm:w-auto flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#0C2340] to-[#1B3B66] 
+                         text-white rounded-xl hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200"
               >
                 <Search className="w-4 h-4" />
-                <span className="ml-2 font-medium text-sm hidden md:block">Search</span>
+                <span className="ml-2 font-medium text-sm">Search</span>
               </button>
             </div>
-          </div>
+          </motion.div>
 
-          {/* Quick Stats */}
-          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-center text-white">
+          {/* Quick Stats - Mobile Friendly */}
+          <motion.div 
+            className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-center text-white relative z-40"
+            initial={{ y: 50, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+          >
             <QuickStat number="2,500+" label="Available Properties" />
             <QuickStat number="500+" label="Verified Agents" />
             <QuickStat number="10,000+" label="Happy Customers" />
             <QuickStat number="15+" label="Cities Covered" />
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Fair Housing Notice */}
-      <div className="bg-[#0C2340] text-white py-4 text-center">
+      <div className="bg-[#0C2340] text-white py-4 text-center relative z-30">
         <div className="max-w-7xl mx-auto px-4">
           <span className="font-semibold">Fair Housing in Ghana:</span>{' '}
           <button className="underline hover:text-gray-300 transition-colors">
