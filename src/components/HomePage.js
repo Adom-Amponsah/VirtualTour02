@@ -579,9 +579,12 @@ const HomePage = () => {
           duration: 0.8
         }}
         style={{ 
-          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/images/coverrr.jpeg)'
+          backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/images/coverrr.jpeg)'
         }}
       >
+        {/* Additional dark overlay */}
+        <div className="absolute inset-0 bg-black/50 z-10" />
+        
         <div className="max-w-7xl mx-auto px-4 w-full relative z-40">
           {/* Hero Text */}
           <motion.div 
