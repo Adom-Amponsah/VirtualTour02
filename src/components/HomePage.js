@@ -564,19 +564,19 @@ const HomePage = () => {
 
       {/* Search Section with Scroll Animation */}
       <motion.div 
-        className="relative min-h-[85vh] bg-cover bg-center flex items-center z-30"
+        className="relative min-h-[85vh] bg-cover bg-center flex items-center"
         initial={{ y: 100, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ 
           once: true,
-          amount: 0.3,
-          margin: "-100px"
+          amount: 0.1,
+          margin: "-200px"
         }}
         transition={{
           type: "spring",
           stiffness: 50,
           damping: 20,
-          duration: 0.8
+          duration: 0.6
         }}
         style={{ 
           backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/images/coverrr.jpeg)'
@@ -772,7 +772,7 @@ const HomePage = () => {
       </motion.div>
 
       {/* Fair Housing Notice */}
-      <div className="bg-[#0C2340] text-white py-4 text-center relative z-30">
+      <div className="bg-[#0C2340] text-white py-4 text-center">
         <div className="max-w-7xl mx-auto px-4">
           <span className="font-semibold">Fair Housing in Ghana:</span>{' '}
           <button className="underline hover:text-gray-300 transition-colors">
@@ -782,7 +782,7 @@ const HomePage = () => {
       </div>
 
       {/* Available Rentals Section */}
-      <div className="py-16 bg-white">
+      <div className="py-16 bg-white relative z-40">
         <div className="max-w-7xl mx-auto px-4">
           <AnimatedSection>
             <div className="text-center mb-12">
@@ -795,21 +795,28 @@ const HomePage = () => {
             </div>
           </AnimatedSection>
 
-          {/* Wrap the location cards section with ScrollAnimatedSection */}
+          {/* Location Cards with Horizontal Scroll */}
           <ScrollAnimatedSection className="relative">
             <div className="overflow-x-auto scrollbar-hide">
-              <div className="flex gap-6 pb-8">
+              <motion.div 
+                className="flex gap-6 pb-8 relative"
+                drag="x"
+                dragConstraints={{ right: 0, left: -1600 }}
+                whileTap={{ cursor: "grabbing" }}
+                style={{ cursor: "grab" }}
+              >
                 {Array.from({ length: Math.ceil(locationAreas.length / 3) }).map((_, groupIndex) => (
                   <motion.div
                     key={groupIndex}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ opacity: 0, x: 50 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, margin: "-100px" }}
                     transition={{
                       duration: 0.5,
-                      delay: groupIndex * 0.3,
+                      delay: groupIndex * 0.2,
                       ease: "easeOut"
                     }}
-                    className="flex gap-6"
+                    className="flex-shrink-0 flex gap-6"
                   >
                     {/* Full height card */}
                     <div 
@@ -878,7 +885,7 @@ const HomePage = () => {
                     </div>
                   </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </ScrollAnimatedSection>
         </div>
