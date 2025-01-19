@@ -565,18 +565,15 @@ const HomePage = () => {
       {/* Search Section with Scroll Animation */}
       <motion.div 
         className="relative min-h-[85vh] bg-cover bg-center flex items-center"
-        initial={{ y: 100, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
         viewport={{ 
           once: true,
-          amount: 0.1,
-          margin: "-200px"
+          amount: 0.05,
+          margin: "-50px"
         }}
         transition={{
-          type: "spring",
-          stiffness: 50,
-          damping: 20,
-          duration: 0.6
+          duration: 0.4
         }}
         style={{ 
           backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/images/coverrr.jpeg)'
@@ -589,10 +586,10 @@ const HomePage = () => {
           {/* Hero Text */}
           <motion.div 
             className="max-w-3xl mx-auto text-center mb-8 sm:mb-12"
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2, duration: 0.6 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ delay: 0.1, duration: 0.4 }}
           >
             <h1 className="text-3xl sm:text-5xl md:text-6xl text-white font-bold mb-4 sm:mb-6">
               Find Your Perfect Home in Ghana
