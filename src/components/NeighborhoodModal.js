@@ -470,7 +470,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
         className="relative w-full h-full md:h-auto md:max-h-[90vh] md:max-w-4xl bg-white 
                   md:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
       >
-        {/* Progress Bar */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gray-100 z-10">
           <motion.div
             initial={{ width: "0%" }}
@@ -479,10 +478,8 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
           />
         </div>
 
-        {/* Header */}
         <div className="p-6 md:p-8 bg-gradient-to-br from-[#0C2340] to-[#1B3B66] shrink-0">
           <div className="flex justify-between items-center">
-            {/* Back button on the left */}
             <div>
               {currentCategory > 0 && (
                 <motion.button
@@ -496,7 +493,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Title in center */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -510,7 +506,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
               </p>
             </motion.div>
 
-            {/* Close button on the right */}
             <button 
               onClick={onClose}
               className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
@@ -520,7 +515,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto">
           <div className="p-4 md:p-8">
             <AnimatePresence mode="wait">
@@ -531,7 +525,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
                 exit={{ opacity: 0, y: -20 }}
                 className="space-y-6"
               >
-                {/* Category Header Card */}
                 <motion.div 
                   className={`p-6 rounded-xl bg-gradient-to-r ${category.gradient} 
                             border border-${category.color}/10`}
@@ -547,7 +540,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
                   </div>
                 </motion.div>
 
-                {/* Places List - Changed from grid to stack on mobile */}
                 <div className="space-y-4 md:grid md:grid-cols-2 md:gap-4 md:space-y-0">
                   {category.alert && (
                     <motion.div
@@ -601,7 +593,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
                           )}
                         </div>
 
-                        {/* Features */}
                         <div className="mt-3 space-y-2">
                           {place.features.map((feature, idx) => (
                             <motion.div
@@ -616,7 +607,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
                           ))}
                         </div>
 
-                        {/* Rating */}
                         <div className="mt-3 flex items-center gap-1">
                           <div className="flex items-center">
                             {[...Array(5)].map((_, i) => (
@@ -643,7 +633,6 @@ const NeighborhoodModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Footer - Fixed at bottom on mobile */}
         <div className="p-4 md:p-6 bg-gray-50 border-t mt-auto">
           <motion.button
             whileHover={{ scale: 1.02 }}

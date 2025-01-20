@@ -292,7 +292,6 @@ const ScrollAnimatedSection = ({ children, className = '' }) => {
 
   return (
     <div ref={sectionRef} className={className}>
-      {/* Only render children when section is visible */}
       {isVisible && children}
     </div>
   );
@@ -815,7 +814,6 @@ const HomePage = () => {
                     }}
                     className="flex-shrink-0 flex gap-6"
                   >
-                    {/* Full height card */}
                     <div 
                       className="relative rounded-2xl overflow-hidden cursor-pointer w-[300px] h-[600px] group"
                       onClick={() => navigate(`/search?region=${locationAreas[groupIndex * 3]?.name}`)}
@@ -888,7 +886,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* PreferencesModal */}
       <PreferencesModal
         isOpen={showPreferencesModal}
         onClose={() => setShowPreferencesModal(false)}

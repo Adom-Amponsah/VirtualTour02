@@ -90,6 +90,11 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
   const handleNext = () => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(prev => prev + 1);
+      // Scroll the content div to the top
+      const contentDiv = document.querySelector('.preferences-modal-content');
+      if (contentDiv) {
+        contentDiv.scrollTop = 0;
+      }
     } else {
       // Show loading overlay
       setShowLoadingOverlay(true);
@@ -105,6 +110,11 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
+      // Scroll the content div to the top
+      const contentDiv = document.querySelector('.preferences-modal-content');
+      if (contentDiv) {
+        contentDiv.scrollTop = 0;
+      }
     }
   };
 
@@ -152,7 +162,7 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
           />
         </div>
 
-        {/* Header - Fixed */}
+        {/* Header*/}
         <div className="sticky top-0 z-20 bg-gradient-to-br from-[#0C2340] to-[#1B3B66] p-4 md:p-6">
           <div className="flex justify-between items-center">
             <div>
@@ -189,7 +199,7 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
         </div>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto overscroll-contain">
+        <div className="flex-1 overflow-y-auto overscroll-contain preferences-modal-content">
           <div className="p-4 md:p-6">
             <AnimatePresence mode="wait">
               <motion.div
@@ -287,7 +297,7 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
           </div>
         </div>
 
-        {/* Footer - Fixed */}
+        {/* Footer */}
         <div className="sticky bottom-0 p-4 md:p-6 bg-gray-50 border-t mt-auto">
           <motion.button
             whileHover={{ scale: 1.02 }}

@@ -12,10 +12,9 @@ const Map = ({ properties, selectedProperty, onPropertySelect }) => {
     width: "100%"
   };
 
-  // Center map on Ghana or selected property
   const center = selectedProperty 
     ? { lat: selectedProperty.coordinates[0], lng: selectedProperty.coordinates[1] }
-    : { lat: 5.6037, lng: -0.1870 }; // Ghana default center
+    : { lat: 5.6037, lng: -0.1870 }; 
 
   if (loadError) {
     return (
