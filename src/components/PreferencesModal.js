@@ -90,16 +90,13 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
   const handleNext = () => {
     if (currentStep < questions.length - 1) {
       setCurrentStep(prev => prev + 1);
-      // Scroll the content div to the top
       const contentDiv = document.querySelector('.preferences-modal-content');
       if (contentDiv) {
         contentDiv.scrollTop = 0;
       }
     } else {
-      // Show loading overlay
       setShowLoadingOverlay(true);
       
-      // Wait 3 seconds before completing
       setTimeout(() => {
         setShowLoadingOverlay(false);
         onComplete(preferences);
@@ -110,7 +107,6 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep(prev => prev - 1);
-      // Scroll the content div to the top
       const contentDiv = document.querySelector('.preferences-modal-content');
       if (contentDiv) {
         contentDiv.scrollTop = 0;
@@ -125,10 +121,8 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center md:p-4">
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
       
-      {/* Loading Overlay */}
       {showLoadingOverlay && (
         <motion.div 
           initial={{ opacity: 0 }}
@@ -145,7 +139,6 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
         </motion.div>
       )}
 
-      {/* Modal Container */}
       <motion.div 
         initial={{ opacity: 0, y: '100%' }}
         animate={{ opacity: 1, y: 0 }}
@@ -153,7 +146,6 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
         className="relative w-full h-full md:h-auto md:max-h-[90vh] md:max-w-3xl bg-white 
                   md:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
       >
-        {/* Progress Bar */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-gray-100">
           <motion.div
             initial={{ width: "0%" }}
@@ -162,8 +154,7 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
           />
         </div>
 
-        {/* Header*/}
-        <div className="sticky top-0 z-20 bg-gradient-to-br from-[#0C2340] to-[#1B3B66] p-4 md:p-6">
+=        <div className="sticky top-0 z-20 bg-gradient-to-br from-[#0C2340] to-[#1B3B66] p-4 md:p-6">
           <div className="flex justify-between items-center">
             <div>
               {currentStep > 0 && (
@@ -198,7 +189,6 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
           </div>
         </div>
 
-        {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto overscroll-contain preferences-modal-content">
           <div className="p-4 md:p-6">
             <AnimatePresence mode="wait">
@@ -209,7 +199,6 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
                 exit={{ opacity: 0, y: -20 }}
                 className="space-y-6"
               >
-                {/* Question Card */}
                 <motion.div 
                   className={`p-4 md:p-6 rounded-xl bg-gradient-to-r ${style.gradient} 
                             border ${style.border}`}
@@ -225,7 +214,6 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
                   </div>
                 </motion.div>
 
-                {/* Options */}
                 <div className="space-y-4">
                   {currentQuestion.options.map((option, index) => {
                     const selectedImportance = preferences[currentQuestion.id]?.[option.value];
@@ -297,7 +285,6 @@ const PreferencesModal = ({ isOpen, onClose, onComplete }) => {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="sticky bottom-0 p-4 md:p-6 bg-gray-50 border-t mt-auto">
           <motion.button
             whileHover={{ scale: 1.02 }}

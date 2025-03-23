@@ -188,20 +188,17 @@ const ApartmentList = () => {
   ];
 
   const handleApartmentClick = (listingId) => {
-    // Scroll to top before navigation
     window.scrollTo(0, 0);
     navigate(`/apartment/${listingId}`);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${
         scrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm' : 'bg-white'
       }`}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            {/* Logo */}
             <div className="flex items-center space-x-8">
               <motion.div 
                 className="text-xl font-bold text-primary"
@@ -214,7 +211,6 @@ const ApartmentList = () => {
               </motion.div>
             </div>
 
-            {/* Search Bar */}
             <motion.div 
               className="flex-1 max-w-2xl mx-8"
               initial={{ opacity: 0, y: -20 }}
@@ -240,7 +236,6 @@ const ApartmentList = () => {
               </div>
             </motion.div>
 
-            {/* User Actions */}
             <div className="flex items-center space-x-4">
               <Button variant="outline" className="hidden lg:flex">
                 List Property
@@ -258,7 +253,6 @@ const ApartmentList = () => {
         </div>
       </nav>
 
-      {/* Filter Bar */}
       <div className="pt-24 pb-4 px-4 bg-white border-b">
         <div className="max-w-7xl mx-auto">
           <motion.div 
@@ -286,7 +280,6 @@ const ApartmentList = () => {
         </div>
       </div>
 
-      {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 py-8">
         <motion.div 
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"

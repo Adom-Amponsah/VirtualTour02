@@ -103,10 +103,8 @@ const RatingModal = ({ isOpen, onClose }) => {
         animate={{ opacity: 1, scale: 1 }}
         className="relative w-full max-w-3xl bg-white rounded-2xl shadow-2xl overflow-hidden"
       >
-        {/* Header */}
         <div className="p-6 bg-gradient-to-br from-[#0C2340] to-[#1B3B66]">
           <div className="flex justify-between items-center">
-            {/* Back button on the left */}
             <div>
               {currentStep > 0 && (
                 <motion.button
@@ -120,7 +118,6 @@ const RatingModal = ({ isOpen, onClose }) => {
               )}
             </div>
 
-            {/* Title in center */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -132,7 +129,6 @@ const RatingModal = ({ isOpen, onClose }) => {
               </p>
             </motion.div>
 
-            {/* Close button on the right */}
             <button 
               onClick={onClose}
               className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors"
@@ -144,7 +140,6 @@ const RatingModal = ({ isOpen, onClose }) => {
 
         <div className="p-4 md:p-8">
           <div className="flex flex-col md:flex-row md:gap-8">
-            {/* Rating Card with enhanced animations */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -194,7 +189,6 @@ const RatingModal = ({ isOpen, onClose }) => {
               </motion.div>
             </AnimatePresence>
 
-            {/* Description with enhanced animations */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentStep}
@@ -247,7 +241,6 @@ const RatingModal = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="p-6 bg-gray-50 border-t">
           <motion.button
             whileHover={{ scale: 1.02 }}

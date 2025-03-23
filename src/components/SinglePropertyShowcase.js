@@ -21,7 +21,7 @@ const CommentSection = ({ review }) => {
 
     const comment = {
       id: Date.now(),
-      user: "Current User", // Replace with actual user data
+      user: "Current User", 
       content: newComment,
       timestamp: new Date().toISOString(),
       likes: 0,
@@ -54,7 +54,6 @@ const CommentSection = ({ review }) => {
 
   return (
     <div className="mt-6">
-      {/* Comment Input */}
       <form onSubmit={handleAddComment} className="flex gap-2 mb-6">
         <div className="w-10 h-10 rounded-full bg-[#0C2340]/10 flex items-center justify-center flex-shrink-0">
           <User className="w-5 h-5 text-[#0C2340]" />
@@ -76,7 +75,6 @@ const CommentSection = ({ review }) => {
         </div>
       </form>
 
-      {/* Sort Options */}
       <div className="flex justify-between items-center mb-4">
         <span className="text-sm text-gray-500">{comments.length} comments</span>
         <select 
@@ -89,7 +87,6 @@ const CommentSection = ({ review }) => {
         </select>
       </div>
 
-      {/* Comments List */}
       <div className="space-y-4">
         {sortedComments.map(comment => (
           <div key={comment.id} className="flex gap-3">
@@ -143,7 +140,6 @@ const ReviewModal = ({ review, isOpen, onClose }) => {
           className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         >
           <div className="p-6">
-            {/* User Info - Updated with Avatar Icon */}
             <div className="flex items-center gap-4 mb-6">
               <div className="w-16 h-16 rounded-full bg-[#0C2340]/10 flex items-center justify-center">
                 <User className="w-8 h-8 text-[#0C2340]" />
@@ -154,12 +150,10 @@ const ReviewModal = ({ review, isOpen, onClose }) => {
               </div>
             </div>
 
-            {/* Full Review Content */}
             <p className="text-gray-700 text-lg leading-relaxed mb-6">
               {review.fullContent}
             </p>
 
-            {/* Engagement Stats */}
             <div className="flex items-center gap-4 text-gray-500 text-sm">
               <div className="flex items-center gap-2">
                 <ThumbsUp className="w-4 h-4" />
@@ -172,7 +166,6 @@ const ReviewModal = ({ review, isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Add Comment Section */}
           <div className="border-t">
             <div className="p-6">
               <CommentSection review={review} />
@@ -195,14 +188,14 @@ const ReviewModal = ({ review, isOpen, onClose }) => {
 };
 
 const gradientColors = [
-  'from-[#0C2340] to-[#183A66]',  // Navy Blue
-  'from-[#2E7D32] to-[#43A047]',  // Green
-  'from-[#C62828] to-[#E53935]',  // Red
-  'from-[#F9A825] to-[#FBC02D]',  // Yellow
-  'from-[#6A1B9A] to-[#8E24AA]',  // Purple
-  'from-[#00838F] to-[#00ACC1]',  // Teal
-  'from-[#D84315] to-[#F4511E]',  // Orange
-  'from-[#1565C0] to-[#1E88E5]'   // Royal Blue
+  'from-[#0C2340] to-[#183A66]',  
+  'from-[#2E7D32] to-[#43A047]',  
+  'from-[#C62828] to-[#E53935]', 
+  'from-[#F9A825] to-[#FBC02D]', 
+  'from-[#6A1B9A] to-[#8E24AA]',  
+  'from-[#00838F] to-[#00ACC1]',  
+  'from-[#D84315] to-[#F4511E]',  
+  'from-[#1565C0] to-[#1E88E5]'   
 ];
 
 const styles = {
@@ -237,7 +230,6 @@ const ReviewCard = ({ review, onViewMore, index }) => {
                   w-[240px] h-[320px] flex flex-col justify-between 
                   shadow-lg hover:shadow-xl transition-all duration-300`}
     >
-      {/* User Info */}
       <div>
         <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center">
@@ -249,13 +241,11 @@ const ReviewCard = ({ review, onViewMore, index }) => {
           </div>
         </div>
 
-        {/* Review Preview - Made larger */}
         <p className="text-white/90 text-lg leading-relaxed mb-6 line-clamp-6">
           {review.content}
         </p>
       </div>
 
-      {/* Actions - Moved to bottom */}
       <div className="flex items-center justify-between mt-auto">
         <button
           onClick={handleLike}
@@ -301,7 +291,6 @@ const SinglePropertyShowcase = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Mock data - replace with your actual data fetching logic
   const property = {
     id,
     title: "Luxury Villa in Cantonments",
@@ -362,7 +351,6 @@ const SinglePropertyShowcase = () => {
 
     return (
       <div className="relative bg-gray-900">
-        {/* Main Image */}
         <div className="relative h-[60vh]">
           <img
             src={images[currentImageIndex].src}
@@ -370,7 +358,6 @@ const SinglePropertyShowcase = () => {
             className="w-full h-full object-cover"
           />
 
-          {/* Navigation Arrows */}
           <button
             onClick={previousImage}
             className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
@@ -385,7 +372,6 @@ const SinglePropertyShowcase = () => {
           </button>
         </div>
 
-        {/* Thumbnail Strip */}
         <div className="bg-gray-900 p-4">
           <div className="flex gap-2 overflow-x-auto max-w-7xl mx-auto">
             {images.map((image, index) => (
@@ -526,7 +512,7 @@ const reviews = [
         const rect = additionalViewsSection.getBoundingClientRect();
         if (rect.top < window.innerHeight) {
           setShowNeighborhoodModal(true);
-          setHasShownModal(true);  // Prevent showing again
+          setHasShownModal(true); 
         }
       }
     };
@@ -537,7 +523,6 @@ const reviews = [
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <header className="bg-white border-b sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
@@ -549,7 +534,6 @@ const reviews = [
               Back to Search
             </button>
 
-            {/* Action Buttons */}
             <div className="flex items-center gap-4">
               <button className="p-2 hover:bg-gray-100 rounded-full">
                 <Share className="w-5 h-5 text-gray-600" />
@@ -562,7 +546,6 @@ const reviews = [
         </div>
       </header>
 
-      {/* Virtual Tour Section */}
       <div className="relative h-[70vh]">
         <VirtualTour scenes={property.scenes} />
         <div className="absolute top-4 left-4 z-10">
@@ -572,20 +555,11 @@ const reviews = [
         </div>
       </div>
 
-      {/* Photo Gallery */}
-      {/* <div className="mb-8">
-        <PhotoGallery images={property.images} />
-      </div> */}
-
-      {/* Property Details */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="p-8">
-            {/* Split into two columns */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Left Column - Property Info */}
               <div className="space-y-8">
-                {/* Title and Location */}
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900 mb-2">
                     {property.title}
@@ -596,7 +570,6 @@ const reviews = [
                   </div>
                 </div>
 
-                {/* Price Section */}
                 <div>
                   <div className="text-3xl font-bold text-[#0C2340]">
                     ₵{property.price.toLocaleString()}
@@ -612,7 +585,6 @@ const reviews = [
                   </div>
                 </div>
 
-                {/* Property Features */}
                 <div className="flex items-center gap-6">
                   <div className="flex items-center gap-2">
                     <BedDouble className="w-5 h-5 text-[#0C2340]" />
@@ -628,18 +600,11 @@ const reviews = [
                   </div>
                 </div>
 
-                {/* Photo Gallery moved here
-                <div className="mt-8">
-                  <PhotoGallery images={property.images} />
-                </div> */}
-
-                 {/* Description */}
                  <div>
                   <h2 className="text-xl font-semibold mb-2">About this property</h2>
                   <p className="text-gray-600">{property.description}</p>
                 </div>
 
-                {/* Amenities */}
                 <div>
                   <h2 className="text-xl font-semibold mb-4">Amenities & Features</h2>
                   <div className="grid grid-cols-2 gap-4">
@@ -659,12 +624,10 @@ const reviews = [
 
                
 
-                {/* Additional Apartment Images */}
                 <div id="additional-views" className="mt-10">
                   <h2 className="text-2xl font-bold mb-6">Additional Views</h2>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-4">
-                      {/* Large image on the left */}
                       <div className="aspect-[4/3] rounded-xl overflow-hidden">
                         <img
                           src="/images/add011.jpeg"
@@ -672,7 +635,6 @@ const reviews = [
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                         />
                       </div>
-                      {/* Two smaller images below */}
                       <div className="grid grid-cols-2 gap-4">
                         <div className="aspect-square rounded-xl overflow-hidden">
                           <img
@@ -692,7 +654,6 @@ const reviews = [
                     </div>
 
                     <div className="space-y-4">
-                      {/* Two smaller images on top */}
                       <div className="grid grid-cols-2 gap-4">
                         <div className="aspect-square rounded-xl overflow-hidden">
                           <img
@@ -709,7 +670,6 @@ const reviews = [
                           />
                         </div>
                       </div>
-                      {/* Large image below */}
                       <div className="aspect-[4/3] rounded-xl overflow-hidden">
                         <img
                           src="/images/app055.jpeg"
@@ -727,7 +687,6 @@ const reviews = [
 
 
 
-              {/* Right Column - Request Tour Form */}
               <div className="bg-white rounded-2xl shadow-lg p-6 h-[620px]">
                 <h2 className="text-xl font-semibold mb-4">Request a Tour</h2>
                 <form className="space-y-4">
@@ -829,7 +788,6 @@ const reviews = [
             ))}
           </div>
           
-          {/* Scroll Arrows */}
           <ScrollArrow 
             direction="left" 
             onClick={() => {
@@ -847,7 +805,6 @@ const reviews = [
         </div>
       </div>
 
-      {/* Review Modal */}
       <ReviewModal
         review={selectedReview}
         isOpen={!!selectedReview}

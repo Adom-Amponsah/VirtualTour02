@@ -44,14 +44,12 @@ const SearchResults = () => {
   const navigate = useNavigate();
   const [viewType, setViewType] = useState('list');
   
-  // Get search parameters
   const region = searchParams.get('region');
   const type = searchParams.get('type');
   const minPrice = searchParams.get('minPrice');
   const maxPrice = searchParams.get('maxPrice');
   const preferences = searchParams.get('preferences');
 
-  // Mock data with coordinates
   const properties = [
     {
       id: 1,
@@ -105,7 +103,7 @@ const SearchResults = () => {
         baths: "1 Bath",
         sqft: "800 sqft",
         image: "/images/apart055.jpeg",
-        coordinates: [5.5500, -0.1833] // Latitude, Longitude for Osu
+        coordinates: [5.5500, -0.1833] 
       },
       {
         id: 5,
@@ -147,7 +145,7 @@ const SearchResults = () => {
         baths: "1 Bath",
         sqft: "800 sqft",
         image: "/images/apart044.jpeg",
-        coordinates: [5.5500, -0.1833] // Latitude, Longitude for Osu
+        coordinates: [5.5500, -0.1833] 
       },
       {
           id: 8,
@@ -158,11 +156,10 @@ const SearchResults = () => {
           baths: "1 Bath",
           sqft: "800 sqft",
           image: "/images/apart055.jpeg",
-          coordinates: [5.5500, -0.1833] // Latitude, Longitude for Osu
+          coordinates: [5.5500, -0.1833] 
         },
   ];
 
-  // Handle property selection
   const handlePropertySelect = (property) => {
     if (property.hasMultipleUnits) {
       navigate(`/apartment/${property.id}`, { state: { fromPropertyDetails: true } });
@@ -171,7 +168,6 @@ const SearchResults = () => {
     }
   };
 
-  // Add this function to handle filter changes
   const handleFilterChange = (filterType, value) => {
     setFilters(prev => ({
       ...prev,
@@ -179,7 +175,6 @@ const SearchResults = () => {
     }));
   };
 
-  // Add these filter options
   const priceOptions = [
     { value: '1000', label: '₵1,000' },
     { value: '2000', label: '₵2,000' },
@@ -223,7 +218,6 @@ const SearchResults = () => {
     });
   };
 
-  // Add a separate handler for the View Details button to prevent double navigation
   const handleViewDetails = (e, property) => {
     e.stopPropagation();
     navigate(`/apartment/${property.id}`);
@@ -248,7 +242,6 @@ const SearchResults = () => {
             </div>
           </div>
 
-          {/* Filter Bar */}
           <div className="mt-4 flex items-center space-x-2 overflow-x-auto pb-4">
             <FilterDropdown
               label="Price (Min)"
@@ -288,16 +281,14 @@ const SearchResults = () => {
               onChange={(value) => handleFilterChange('propertyType', value)}
             />
 
-            {/* More Filters Button */}
             <button 
               className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-50 border border-gray-200"
-              onClick={() => {/* Add modal for more filters */}}
+              onClick={() => {}}
             >
               <Sliders className="w-4 h-4 text-gray-500" />
               <span className="text-sm text-gray-700">More Filters</span>
             </button>
 
-            {/* Clear Filters Button - Only show if filters are applied */}
             {Object.values(filters).some(Boolean) && (
               <button 
                 className="text-sm text-[#0C2340] hover:underline"
@@ -316,7 +307,6 @@ const SearchResults = () => {
           </div>
         </div>
 
-        {/* Add View Toggle below the filters */}
         <div className="max-w-7xl mx-auto px-4 py-3 border-t">
           <div className="flex items-center justify-end space-x-2">
             <div className="bg-gray-100 rounded-lg p-1 flex">
@@ -347,9 +337,7 @@ const SearchResults = () => {
         </div>
       </header>
 
-      {/* Main Content */}
       {viewType === 'list' ? (
-        // List View - Full width
         <div className="max-w-7xl mx-auto px-4">
           <div className="py-4">
             <span className="text-gray-600">
@@ -364,9 +352,7 @@ const SearchResults = () => {
                 onClick={() => handlePropertySelect(property)}
                 className="bg-white rounded-xl overflow-hidden cursor-pointer group hover:shadow-xl transition-all duration-300"
               >
-                {/* Main Card Layout */}
                 <div className="flex flex-col h-full">
-                  {/* Image Section */}
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={property.image}
@@ -375,14 +361,12 @@ const SearchResults = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                     
-                    {/* Status Badge */}
                     <div className="absolute top-4 left-4 z-10">
                       <div className="px-3 py-1 rounded-full bg-[#0C2340] text-white text-sm font-medium">
                         Available Now
                       </div>
                     </div>
 
-                    {/* Favorite Button */}
                     <button
                       onClick={(e) => toggleFavorite(e, property.id)}
                       className="absolute top-4 right-4 p-2 rounded-full bg-white/90 backdrop-blur-sm z-10
@@ -398,24 +382,19 @@ const SearchResults = () => {
                     </button>
                   </div>
 
-                  {/* Content Section */}
                   <div className="p-4">
-                    {/* Price */}
                     <div className="text-xl font-bold text-[#0C2340] mb-2">
                       {property.price}
                       <span className="text-sm font-normal text-gray-500">/month</span>
                     </div>
 
-                    {/* Title */}
                     <h3 className="font-medium text-gray-900 mb-2">{property.title}</h3>
 
-                    {/* Location */}
                     <div className="flex items-center text-gray-500 mb-3">
                       <MapPin className="w-4 h-4 mr-1" />
                       <span className="text-sm">{property.location}</span>
                     </div>
 
-                    {/* Property Details */}
                     <div className="flex items-center gap-4 text-gray-600">
                       <div className="flex items-center gap-1">
                         <BedDouble className="w-4 h-4" />
@@ -437,9 +416,7 @@ const SearchResults = () => {
           </div>
         </div>
       ) : (
-        // Map View - Split screen
         <div className="flex-1 flex overflow-hidden">
-          {/* Property Listings - Left side */}
           <div className="w-[45%] overflow-y-auto">
             <div className="p-4 space-y-6">
               {properties.map((property) => (
@@ -448,9 +425,7 @@ const SearchResults = () => {
                   onClick={() => handlePropertySelect(property)}
                   className="bg-white rounded-xl overflow-hidden cursor-pointer group hover:shadow-xl transition-all duration-300"
                 >
-                  {/* Main Card Layout */}
                   <div className="flex flex-col h-full">
-                    {/* Image Section */}
                     <div className="relative h-48 overflow-hidden">
                       <img
                         src={property.image}
@@ -459,14 +434,12 @@ const SearchResults = () => {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                       
-                      {/* Status Badge */}
                       <div className="absolute top-4 left-4 z-10">
                         <div className="px-3 py-1 rounded-full bg-[#0C2340] text-white text-sm font-medium">
                           Available Now
                         </div>
                       </div>
 
-                      {/* Favorite Button */}
                       <button
                         onClick={(e) => toggleFavorite(e, property.id)}
                         className="absolute top-4 right-4 p-2 rounded-full bg-white/90 backdrop-blur-sm z-10
@@ -482,24 +455,19 @@ const SearchResults = () => {
                       </button>
                     </div>
 
-                    {/* Content Section */}
                     <div className="p-4">
-                      {/* Price */}
                       <div className="text-xl font-bold text-[#0C2340] mb-2">
                         {property.price}
                         <span className="text-sm font-normal text-gray-500">/month</span>
                       </div>
 
-                      {/* Title */}
                       <h3 className="font-medium text-gray-900 mb-2">{property.title}</h3>
 
-                      {/* Location */}
                       <div className="flex items-center text-gray-500 mb-3">
                         <MapPin className="w-4 h-4 mr-1" />
                         <span className="text-sm">{property.location}</span>
                       </div>
 
-                      {/* Property Details */}
                       <div className="flex items-center gap-4 text-gray-600">
                         <div className="flex items-center gap-1">
                           <BedDouble className="w-4 h-4" />
@@ -521,7 +489,6 @@ const SearchResults = () => {
             </div>
           </div>
 
-          {/* Map - Right side */}
           <div className="flex-1 relative">
             <Map 
               properties={properties}

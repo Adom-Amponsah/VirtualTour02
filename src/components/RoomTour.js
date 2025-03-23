@@ -1,5 +1,5 @@
 import React from 'react';
-import VirtualTour from '../virtualTour'; // Assuming the virtual tour component is in the same directory
+import VirtualTour from '../virtualTour'; 
 
 const RoomTour = ({ roomId }) => {
   return (

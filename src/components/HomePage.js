@@ -15,10 +15,9 @@ const PropertyCard = ({ property, index }) => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            // Add animation after a delay based on the card's index
             setTimeout(() => {
               entry.target.classList.add('animate');
-            }, index * 200); // 200ms delay between each card
+            }, index * 200); 
             observer.unobserve(entry.target);
           }
         });
@@ -50,7 +49,6 @@ const PropertyCard = ({ property, index }) => {
         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)'
       }}
     >
-      {/* Image Container */}
       <div className="relative h-64 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent z-10" />
         <img 
@@ -59,12 +57,10 @@ const PropertyCard = ({ property, index }) => {
           className={`w-full h-full object-cover transition-transform duration-700 ease-out ${isHovered ? 'scale-110' : 'scale-100'}`}
         />
         
-        {/* Price Tag */}
         <div className="absolute top-4 left-4 z-20 bg-white px-3 py-1 rounded-full">
           <span className="text-sm font-semibold text-gray-900">{property.price}</span>
         </div>
         
-        {/* Favorite Button */}
         <button 
           onClick={() => setIsFavorite(!isFavorite)}
           className="absolute top-4 right-4 z-20 p-2 rounded-full bg-white/90 hover:bg-white transition-colors"
@@ -75,7 +71,6 @@ const PropertyCard = ({ property, index }) => {
         </button>
       </div>
 
-      {/* Content */}
       <div className="p-5">
         <div className="flex items-start justify-between mb-3">
           <div>
@@ -87,7 +82,6 @@ const PropertyCard = ({ property, index }) => {
           </div>
         </div>
 
-        {/* Features */}
         <div className="flex items-center gap-4 mb-4">
           <div className="flex items-center text-gray-600">
             <BedDouble className="w-4 h-4 mr-1" />
@@ -95,7 +89,6 @@ const PropertyCard = ({ property, index }) => {
           </div>
         </div>
 
-        {/* View Details Button */}
         <div className="flex items-center justify-between">
           <button className="group-hover:text-[#0C2340] text-gray-600 font-semibold text-sm flex items-center transition-colors">
             View Details
@@ -201,7 +194,6 @@ const LocationCard = ({ location, index, navigate }) => {
         className="group relative rounded-2xl overflow-hidden cursor-pointer min-w-[300px] w-[300px]"
         onClick={() => navigate(`/search?region=${location.name}`)}
       >
-        {/* Full Image Card */}
         <div className="aspect-[3/4] relative">
           <img
             src={location.image}
@@ -210,7 +202,6 @@ const LocationCard = ({ location, index, navigate }) => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
           
-          {/* Content at bottom */}
           <div className="absolute bottom-0 left-0 right-0 p-6">
             <h3 className="text-2xl font-bold text-white mb-2">{location.name}</h3>
             <span className="text-sm font-medium text-white/80">{location.properties}</span>
@@ -228,9 +219,7 @@ const LocationCard = ({ location, index, navigate }) => {
       className="group relative rounded-2xl overflow-hidden cursor-pointer min-w-[400px] w-[400px] bg-white"
       onClick={() => navigate(`/search?region=${location.name}`)}
     >
-      {/* Split Content Card */}
       <div className="flex h-[400px]">
-        {/* Text Content */}
         <div className="w-1/2 p-6 flex flex-col justify-between">
           <div>
             <h3 className="text-2xl font-bold text-gray-900 mb-4">{location.name}</h3>
@@ -245,7 +234,6 @@ const LocationCard = ({ location, index, navigate }) => {
           </div>
         </div>
         
-        {/* Image Half */}
         <div className="w-1/2 relative">
           <img
             src={location.image}
@@ -258,7 +246,6 @@ const LocationCard = ({ location, index, navigate }) => {
   );
 };
 
-// Add this new component for scroll-triggered animations
 const ScrollAnimatedSection = ({ children, className = '' }) => {
   const sectionRef = React.useRef(null);
   const [isVisible, setIsVisible] = React.useState(false);
@@ -309,7 +296,6 @@ const HomePage = () => {
   const [showPreferencesModal, setShowPreferencesModal] = useState(false);
   const { scrollY } = useScroll();
 
-  // Transform values for parallax and cutout effects
   const heroScale = useTransform(scrollY, [0, 300], [1, 1.1]);
   const heroOpacity = useTransform(scrollY, [0, 300], [1, 0.3]);
   const textY = useTransform(scrollY, [0, 300], [0, -50]);
@@ -381,23 +367,19 @@ const HomePage = () => {
       minPrice,
       maxPrice
     });
-    // Store the current search parameters
     localStorage.setItem('searchParams', JSON.stringify({
       searchType,
       location,
       minPrice,
       maxPrice
     }));
-    // Open the preferences modal
     setShowPreferencesModal(true);
   };
 
   const handlePreferencesComplete = (preferences) => {
-    // Get the stored search parameters
     const searchParams = JSON.parse(localStorage.getItem('searchParams') || '{}');
     setShowPreferencesModal(false);
     
-    // Construct the search URL with all parameters
     const searchQuery = new URLSearchParams({
       region: searchParams.location || '',
       type: searchParams.searchType || 'Rent',
@@ -406,22 +388,18 @@ const HomePage = () => {
       preferences: JSON.stringify(preferences)
     }).toString();
 
-    // Navigate to search results with all parameters
     navigate(`/search?${searchQuery}`);
   };
 
   return (
     <div className="min-h-screen bg-white overflow-hidden">
-      {/* Navigation - Updated colors */}
       <nav className="bg-[#0C2340] text-white shadow-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-14">
-            {/* Logo */}
             <div className="text-xl font-bold text-white">
               Apartment<span className="text-[#FF385C]">Ghana</span>
             </div>
 
-            {/* Mobile Menu Button */}
             <button 
               className="md:hidden"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -429,7 +407,6 @@ const HomePage = () => {
               {isMenuOpen ? <X /> : <Menu />}
             </button>
 
-            {/* Main Navigation - Converted to links */}
             <div className="hidden md:flex items-center space-x-8">
               <a href="#" className="text-white hover:text-gray-300 text-sm">RENT</a>
               <a href="#" className="text-gray-300 hover:text-white text-sm">BUY</a>
@@ -439,7 +416,6 @@ const HomePage = () => {
               <a href="#" className="text-gray-300 hover:text-white text-sm">BLOG</a>
             </div>
 
-            {/* Auth Links */}
             <div className="hidden md:flex items-center space-x-6">
               <a href="#" className="text-sm text-gray-300 hover:text-white">
                 Advertise
@@ -451,7 +427,6 @@ const HomePage = () => {
           </div>
         </div>
 
-        {/* Mobile Menu - Updated with links */}
         {isMenuOpen && (
           <div className="md:hidden bg-[#0C2340] border-t border-[#163156] py-3">
             <div className="space-y-1 px-4">
@@ -492,9 +467,7 @@ const HomePage = () => {
         )}
       </nav>
 
-      {/* Initial Hero Section with House Cutout */}
       <motion.div className="relative h-screen">
-        {/* Background Image */}
         <motion.div 
           className="absolute inset-0 z-0"
           style={{ scale: heroScale, opacity: heroOpacity }}
@@ -513,12 +486,10 @@ const HomePage = () => {
           />
         </motion.div>
 
-        {/* Hero Content with House Cutout */}
         <motion.div 
           className="relative z-20 h-full flex flex-col px-6 md:ml-32"
           style={{ y: textY }}
         >
-          {/* Hero Text */}
           <motion.div 
             className="mt-32"
             initial={{ opacity: 0, y: 20 }}
@@ -537,7 +508,6 @@ const HomePage = () => {
             </p>
           </motion.div>
 
-          {/* House Cutout at Bottom */}
           <motion.div
             className="absolute bottom-0 left-1/2 -translate-x-1/2 w-64 sm:w-96 md:w-128 h-64 sm:h-96 md:h-128"
             style={{ 
@@ -561,7 +531,6 @@ const HomePage = () => {
         </motion.div>
       </motion.div>
 
-      {/* Search Section with Scroll Animation */}
       <motion.div 
         className="relative min-h-[85vh] bg-cover bg-center flex items-center"
         initial={{ opacity: 0 }}
@@ -578,12 +547,10 @@ const HomePage = () => {
           backgroundImage: 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(/images/coverrr.jpeg)'
         }}
       >
-        {/* Additional dark overlay */}
         <div className="absolute inset-0 bg-black/50 z-10" />
         
         <div className="max-w-7xl mx-auto px-4 w-full relative z-40">
-          {/* Hero Text */}
-          <motion.div 
+=          <motion.div 
             className="max-w-3xl mx-auto text-center mb-8 sm:mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -598,7 +565,6 @@ const HomePage = () => {
             </p>
           </motion.div>
 
-          {/* Search Interface - Mobile Friendly */}
           <motion.div 
             className="bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl p-2 sm:p-4 max-w-5xl mx-auto"
             initial={{ y: 50, opacity: 0 }}
@@ -607,7 +573,6 @@ const HomePage = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
           >
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-2 items-stretch sm:items-center">
-              {/* Search Type Toggle - Mobile Friendly */}
               <div className="sm:hidden flex justify-center mb-2">
                 <div className="flex space-x-1 bg-gray-300 p-1 rounded-lg">
                   {['Rent', 'Buy'].map((type) => (
@@ -629,7 +594,6 @@ const HomePage = () => {
                 </div>
               </div>
 
-              {/* Desktop Search Type Toggle */}
               <div className="hidden sm:flex items-center border-r border-gray-200 px-4">
                 <div className="flex space-x-1 bg-gray-300 p-1 rounded-lg">
                   {['Rent', 'Buy'].map((type) => (
@@ -651,7 +615,6 @@ const HomePage = () => {
                 </div>
               </div>
 
-              {/* Location Dropdown - Mobile Friendly */}
               <div className="flex-1 relative group">
                 <div className="flex items-center">
                   <MapPin className="h-4 w-4 text-gray-400 absolute left-4" />
@@ -676,7 +639,6 @@ const HomePage = () => {
                 <div className="absolute bottom-0 left-2 right-2 h-px bg-gray-200 group-hover:bg-[#0C2340] transition-colors" />
               </div>
 
-              {/* Price Range - Mobile Friendly */}
               <div className="flex sm:hidden flex-col gap-2">
                 <div className="relative group">
                   <select 
@@ -706,7 +668,6 @@ const HomePage = () => {
                 </div>
               </div>
 
-              {/* Desktop Price Range */}
               <div className="hidden sm:flex items-center space-x-2 px-4 border-l border-gray-200">
                 <div className="relative group">
                   <select 
@@ -739,7 +700,6 @@ const HomePage = () => {
                 </div>
               </div>
 
-              {/* Search Button - Mobile Friendly */}
               <button 
                 onClick={handleSearch}
                 className="w-full sm:w-auto flex items-center justify-center px-6 py-3 bg-gradient-to-r from-[#0C2340] to-[#1B3B66] 
@@ -751,7 +711,6 @@ const HomePage = () => {
             </div>
           </motion.div>
 
-          {/* Quick Stats - Mobile Friendly */}
           <motion.div 
             className="mt-8 sm:mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto text-center text-white relative z-40"
             initial={{ y: 50, opacity: 0 }}
@@ -767,7 +726,6 @@ const HomePage = () => {
         </div>
       </motion.div>
 
-      {/* Fair Housing Notice */}
       <div className="bg-[#0C2340] text-white py-4 text-center">
         <div className="max-w-7xl mx-auto px-4">
           <span className="font-semibold">Fair Housing in Ghana:</span>{' '}
@@ -777,7 +735,6 @@ const HomePage = () => {
         </div>
       </div>
 
-      {/* Available Rentals Section */}
       <div className="py-16 bg-white relative z-40">
         <div className="max-w-7xl mx-auto px-4">
           <AnimatedSection>
@@ -791,7 +748,6 @@ const HomePage = () => {
             </div>
           </AnimatedSection>
 
-          {/* Location Cards with Horizontal Scroll */}
           <ScrollAnimatedSection className="relative">
             <div className="overflow-x-auto scrollbar-hide">
               <motion.div 
@@ -834,9 +790,7 @@ const HomePage = () => {
                       </div>
                     </div>
 
-                    {/* Stacked cards container */}
                     <div className="flex flex-col gap-6">
-                      {/* Top card */}
                       <div 
                         className="relative rounded-2xl overflow-hidden cursor-pointer w-[300px] h-[290px] group"
                         onClick={() => navigate(`/search?region=${locationAreas[groupIndex * 3 + 1]?.name}`)}
@@ -857,7 +811,6 @@ const HomePage = () => {
                         </div>
                       </div>
 
-                      {/* Bottom card */}
                       <div 
                         className="relative rounded-2xl overflow-hidden cursor-pointer w-[300px] h-[290px] group"
                         onClick={() => navigate(`/search?region=${locationAreas[groupIndex * 3 + 2]?.name}`)}
@@ -895,7 +848,6 @@ const HomePage = () => {
   );
 };
 
-// Component for search type buttons
 const SearchTypeButton = ({ children, active, onClick }) => (
   <button 
     className={`px-8 py-2 rounded-md transition-all ${
@@ -909,7 +861,6 @@ const SearchTypeButton = ({ children, active, onClick }) => (
   </button>
 );
 
-// Component for price select dropdowns
 const PriceSelect = ({ placeholder }) => (
   <div className="relative">
     <select className="w-full appearance-none bg-white border rounded-lg px-4 py-3 pr-8 focus:outline-none focus:ring-2 focus:ring-[#0C2340] focus:border-transparent">
@@ -924,7 +875,6 @@ const PriceSelect = ({ placeholder }) => (
   </div>
 );
 
-// Component for quick stats
 const QuickStat = ({ number, label }) => (
   <div className="p-4">
     <div className="text-2xl font-bold">{number}</div>

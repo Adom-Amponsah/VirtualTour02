@@ -30,14 +30,12 @@ const CardContent = ({ children, className = '' }) => (
   </div>
 );
 
-// Button Component
 const Button = ({ children, className = '', ...props }) => (
   <button className={`bg-primary text-white py-2 px-4 rounded ${className}`} {...props}>
     {children}
   </button>
 );
 
-// Separator Component
 const Separator = ({ className = '' }) => (
   <hr className={`border-t border-gray-200 ${className}`} />
 );
@@ -92,7 +90,6 @@ const LocationMap = ({ latitude, longitude, name }) => {
     );
   }
 
-  // Handle loading state
   if (!isLoaded) {
     return (
       <div className="h-[400px] w-full rounded-xl bg-gray-100 flex items-center justify-center">
@@ -155,10 +152,8 @@ const VirtualTourSection = ({ scenes, name }) => {
         onSceneChange={handleSceneChange}
       />
       
-      {/* Gradient Overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/40 pointer-events-none" />
       
-      {/* Header Content */}
       <motion.div 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}

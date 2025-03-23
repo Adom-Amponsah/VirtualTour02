@@ -30,7 +30,6 @@ const ReservationCheckout = () => {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   };
 
-  // Update pricing when dates or guests change
   const handleDateChange = (type, date) => {
     if (type === 'start') {
       setStartDate(date);
@@ -57,7 +56,6 @@ const ReservationCheckout = () => {
     });
   };
 
-  // Mock data - In a real app, this would come from your booking context/state
   const listing = {
     id: 1,
     title: "Cozy room in the Langen Reihe",
@@ -79,17 +77,14 @@ const ReservationCheckout = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsProcessing(true);
-    // Simulate payment processing
     setTimeout(() => {
       setIsProcessing(false);
-      // Navigate to confirmation page
       navigate('/booking-confirmation');
     }, 2000);
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-white border-b">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <button 
@@ -104,12 +99,10 @@ const ReservationCheckout = () => {
 
       <main className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Left Column - Booking Form */}
           <div>
             <h1 className="text-3xl font-bold mb-8">Request to book</h1>
 
             <form onSubmit={handleSubmit} className="space-y-8">
-              {/* Trip Details Section */}
               <div className="bg-white rounded-2xl p-6 shadow-sm">
                 <h2 className="text-xl font-semibold mb-6">Your trip</h2>
                 
@@ -165,7 +158,6 @@ const ReservationCheckout = () => {
                 </div>
               </div>
 
-              {/* Payment Section */}
               <div className="bg-white rounded-2xl p-6 shadow-sm">
                 <h2 className="text-xl font-semibold mb-6">Pay with</h2>
                 
@@ -229,7 +221,6 @@ const ReservationCheckout = () => {
                 </div>
               </div>
 
-              {/* Cancellation Policy */}
               <div className="bg-white rounded-2xl p-6 shadow-sm">
                 <div className="flex items-start space-x-4">
                   <Clock className="w-6 h-6 text-gray-600 mt-1" />
@@ -242,7 +233,6 @@ const ReservationCheckout = () => {
                 </div>
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={isProcessing}
@@ -260,11 +250,9 @@ const ReservationCheckout = () => {
             </form>
           </div>
 
-          {/* Right Column - Price Breakdown */}
           <div className="lg:pl-12">
             <div className="sticky top-24">
               <div className="bg-white rounded-2xl p-6 shadow-sm">
-                {/* Listing Preview */}
                 <div className="flex space-x-4 pb-6 border-b">
                   <img
                     src={listing.image}
@@ -283,7 +271,6 @@ const ReservationCheckout = () => {
                   </div>
                 </div>
 
-                {/* Price Breakdown */}
                 <div className="py-6 space-y-4">
                   <h3 className="font-semibold text-lg">Price details</h3>
                   
@@ -310,7 +297,6 @@ const ReservationCheckout = () => {
                   </div>
                 </div>
 
-                {/* Security Notice */}
                 <div className="pt-6 border-t">
                   <div className="flex items-start space-x-4">
                     <Shield className="w-6 h-6 text-gray-600" />

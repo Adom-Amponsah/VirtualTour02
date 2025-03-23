@@ -10,7 +10,6 @@ const useLocations = () => {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        // Step 1: Get the auth token
         const tokenResponse = await fetch(
           'https://www.universal-tutorial.com/api/getaccesstoken', 
           {
@@ -28,7 +27,6 @@ const useLocations = () => {
 
         const { auth_token } = await tokenResponse.json();
 
-        // Step 2: Use the auth token to fetch locations
         const locationsResponse = await fetch(
           'https://www.universal-tutorial.com/api/states/Ghana',
           {

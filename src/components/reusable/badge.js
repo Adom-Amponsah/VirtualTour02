@@ -1,4 +1,3 @@
-// components/ui/badge.jsx
 import * as React from "react"
 
 const Badge = React.forwardRef(({ className, ...props }, ref) => (
